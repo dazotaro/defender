@@ -1,7 +1,18 @@
+// Global includes
 #include <cstdio>			// printf
 #include <SDL.h>			// all SDL2
-#include "gl_core_4_2.h"	// openGL
 #include <SDL_opengl.h>
+#include <map>				// std::map
+#include <string>
+// Local incluces
+#include "gl_core_4_2.hpp"	// glLoadGen generated header files
+#include "GLSLProgramHelper.hpp"	// GLSLProgramHelper
+#include "GLSLProgram.hpp"	// GLSLProgram
+
+namespace
+{
+	std::map<std::string, JU::GLSLProgram> glsl_program_map_;
+}
 
 
 /* A simple function that prints a message, the error code returned by SDL,
@@ -29,6 +40,39 @@ void checkSDLError(int line = -1)
 }
 
 
+/**
+* @brief Initialization function
+*
+* @detail Initialize application
+*/
+void init()
+{
+    // GLSL PROGRAMS
+    // -------------
+    glsl_program_map_["simple"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
+}
+
+
+/**
+* @brief Game loop
+*
+* @detail Infinite game loop
+*/
+void loop()
+{
+}
+
+
+/**
+* @brief Exit function
+*
+* @detail Clean up before termination
+*/
+void exit()
+{
+}
+
+
 /* Our program's entry point */
 int main(int argc, char *argv[])
 {
@@ -51,16 +95,16 @@ int main(int argc, char *argv[])
 
     //------------------------------------
     // glLoadGen required initialization
-    int loaded = ogl_LoadFunctions();
-    if(loaded == ogl_LOAD_FAILED)
-    {
-        //Destroy the context and abort
-        return 0;
-    }
+	gl::exts::LoadTest loaded = gl::sys::LoadFunctions();
+	if(!loaded)
+	{
+		//Destroy the context and abort
+		return 0;
+	}
 
-    int num_failed = loaded - ogl_LOAD_SUCCEEDED; std::printf("Number of functions that failed to load: %i.\n",num_failed);
+    //int num_failed = loaded - gl::sys::LOAD_SUCCEEDED;
+    //std::printf("Number of functions that failed to load: %i.\n",num_failed);
     //------------------------------------
-
 
     /* Create our window centered at 512x512 resolution */
     mainwindow = SDL_CreateWindow("Testing SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -79,22 +123,22 @@ int main(int argc, char *argv[])
     SDL_GL_SetSwapInterval(1);
 
     /* Clear our buffer with a red background */
-    glClearColor ( 1.0, 0.0, 0.0, 1.0 );
-    glClear ( GL_COLOR_BUFFER_BIT );
+    gl::ClearColor ( 1.0, 0.0, 0.0, 1.0 );
+    gl::Clear ( gl::COLOR_BUFFER_BIT );
     /* Swap our back buffer to the front */
     SDL_GL_SwapWindow(mainwindow);
     /* Wait 2 seconds */
     SDL_Delay(2000);
 
     /* Same as above, but green */
-    glClearColor ( 0.0, 1.0, 0.0, 1.0 );
-    glClear ( GL_COLOR_BUFFER_BIT );
+    gl::ClearColor ( 0.0, 1.0, 0.0, 1.0 );
+    gl::Clear ( gl::COLOR_BUFFER_BIT );
     SDL_GL_SwapWindow(mainwindow);
     SDL_Delay(2000);
 
     /* Same as above, but blue */
-    glClearColor ( 0.0, 0.0, 1.0, 1.0 );
-    glClear ( GL_COLOR_BUFFER_BIT );
+    gl::ClearColor ( 0.0, 0.0, 1.0, 1.0 );
+    gl::Clear ( gl::COLOR_BUFFER_BIT );
     SDL_GL_SwapWindow(mainwindow);
     SDL_Delay(2000);
 
@@ -102,6 +146,10 @@ int main(int argc, char *argv[])
     SDL_GL_DeleteContext(maincontext);
     SDL_DestroyWindow(mainwindow);
     SDL_Quit();
+
+    init();
+    loop();
+    exit();
 
     return 0;
 }
