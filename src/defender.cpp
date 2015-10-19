@@ -73,6 +73,8 @@ void init()
 */
 void loop()
 {
+	static JU::GLSLProgram* p_program;
+
 	unsigned counter = 10000;
 	while (counter--)
 	{
@@ -80,11 +82,12 @@ void loop()
 		gl::Clear(gl::COLOR_BUFFER_BIT);
 
 		// Bind the GLSL program and this object's VAO
-		g_shader_map_["simple"].use();
+		p_program = &g_shader_map_["simple"];
+		p_program->use();
 
 		std::map<std::string, JU::GLMesh2D*>::const_iterator iter;
 		for (iter = g_glmesh_map_.begin(); iter != g_glmesh_map_.end(); ++iter)
-			iter->second->render();
+			iter->second->render(*p_program, glm::mat3(), glm::mat3());
 
 	    /* Swap our back buffer to the front */
 	    SDL_GL_SwapWindow(g_mainwindow);

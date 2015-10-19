@@ -8,13 +8,14 @@
 #ifndef GLMESH2D_HPP_
 #define GLMESH2D_HPP_
 
-#include "Defs.hpp"					// uint8
-#include "gl_core_4_2.hpp"          // glLoadGen generated header file
+#include "Defs.hpp"						// uint8
+#include "gl_core_4_2.hpp"          	// glLoadGen generated header file
+#include "Renderable2DInterface.hpp"	// Renderable2DInterface
 
 namespace JU
 {
 
-class GLMesh2D
+class GLMesh2D : public Renderable2DInterface
 {
 	public:
 		GLMesh2D();
@@ -22,6 +23,12 @@ class GLMesh2D
 
 		void init();
 		void render() const;
+
+		// Renderable2DInterface
+        virtual void render(const GLSLProgram &program,
+                          const glm::mat3 & model,
+                          const glm::mat3 &view) const;
+
 
 	private:
         GLuint vao_handle_;         //!< Handle to VAO
