@@ -13,7 +13,7 @@ namespace JU
 * @brief Default constructor
 *
 */
-GLMesh2D::GLMesh2D() : vao_handle_(0), vbo_handles_(nullptr), num_buffers_(0)
+GLMesh2D::GLMesh2D() : vao_handle_(0), vbo_handles_(nullptr), num_buffers_(0), num_vertices_(0)
 {
 }
 
