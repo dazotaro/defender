@@ -16,13 +16,15 @@ namespace JU
 class Moveable2D
 {
 	public:
-		Moveable2D(glm::f32 pos_x, glm::f32 pos_y, glm::f32 scale_x, glm::f32 scale_y, glm::f32 angle);
+		Moveable2D(glm::f32 pos_x = 0.0f, glm::f32 pos_y = 0.0f,
+				   glm::f32 scalex = 1.0f, glm::f32 scaley = 1.0f,
+				   glm::f32 angle = 0.0f);
 
 		glm::mat3 transformationToParent() const;
 		glm::mat3 transformationFromParent() const;
 
 	private:
-		glm::vec3	position_;	//!< position in parent's coordinate system
+		glm::vec2	position_;	//!< position in parent's coordinate system
 		glm::vec2	scale_;		//!< scale
 		glm::f32	angle_;		//!< angle with the parent's X axis (in radians)
 };
