@@ -1,17 +1,19 @@
-// Global includes
-#include <cstdio>			// printf
-#include <SDL.h>			// all SDL2
-#include <SDL_opengl.h>
-#include <map>				// std::map
-#include <string>
 // Local incluces
-#include "gl_core_4_2.hpp"	// glLoadGen generated header files
+#include "gl_core_4_2.hpp"			// glLoadGen generated header files (need to be included before 'SDL_oepngl.h')
 #include "GLSLProgramHelper.hpp"	// GLSLProgramHelper
-#include "GLSLProgram.hpp"	// GLSLProgram
+#include "GLSLProgram.hpp"			// GLSLProgram
+// Global includes
+#include <cstdio>					// printf
+#include <SDL.h>					// all SDL2
+#include <SDL_opengl.h>
+#include <map>						// std::map
+#include <string>					// std::string
 
 namespace
 {
 	std::map<std::string, JU::GLSLProgram> glsl_program_map_;
+	const unsigned int WIDTH = 800;
+	const unsigned int HEIGHT = 600;
 }
 
 
@@ -107,8 +109,8 @@ int main(int argc, char *argv[])
     //------------------------------------
 
     /* Create our window centered at 512x512 resolution */
-    mainwindow = SDL_CreateWindow("Testing SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        512, 512, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    mainwindow = SDL_CreateWindow("Defender", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        WIDTH, HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (!mainwindow) /* Die if creation failed */
         sdldie("Unable to create window");
 
