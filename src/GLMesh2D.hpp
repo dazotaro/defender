@@ -11,6 +11,9 @@
 #include "Defs.hpp"					// uint8
 #include "gl_core_4_2.hpp"          // glLoadGen generated header file
 
+namespace JU
+{
+
 class GLMesh2D
 {
 	public:
@@ -18,11 +21,15 @@ class GLMesh2D
 		virtual ~GLMesh2D();
 
 		void init();
+		void render() const;
 
 	private:
         GLuint vao_handle_;         //!< Handle to VAO
         GLuint *vbo_handles_;		//!< Handle to dynamically allocated VBOs
         JU::uint8 num_buffers_;
+        JU::uint32 num_vertices_;	//!< Number of vertices
 };
+
+} // namespace JU
 
 #endif /* GLMESH2D_HPP_ */

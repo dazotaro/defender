@@ -7,6 +7,8 @@
 
 #include "GLMesh2D.hpp"
 
+namespace JU
+{
 /**
 * @brief Default constructor
 *
@@ -46,7 +48,7 @@ void GLMesh2D::init()
         1, 3, 2,
     };
 
-    //num_vertices_ = sizeof(vertexIndices) / sizeof(vertexIndices[0]);
+    num_vertices_ = sizeof(vertexIndices) / sizeof(vertexIndices[0]);
 
     // VAO
     gl::GenVertexArrays(1, &vao_handle_);
@@ -71,4 +73,27 @@ void GLMesh2D::init()
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
     gl::BindVertexArray(0);
 }
+
+
+/**
+* @brief Render function
+*
+* @detail Render this GLMesh2D
+*
+* @param program GLSLProgram to use for rendering
+*
+*/
+void GLMesh2D::render() const
+{
+    gl::BindVertexArray(vao_handle_);
+
+    // Draw using indices
+    gl::DrawElements(gl::TRIANGLES, num_vertices_, gl::UNSIGNED_SHORT, 0);
+
+    // Unbind
+    gl::BindVertexArray(0);
+}
+
+
+} // namespace JU
 

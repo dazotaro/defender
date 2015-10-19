@@ -2,6 +2,7 @@
 #include "gl_core_4_2.hpp"			// glLoadGen generated header files (need to be included before 'SDL_oepngl.h')
 #include "GLSLProgramHelper.hpp"	// GLSLProgramHelper
 #include "GLSLProgram.hpp"			// GLSLProgram
+#include "GLMesh2D.hpp"				// GLMesh2D
 // Global includes
 #include <cstdio>					// printf
 #include <SDL.h>					// all SDL2
@@ -11,9 +12,13 @@
 
 namespace
 {
-	std::map<std::string, JU::GLSLProgram> glsl_program_map_;
+	// CONSTANTS
 	const unsigned int WIDTH = 800;
 	const unsigned int HEIGHT = 600;
+	// Global variables
+	std::map<std::string, JU::GLSLProgram> 	g_shader_map_;
+	std::map<std::string, JU::GLMesh2D*>    g_glmesh_map_;
+	SDL_Window*								g_mainwindow; /* Our window handle */
 }
 
 
@@ -51,7 +56,13 @@ void init()
 {
     // GLSL PROGRAMS
     // -------------
-    glsl_program_map_["simple"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
+    g_shader_map_["simple"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
+
+    // GLMesh
+    // -------------
+    JU::GLMesh2D* p_glmesh = new JU::GLMesh2D();
+    p_glmesh->init();
+    g_glmesh_map_["quad"] = p_glmesh;
 }
 
 
@@ -62,6 +73,25 @@ void init()
 */
 void loop()
 {
+	unsigned counter = 10000;
+	while (counter--)
+	{
+		gl::ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		gl::Clear(gl::COLOR_BUFFER_BIT);
+
+		// Bind the GLSL program and this object's VAO
+		g_shader_map_["simple"].use();
+
+		std::map<std::string, JU::GLMesh2D*>::const_iterator iter;
+		for (iter = g_glmesh_map_.begin(); iter != g_glmesh_map_.end(); ++iter)
+			iter->second->render();
+
+	    /* Swap our back buffer to the front */
+	    SDL_GL_SwapWindow(g_mainwindow);
+
+	    // Unbind GLSL Program
+		gl::UseProgram(0);
+	}
 }
 
 
@@ -72,13 +102,15 @@ void loop()
 */
 void exit()
 {
+	std::map<std::string, JU::GLMesh2D*>::const_iterator iter;
+	for (iter = g_glmesh_map_.begin(); iter != g_glmesh_map_.end(); ++iter)
+		delete iter->second;
 }
 
 
 /* Our program's entry point */
 int main(int argc, char *argv[])
 {
-    SDL_Window *mainwindow; /* Our window handle */
     SDL_GLContext maincontext; /* Our opengl context handle */
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) /* Initialize SDL's Video subsystem */
@@ -109,49 +141,37 @@ int main(int argc, char *argv[])
     //------------------------------------
 
     /* Create our window centered at 512x512 resolution */
-    mainwindow = SDL_CreateWindow("Defender", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    g_mainwindow = SDL_CreateWindow("Defender", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         WIDTH, HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-    if (!mainwindow) /* Die if creation failed */
+    if (!g_mainwindow) /* Die if creation failed */
         sdldie("Unable to create window");
 
     checkSDLError(__LINE__);
 
     /* Create our opengl context and attach it to our window */
-    maincontext = SDL_GL_CreateContext(mainwindow);
+    maincontext = SDL_GL_CreateContext(g_mainwindow);
     checkSDLError(__LINE__);
 
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
-    SDL_GL_SetSwapInterval(1);
+    SDL_GL_SetSwapInterval(0);
 
     /* Clear our buffer with a red background */
     gl::ClearColor ( 1.0, 0.0, 0.0, 1.0 );
     gl::Clear ( gl::COLOR_BUFFER_BIT );
     /* Swap our back buffer to the front */
-    SDL_GL_SwapWindow(mainwindow);
+    SDL_GL_SwapWindow(g_mainwindow);
     /* Wait 2 seconds */
     SDL_Delay(2000);
-
-    /* Same as above, but green */
-    gl::ClearColor ( 0.0, 1.0, 0.0, 1.0 );
-    gl::Clear ( gl::COLOR_BUFFER_BIT );
-    SDL_GL_SwapWindow(mainwindow);
-    SDL_Delay(2000);
-
-    /* Same as above, but blue */
-    gl::ClearColor ( 0.0, 0.0, 1.0, 1.0 );
-    gl::Clear ( gl::COLOR_BUFFER_BIT );
-    SDL_GL_SwapWindow(mainwindow);
-    SDL_Delay(2000);
-
-    /* Delete our opengl context, destroy our window, and shutdown SDL */
-    SDL_GL_DeleteContext(maincontext);
-    SDL_DestroyWindow(mainwindow);
-    SDL_Quit();
 
     init();
     loop();
     exit();
+
+    /* Delete our opengl context, destroy our window, and shutdown SDL */
+    SDL_GL_DeleteContext(maincontext);
+    SDL_DestroyWindow(g_mainwindow);
+    SDL_Quit();
 
     return 0;
 }
