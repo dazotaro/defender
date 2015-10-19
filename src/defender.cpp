@@ -3,6 +3,7 @@
 #include "GLSLProgramHelper.hpp"	// GLSLProgramHelper
 #include "GLSLProgram.hpp"			// GLSLProgram
 #include "GLMesh2D.hpp"				// GLMesh2D
+#include "GLMesh2DInstance.hpp"		// GLMesh2DInstance
 // Global includes
 #include <cstdio>					// printf
 #include <SDL.h>					// all SDL2
@@ -16,8 +17,9 @@ namespace
 	const unsigned int WIDTH = 800;
 	const unsigned int HEIGHT = 600;
 	// Global variables
-	std::map<std::string, JU::GLSLProgram> 	g_shader_map_;
-	std::map<std::string, JU::GLMesh2D*>    g_glmesh_map_;
+	std::map<std::string, JU::GLSLProgram> 			g_shader_map_;
+	std::map<std::string, JU::GLMesh2D*>    		g_glmesh_map_;
+	std::map<std::string, JU::GLMesh2DInstance*>    g_glmesh_instance_map_;
 	SDL_Window*								g_mainwindow; /* Our window handle */
 }
 
@@ -58,11 +60,15 @@ void init()
     // -------------
     g_shader_map_["simple"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
 
-    // GLMesh
+    // GLMesh2D
     // -------------
     JU::GLMesh2D* p_glmesh = new JU::GLMesh2D();
     p_glmesh->init();
     g_glmesh_map_["quad"] = p_glmesh;
+    // GLMesh2DInstance
+    // -------------
+    JU::GLMesh2DInstance* p_glmesh_instance = new JU::GLMesh2DInstance(p_glmesh);
+    g_glmesh_instance_map_["sprite"] = p_glmesh_instance;
 }
 
 
@@ -85,8 +91,8 @@ void loop()
 		p_program = &g_shader_map_["simple"];
 		p_program->use();
 
-		std::map<std::string, JU::GLMesh2D*>::const_iterator iter;
-		for (iter = g_glmesh_map_.begin(); iter != g_glmesh_map_.end(); ++iter)
+		std::map<std::string, JU::GLMesh2DInstance*>::const_iterator iter;
+		for (iter = g_glmesh_instance_map_.begin(); iter != g_glmesh_instance_map_.end(); ++iter)
 			iter->second->render(*p_program, glm::mat3(), glm::mat3());
 
 	    /* Swap our back buffer to the front */
@@ -105,9 +111,13 @@ void loop()
 */
 void exit()
 {
-	std::map<std::string, JU::GLMesh2D*>::const_iterator iter;
-	for (iter = g_glmesh_map_.begin(); iter != g_glmesh_map_.end(); ++iter)
-		delete iter->second;
+	std::map<std::string, JU::GLMesh2D*>::const_iterator iter_mesh;
+	for (iter_mesh = g_glmesh_map_.begin(); iter_mesh != g_glmesh_map_.end(); ++iter_mesh)
+		delete iter_mesh->second;
+
+	std::map<std::string, JU::GLMesh2DInstance*>::const_iterator iter_instance;
+	for (iter_instance = g_glmesh_instance_map_.begin(); iter_instance != g_glmesh_instance_map_.end(); ++iter_instance)
+		delete iter_instance->second;
 }
 
 

@@ -83,7 +83,7 @@ void GLMesh2D::init()
 * @param program GLSLProgram to use for rendering
 *
 */
-void GLMesh2D::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
+void GLMesh2D::render() const
 {
     gl::BindVertexArray(vao_handle_);
 
