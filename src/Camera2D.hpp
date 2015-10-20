@@ -21,6 +21,7 @@ class Camera2D
 		Camera2D(Moveable2D moveable, JU::uint32 width, JU::uint32 height);
 
 		void setMoveable(Moveable2D moveable);
+		void getWorld2NDCTransformation(glm::mat3& view) const;
 
 	private:
 		Moveable2D moveable_;	//!< Moveable data
