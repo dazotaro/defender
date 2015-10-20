@@ -5,6 +5,9 @@
 #include "GLMesh2D.hpp"				// GLMesh2D
 #include "GLMesh2DInstance.hpp"		// GLMesh2DInstance
 #include "Camera2D.hpp"				// Camera2D
+#include "SDLEventManager.hpp"		// JU::SDLEventManager
+#include "Singleton.hpp"			// JU::Singleton
+#include "Keyboard.hpp"				// JU::Keyboard
 // Global includes
 #include <cstdio>					// printf
 #include <SDL.h>					// all SDL2
@@ -16,12 +19,14 @@ namespace
 {
 	// CONSTANTS
 	const unsigned int WIDTH = 800;
-	const unsigned int HEIGHT = 600;
+	const unsigned int HEIGHT = 800;
 	// Global variables
 	std::map<std::string, JU::GLSLProgram> 			g_shader_map_;
 	std::map<std::string, JU::GLMesh2D*>    		g_glmesh_map_;
 	std::map<std::string, JU::GLMesh2DInstance*>    g_glmesh_instance_map_;
-	JU::Camera2D* g_pcamera;
+	JU::Camera2D* 		 g_pcamera;
+	JU::SDLEventManager* g_SDL_event_manager;
+	JU::Keyboard*		 g_keyboard;
 	SDL_Window*	  g_mainwindow; /* Our window handle */
 }
 
@@ -58,7 +63,29 @@ void checkSDLError(int line = -1)
 */
 void init()
 {
-    // GLSL PROGRAMS
+	// KEYBOARD
+	// --------
+	g_keyboard = JU::Singleton<JU::Keyboard>::getInstance();
+	g_keyboard->reset();
+
+	// SDL EVENT MANAGER
+	// -----------------
+	g_SDL_event_manager = JU::Singleton<JU::SDLEventManager>::getInstance();
+	if (!g_SDL_event_manager->initialize())
+	{
+		std::printf("Input Manager failed to initialize!!!\n");
+		exit(0);
+	}
+	// Register window resize event
+	//g_SDL_event_manager->attachEventHandler(SDL_WINDOWEVENT, "MainWindowResize", &window_);
+
+	// KEYBOARD
+	// --------
+	// Register window resize event
+	g_SDL_event_manager->attachEventHandler(SDL_KEYDOWN, "Keydown", g_keyboard);
+	g_SDL_event_manager->attachEventHandler(SDL_KEYUP, 	"Keyup",   g_keyboard);
+
+	// GLSL PROGRAMS
     // -------------
     g_shader_map_["simple"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
 
@@ -70,7 +97,7 @@ void init()
 
     // Camera2D
     // --------
-    g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f), 5.0f, 5.0f);
+    g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f), 10.0f, 10.0f);
 
     // GLMesh2DInstance
     // -------------
@@ -86,11 +113,19 @@ void init()
 */
 void loop()
 {
+	bool running = true;
 	static JU::GLSLProgram* p_program;
 
-	unsigned counter = 20000;
-	while (counter--)
+	while (running)
 	{
+		// SDL EVENTS
+		g_SDL_event_manager->update();
+		if (g_SDL_event_manager->quitting())
+		{
+			running = false;
+			break;
+		}
+
 		gl::ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		gl::Clear(gl::COLOR_BUFFER_BIT);
 
@@ -131,6 +166,9 @@ void exit()
 		delete iter_instance->second;
 
 	delete g_pcamera;
+
+	delete g_SDL_event_manager;
+	delete g_keyboard;
 }
 
 
