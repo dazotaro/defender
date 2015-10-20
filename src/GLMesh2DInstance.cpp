@@ -7,6 +7,7 @@
 
 #include "GLMesh2DInstance.hpp"
 #include "GLMesh2D.hpp"				// GLMesh2D
+#include "GLSLProgram.hpp"			// GLSLProgram
 
 namespace JU
 {
@@ -30,7 +31,9 @@ void GLMesh2DInstance::render(const GLSLProgram &program, const glm::mat3 & mode
 	glm::mat3 M  = model * scale;
 	glm::mat3 MV = view * M;
 
-	// Set Uniforms with our matrices
+    // LOAD UNIFORMS
+    program.setUniform("M", M);
+    program.setUniform("MV", MV);
 
 	// Tell the GLMesh2D to render
 	gl_mesh_->render();

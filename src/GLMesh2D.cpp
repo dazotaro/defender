@@ -34,11 +34,19 @@ GLMesh2D::~GLMesh2D()
 */
 void GLMesh2D::init()
 {
+	/*
     const float vertexPositions[] = {
         -0.75f, 0.75f, 0.0f, 1.0f,  // V0
         -0.75f, -0.75f, 0.0f, 1.0f, // V1
         0.75f, 0.75f, 0.0f, 1.0f,   // V2
         0.75f, -0.75f, 0.0f, 1.0f,  // V3
+    };
+	*/
+    const float vertexPositions[] = {
+        -0.5f,  0.5f, 1.0f,  // V0
+        -0.5f, -0.5f, 1.0f, // V1
+         0.5f,  0.5f, 1.0f,   // V2
+         0.5f, -0.5f, 1.0f,  // V3
     };
 
     const unsigned short vertexIndices[] = {
@@ -63,7 +71,7 @@ void GLMesh2D::init()
     gl::BufferData(gl::ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, gl::STATIC_DRAW);
     // Insert the VBO into the VAO
     gl::EnableVertexAttribArray(0);
-    gl::VertexAttribPointer(0, 4, gl::FLOAT, gl::FALSE_, 0, 0);
+    gl::VertexAttribPointer(0, 3, gl::FLOAT, gl::FALSE_, 0, 0);
 
     // Allocate and initialize VBO for vertex indices
     gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, vbo_handles_[1]);

@@ -4,6 +4,7 @@
 #include "GLSLProgram.hpp"			// GLSLProgram
 #include "GLMesh2D.hpp"				// GLMesh2D
 #include "GLMesh2DInstance.hpp"		// GLMesh2DInstance
+#include "Camera2D.hpp"				// Camera2D
 // Global includes
 #include <cstdio>					// printf
 #include <SDL.h>					// all SDL2
@@ -20,7 +21,8 @@ namespace
 	std::map<std::string, JU::GLSLProgram> 			g_shader_map_;
 	std::map<std::string, JU::GLMesh2D*>    		g_glmesh_map_;
 	std::map<std::string, JU::GLMesh2DInstance*>    g_glmesh_instance_map_;
-	SDL_Window*								g_mainwindow; /* Our window handle */
+	JU::Camera2D* g_pcamera;
+	SDL_Window*	  g_mainwindow; /* Our window handle */
 }
 
 
@@ -65,6 +67,11 @@ void init()
     JU::GLMesh2D* p_glmesh = new JU::GLMesh2D();
     p_glmesh->init();
     g_glmesh_map_["quad"] = p_glmesh;
+
+    // Camera2D
+    // --------
+    g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f), 5.0f, 5.0f);
+
     // GLMesh2DInstance
     // -------------
     JU::GLMesh2DInstance* p_glmesh_instance = new JU::GLMesh2DInstance(p_glmesh, glm::vec2(1.0f, 1.0f));
@@ -81,7 +88,7 @@ void loop()
 {
 	static JU::GLSLProgram* p_program;
 
-	unsigned counter = 10000;
+	unsigned counter = 20000;
 	while (counter--)
 	{
 		gl::ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -91,9 +98,13 @@ void loop()
 		p_program = &g_shader_map_["simple"];
 		p_program->use();
 
+		// Get World to Camera matrix
+		glm::mat3 view;
+		g_pcamera->getWorld2NDCTransformation(view);
+
 		std::map<std::string, JU::GLMesh2DInstance*>::const_iterator iter;
 		for (iter = g_glmesh_instance_map_.begin(); iter != g_glmesh_instance_map_.end(); ++iter)
-			iter->second->render(*p_program, glm::mat3(), glm::mat3());
+			iter->second->render(*p_program, glm::mat3(), view);
 
 	    /* Swap our back buffer to the front */
 	    SDL_GL_SwapWindow(g_mainwindow);
@@ -118,6 +129,8 @@ void exit()
 	std::map<std::string, JU::GLMesh2DInstance*>::const_iterator iter_instance;
 	for (iter_instance = g_glmesh_instance_map_.begin(); iter_instance != g_glmesh_instance_map_.end(); ++iter_instance)
 		delete iter_instance->second;
+
+	delete g_pcamera;
 }
 
 
@@ -168,14 +181,6 @@ int main(int argc, char *argv[])
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
     SDL_GL_SetSwapInterval(0);
-
-    /* Clear our buffer with a red background */
-    gl::ClearColor ( 1.0, 0.0, 0.0, 1.0 );
-    gl::Clear ( gl::COLOR_BUFFER_BIT );
-    /* Swap our back buffer to the front */
-    SDL_GL_SwapWindow(g_mainwindow);
-    /* Wait 2 seconds */
-    SDL_Delay(2000);
 
     init();
     loop();
