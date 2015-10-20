@@ -22,8 +22,17 @@ GLMesh2DInstance::~GLMesh2DInstance()
 }
 
 
-void GLMesh2DInstance::render(const GLSLProgram &program,	const glm::mat3 & model, const glm::mat3 &view) const
+void GLMesh2DInstance::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
+	glm::mat3 scale(scale_[0],      0.0f, 0.0f,
+						 0.0f, scale_[1], 0.0f,
+						 0.0f,      0.0f, 1.0f);
+	glm::mat3 M  = model * scale;
+	glm::mat3 MV = view * M;
+
+	// Set Uniforms with our matrices
+
+	// Tell the GLMesh2D to render
 	gl_mesh_->render();
 }
 
