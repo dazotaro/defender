@@ -19,7 +19,7 @@ class GLMesh2D;
 class GLMesh2DInstance : public Renderable2DInterface
 {
 	public:
-		GLMesh2DInstance(GLMesh2D* gl_mesh);
+		GLMesh2DInstance(const GLMesh2D* gl_mesh, const glm::vec2& scale);
 		virtual ~GLMesh2DInstance();
 
 	public:
@@ -27,7 +27,8 @@ class GLMesh2DInstance : public Renderable2DInterface
         void render(const GLSLProgram &program,	const glm::mat3 & model, const glm::mat3 &view) const;
 
 	private:
-        GLMesh2D* gl_mesh_;
+        const GLMesh2D* gl_mesh_;
+        glm::vec2 		scale_;
 
 };
 

@@ -11,7 +11,7 @@
 namespace JU
 {
 
-GLMesh2DInstance::GLMesh2DInstance(GLMesh2D* gl_mesh) : gl_mesh_(gl_mesh)
+GLMesh2DInstance::GLMesh2DInstance(const GLMesh2D* gl_mesh, const glm::vec2& scale) : gl_mesh_(gl_mesh), scale_(scale)
 {
 }
 

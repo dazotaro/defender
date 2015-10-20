@@ -10,8 +10,8 @@
 namespace JU
 {
 
-Moveable2D::Moveable2D(glm::f32 pos_x, glm::f32 pos_y, glm::f32 scale_x, glm::f32 scale_y, glm::f32 angle)
-		: position_(pos_x, pos_y), scale_(scale_x, scale_y), angle_(angle)
+Moveable2D::Moveable2D(glm::f32 pos_x, glm::f32 pos_y, glm::f32 angle)
+		: position_(pos_x, pos_y), angle_(angle)
 {
 }
 

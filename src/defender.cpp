@@ -67,7 +67,7 @@ void init()
     g_glmesh_map_["quad"] = p_glmesh;
     // GLMesh2DInstance
     // -------------
-    JU::GLMesh2DInstance* p_glmesh_instance = new JU::GLMesh2DInstance(p_glmesh);
+    JU::GLMesh2DInstance* p_glmesh_instance = new JU::GLMesh2DInstance(p_glmesh, glm::vec2(1.0f, 1.0f));
     g_glmesh_instance_map_["sprite"] = p_glmesh_instance;
 }
 
