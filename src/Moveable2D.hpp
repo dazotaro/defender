@@ -19,8 +19,8 @@ class Moveable2D
 		Moveable2D(glm::f32 pos_x = 0.0f, glm::f32 pos_y = 0.0f,
 				   glm::f32 angle = 0.0f);
 
-		glm::mat3 transformationToParent() const;
-		glm::mat3 transformationFromParent() const;
+		void getToParentTransformation  (glm::mat3& to_parent) const;
+		void getFromParentTransformation(glm::mat3& from_parent) const;
 
 	private:
 		glm::vec2	position_;	//!< position in parent's coordinate system
