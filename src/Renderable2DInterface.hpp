@@ -16,6 +16,7 @@ namespace JU
 
 // FORWARD DECLARATIONS
 class GLSLProgram;
+class Moveable2D;
 
 /**
  * @brief      Pure Virtual Class to draw objects
@@ -26,9 +27,7 @@ class Renderable2DInterface
 {
     public:
         virtual ~Renderable2DInterface() {}
-        virtual void render(const GLSLProgram &program,
-                          const glm::mat3 & model,
-                          const glm::mat3 &view) const = 0;
+        virtual void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const = 0;
 };
 
 } // namespace JU

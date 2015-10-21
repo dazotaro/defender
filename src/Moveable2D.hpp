@@ -22,7 +22,7 @@ class Moveable2D
 		void getToParentTransformation  (glm::mat3& to_parent) const;
 		void getFromParentTransformation(glm::mat3& from_parent) const;
 
-	private:
+	public:
 		glm::vec2	position_;	//!< position in parent's coordinate system
 		glm::f32	angle_;		//!< angle with the parent's X axis (in radians)
 };

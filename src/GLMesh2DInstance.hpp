@@ -23,6 +23,7 @@ class GLMesh2DInstance : public Renderable2DInterface
 		virtual ~GLMesh2DInstance();
 
 	public:
+		const GLMesh2D* getGLMesh() const { return gl_mesh_; }
 		// Renderable2DInterface
         void render(const GLSLProgram &program,	const glm::mat3 & model, const glm::mat3 &view) const;
 

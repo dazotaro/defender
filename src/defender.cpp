@@ -8,6 +8,7 @@
 #include "SDLEventManager.hpp"		// JU::SDLEventManager
 #include "Singleton.hpp"			// JU::Singleton
 #include "Keyboard.hpp"				// JU::Keyboard
+#include "SpaceShip.hpp"			// JU::SpaceShip
 // Global includes
 #include <cstdio>					// printf
 #include <SDL.h>					// all SDL2
@@ -21,9 +22,8 @@ namespace
 	const unsigned int WIDTH = 800;
 	const unsigned int HEIGHT = 800;
 	// Global variables
-	std::map<std::string, JU::GLSLProgram> 			g_shader_map_;
-	std::map<std::string, JU::GLMesh2D*>    		g_glmesh_map_;
-	std::map<std::string, JU::GLMesh2DInstance*>    g_glmesh_instance_map_;
+	std::map<std::string, JU::GLSLProgram> 			g_shader_map;
+	std::map<std::string, JU::GameObject*>			g_game_object_map;
 	JU::Camera2D* 		 g_pcamera;
 	JU::SDLEventManager* g_SDL_event_manager;
 	JU::Keyboard*		 g_keyboard;
@@ -87,22 +87,17 @@ void init()
 
 	// GLSL PROGRAMS
     // -------------
-    g_shader_map_["simple"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
+    g_shader_map["simple"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
 
-    // GLMesh2D
-    // -------------
-    JU::GLMesh2D* p_glmesh = new JU::GLMesh2D();
-    p_glmesh->init();
-    g_glmesh_map_["quad"] = p_glmesh;
+    // GameObjects
+    // -----------
+    JU::SpaceShip* ship = new JU::SpaceShip(0.0f, 0.0f, 0.0f);
+    g_game_object_map["spaceship"] = ship;
 
     // Camera2D
     // --------
     g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f), 10.0f, 10.0f);
 
-    // GLMesh2DInstance
-    // -------------
-    JU::GLMesh2DInstance* p_glmesh_instance = new JU::GLMesh2DInstance(p_glmesh, glm::vec2(1.0f, 1.0f));
-    g_glmesh_instance_map_["sprite"] = p_glmesh_instance;
 }
 
 
@@ -118,7 +113,9 @@ void loop()
 
 	while (running)
 	{
-		// SDL EVENTS
+		// EVENT HANDLING
+		// --------------
+		// sdl events
 		g_SDL_event_manager->update();
 		if (g_SDL_event_manager->quitting())
 		{
@@ -126,19 +123,26 @@ void loop()
 			break;
 		}
 
+		// GAME OBJECT UPDATE
+		// ------------------
+		g_game_object_map["spaceship"]->update(200);
+
+		// RENDER
+		// ------
+		// Clear Buffer
 		gl::ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		gl::Clear(gl::COLOR_BUFFER_BIT);
 
 		// Bind the GLSL program and this object's VAO
-		p_program = &g_shader_map_["simple"];
+		p_program = &g_shader_map["simple"];
 		p_program->use();
 
 		// Get World to Camera matrix
 		glm::mat3 view;
 		g_pcamera->getWorld2NDCTransformation(view);
 
-		std::map<std::string, JU::GLMesh2DInstance*>::const_iterator iter;
-		for (iter = g_glmesh_instance_map_.begin(); iter != g_glmesh_instance_map_.end(); ++iter)
+		// Render all renderables
+		for (auto iter = g_game_object_map.begin(); iter != g_game_object_map.end(); ++iter)
 			iter->second->render(*p_program, glm::mat3(), view);
 
 	    /* Swap our back buffer to the front */
@@ -157,13 +161,8 @@ void loop()
 */
 void exit()
 {
-	std::map<std::string, JU::GLMesh2D*>::const_iterator iter_mesh;
-	for (iter_mesh = g_glmesh_map_.begin(); iter_mesh != g_glmesh_map_.end(); ++iter_mesh)
-		delete iter_mesh->second;
-
-	std::map<std::string, JU::GLMesh2DInstance*>::const_iterator iter_instance;
-	for (iter_instance = g_glmesh_instance_map_.begin(); iter_instance != g_glmesh_instance_map_.end(); ++iter_instance)
-		delete iter_instance->second;
+	for(auto iter = g_game_object_map.begin(); iter != g_game_object_map.end(); ++iter)
+		delete iter->second;
 
 	delete g_pcamera;
 
