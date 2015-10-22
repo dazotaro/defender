@@ -23,7 +23,7 @@ namespace JU
 * @param angle Angle of orientation in radians
 *
 */
-SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle)
+SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delta) : distance_(distance), angle_delta_(angle_delta)
 {
     // GLMesh2D
     // -------------
@@ -61,29 +61,29 @@ void SpaceShip::update(JU::f32 milliseconds)
 
 	if (keyboard->isKeyDown(SDL_SCANCODE_LEFT))
 	{
-		moveable_->moveX(-0.001f);
+		moveable_->moveX(-distance_ * milliseconds);
 	}
 	else if (keyboard->isKeyDown(SDL_SCANCODE_RIGHT))
 	{
-		moveable_->moveX(0.001f);
+		moveable_->moveX(distance_ * milliseconds);
 	}
 
 	if (keyboard->isKeyDown(SDL_SCANCODE_UP))
 	{
-		moveable_->moveY(0.001f);
+		moveable_->moveY(distance_ * milliseconds);
 	}
 	else if (keyboard->isKeyDown(SDL_SCANCODE_DOWN))
 	{
-		moveable_->moveY(-0.001f);
+		moveable_->moveY(-distance_ * milliseconds);
 	}
 
 	if (keyboard->isKeyDown(SDL_SCANCODE_A))
 	{
-		moveable_->rotate(0.001f);
+		moveable_->rotate(angle_delta_ * milliseconds);
 	}
 	else if (keyboard->isKeyDown(SDL_SCANCODE_S))
 	{
-		moveable_->rotate(-0.001f);
+		moveable_->rotate(-angle_delta_ * milliseconds);
 	}
 }
 
