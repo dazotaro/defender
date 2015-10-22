@@ -9,6 +9,7 @@
 #include "Singleton.hpp"			// JU::Singleton
 #include "Keyboard.hpp"				// JU::Keyboard
 #include "SpaceShip.hpp"			// JU::SpaceShip
+#include "Timer.hpp"				// JU::Timer
 // Global includes
 #include <cstdio>					// printf
 #include <SDL.h>					// all SDL2
@@ -110,6 +111,8 @@ void loop()
 {
 	bool running = true;
 	static JU::GLSLProgram* p_program;
+	static JU::Timer timer;
+	static JU::uint32 milliseconds = timer.getTicks();
 
 	while (running)
 	{
@@ -125,7 +128,16 @@ void loop()
 
 		// GAME OBJECT UPDATE
 		// ------------------
-		g_game_object_map["spaceship"]->update(200);
+		milliseconds = timer.getTicks();
+		g_game_object_map["spaceship"]->update(milliseconds);
+		timer.start();
+
+		//////////////
+		// REMOVE IT!!!
+		//////////////
+		SDL_Delay(20);
+		//////////////
+		//////////////
 
 		// RENDER
 		// ------
