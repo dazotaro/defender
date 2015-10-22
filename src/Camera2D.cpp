@@ -10,13 +10,13 @@
 namespace JU
 {
 
-Camera2D::Camera2D() : width_(0), height_(0)
+Camera2D::Camera2D()
 {
 }
 
 
-Camera2D::Camera2D(Moveable2D moveable, JU::f32 width, JU::f32 height)
-			: moveable_(moveable), width_(width), height_(height)
+Camera2D::Camera2D(Moveable2D moveable)
+			: moveable_(moveable)
 {
 }
 
@@ -30,11 +30,6 @@ void Camera2D::setMoveable(Moveable2D moveable)
 void Camera2D::getWorld2NDCTransformation(glm::mat3& view) const
 {
 	moveable_.getFromParentTransformation(view);
-
-	glm::mat3 scale(2.0f / width_,          0.0f,  0.0f,
-    						 0.0f, 2.0 / height_,  0.0f,
-							 0.0f,          0.0f,  1.0f);
-	view = scale * view;
 }
 
 

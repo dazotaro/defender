@@ -19,7 +19,7 @@ class GLMesh2D;
 class GLMesh2DInstance : public Renderable2DInterface
 {
 	public:
-		GLMesh2DInstance(const GLMesh2D* gl_mesh, const glm::vec2& scale);
+		GLMesh2DInstance(const GLMesh2D* gl_mesh);
 		virtual ~GLMesh2DInstance();
 
 	public:
@@ -29,8 +29,6 @@ class GLMesh2DInstance : public Renderable2DInterface
 
 	private:
         const GLMesh2D* gl_mesh_;
-        glm::vec2 		scale_;
-
 };
 
 } /* namespace JU */

@@ -18,15 +18,13 @@ class Camera2D
 {
 	public:
 		Camera2D();
-		Camera2D(Moveable2D moveable, JU::f32 width, JU::f32 height);
+		Camera2D(Moveable2D moveable);
 
 		void setMoveable(Moveable2D moveable);
 		void getWorld2NDCTransformation(glm::mat3& view) const;
 
 	private:
 		Moveable2D moveable_;	//!< Moveable data
-		JU::f32    width_;		//!< Width of the camera's window
-		JU::f32    height_;		//!< Height of the camera's window
 };
 
 } /* namespace JU */

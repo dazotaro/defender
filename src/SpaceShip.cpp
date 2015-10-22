@@ -24,8 +24,8 @@ SpaceShip::SpaceShip(f32 pos_x, f32 pos_y, f32 angle)
 
     // GLMesh2DInstance
     // -------------
-    GameObject::setMeshInstance(new JU::GLMesh2DInstance(p_glmesh, glm::vec2(1.0f, 1.0f)));
-    GameObject::setMoveable2D(new JU::Moveable2D(pos_x, pos_y, angle));
+    GameObject::setMeshInstance(new JU::GLMesh2DInstance(p_glmesh));
+    GameObject::setMoveable2D(new JU::Moveable2D(pos_x, pos_y, angle, 1.0f, 1.0f));
 }
 
 
@@ -43,20 +43,20 @@ void SpaceShip::update(JU::f32 milliseconds)
 
 	if (keyboard->isKeyDown(SDL_SCANCODE_LEFT))
 	{
-		moveable_->position_[0] -= 0.01f;
+		moveable_->position_[0] -= 0.001f * moveable_->scale_[0];
 	}
 	else if (keyboard->isKeyDown(SDL_SCANCODE_RIGHT))
 	{
-		moveable_->position_[0] += 0.01f;
+		moveable_->position_[0] += 0.001f * moveable_->scale_[0];
 	}
 
 	if (keyboard->isKeyDown(SDL_SCANCODE_A))
 	{
-		moveable_->angle_ -= 0.001f;
+		moveable_->angle_ += 0.001f;
 	}
 	else if (keyboard->isKeyDown(SDL_SCANCODE_S))
 	{
-		moveable_->angle_ += 0.001f;
+		moveable_->angle_ -= 0.001f;
 	}
 }
 

@@ -96,7 +96,7 @@ void init()
 
     // Camera2D
     // --------
-    g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f), 10.0f, 10.0f);
+    g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 10.0f, 10.0f));
 
 }
 
