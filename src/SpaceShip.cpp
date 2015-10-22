@@ -15,7 +15,15 @@
 namespace JU
 {
 
-SpaceShip::SpaceShip(f32 pos_x, f32 pos_y, f32 angle)
+/**
+* @brief Non-default constructor
+*
+* @param posx  X coordinate of position
+* @param posy  Y coordinate of position
+* @param angle Angle of orientation in radians
+*
+*/
+SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle)
 {
     // GLMesh2D
     // -------------
@@ -25,10 +33,14 @@ SpaceShip::SpaceShip(f32 pos_x, f32 pos_y, f32 angle)
     // GLMesh2DInstance
     // -------------
     GameObject::setMeshInstance(new JU::GLMesh2DInstance(p_glmesh));
-    GameObject::setMoveable2D(new JU::Moveable2D(pos_x, pos_y, angle, 1.0f, 1.0f));
+    GameObject::setMoveable2D(new JU::Moveable2D(posx, posy, angle, 1.0f, 1.0f));
 }
 
 
+/**
+* @brief Destructor
+*
+*/
 SpaceShip::~SpaceShip()
 {
 	delete mesh_instance_->getGLMesh();
@@ -37,6 +49,12 @@ SpaceShip::~SpaceShip()
 }
 
 
+/**
+* @brief Update function
+*
+* @param milliseconds  Time elapsed since the last call (in milliseconds)
+*
+*/
 void SpaceShip::update(JU::f32 milliseconds)
 {
 	Keyboard* keyboard = Singleton<Keyboard>::getInstance();
@@ -70,6 +88,16 @@ void SpaceShip::update(JU::f32 milliseconds)
 }
 
 
+/**
+* @brief Render function
+*
+* @detail GameObject-inherited render function
+*
+* @param program GLSL program handle (to set uniforms)
+* @param model   Model matrix to parent's coordinate system
+* @param view    Camera's view matrix (world to NDC)
+*
+*/
 void SpaceShip::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
 	glm::mat3 toparent;
