@@ -17,6 +17,7 @@
 #include <map>						// std::map
 #include <string>					// std::string
 
+
 namespace
 {
 	// CONSTANTS
@@ -28,7 +29,7 @@ namespace
 	JU::Camera2D* 		 g_pcamera;
 	JU::SDLEventManager* g_SDL_event_manager;
 	JU::Keyboard*		 g_keyboard;
-	SDL_Window*	  g_mainwindow; /* Our window handle */
+	SDL_Window*	  		 g_mainwindow; /* Our window handle */
 }
 
 
@@ -120,7 +121,7 @@ void loop()
 		// --------------
 		// sdl events
 		g_SDL_event_manager->update();
-		if (g_SDL_event_manager->quitting())
+		if (g_SDL_event_manager->quitting() || g_keyboard->isKeyDown(SDL_SCANCODE_ESCAPE))
 		{
 			running = false;
 			break;
