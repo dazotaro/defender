@@ -17,7 +17,7 @@ namespace JU
 class SpaceShip : public GameObject
 {
 	public:
-		SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance = 0.003f, f32 angle_delta = 0.003f);
+		SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance = 0.005f, f32 angle_delta = 0.003f);
 		virtual ~SpaceShip();
 
 		void update(JU::f32 milliseconds) override;

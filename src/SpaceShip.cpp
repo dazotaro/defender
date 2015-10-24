@@ -61,29 +61,20 @@ void SpaceShip::update(JU::f32 milliseconds)
 
 	if (keyboard->isKeyDown(SDL_SCANCODE_LEFT))
 	{
-		moveable_->moveX(-distance_ * milliseconds);
+		moveable_->rotate(angle_delta_ * milliseconds);
 	}
 	else if (keyboard->isKeyDown(SDL_SCANCODE_RIGHT))
 	{
-		moveable_->moveX(distance_ * milliseconds);
+		moveable_->rotate(-angle_delta_ * milliseconds);
 	}
 
 	if (keyboard->isKeyDown(SDL_SCANCODE_UP))
 	{
-		moveable_->moveY(distance_ * milliseconds);
+		moveable_->moveX(distance_ * milliseconds);
 	}
 	else if (keyboard->isKeyDown(SDL_SCANCODE_DOWN))
 	{
-		moveable_->moveY(-distance_ * milliseconds);
-	}
-
-	if (keyboard->isKeyDown(SDL_SCANCODE_A))
-	{
-		moveable_->rotate(angle_delta_ * milliseconds);
-	}
-	else if (keyboard->isKeyDown(SDL_SCANCODE_S))
-	{
-		moveable_->rotate(-angle_delta_ * milliseconds);
+		moveable_->moveX(-distance_ * milliseconds);
 	}
 }
 
