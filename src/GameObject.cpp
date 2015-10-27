@@ -7,18 +7,17 @@
 
 #include "GameObject.hpp"
 #include "GLMesh2DInstance.hpp"		// JU::GLMesh2DInstance
-#include "Moveable2D.hpp"			// JU::Moveable2D
 #include "GLSLProgram.hpp"			// JU::GLSLProgram
 
 namespace JU
 {
 
-GameObject::GameObject() : mesh_instance_(nullptr), moveable_(nullptr)
+GameObject::GameObject() : mesh_instance_(nullptr)
 {
 }
 
 
-GameObject::GameObject(GLMesh2DInstance* mesh_instance, Moveable2D* moveable) : mesh_instance_(mesh_instance), moveable_(moveable)
+GameObject::GameObject(GLMesh2DInstance* mesh_instance, Moveable2D moveable) : mesh_instance_(mesh_instance), moveable_(moveable)
 {
 }
 
@@ -40,7 +39,7 @@ void GameObject::setMeshInstance(GLMesh2DInstance* mesh_instance)
 }
 
 
-void GameObject::setMoveable2D(Moveable2D* moveable)
+void GameObject::setMoveable2D(Moveable2D moveable)
 {
 	moveable_ = moveable;
 }

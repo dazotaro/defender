@@ -33,7 +33,7 @@ SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
     // GLMesh2DInstance
     // -------------
     GameObject::setMeshInstance(new JU::GLMesh2DInstance(p_glmesh));
-    GameObject::setMoveable2D(new JU::Moveable2D(posx, posy, angle, 1.0f, 1.0f));
+    GameObject::setMoveable2D(JU::Moveable2D(posx, posy, angle, 1.0f, 1.0f));
 }
 
 
@@ -45,7 +45,6 @@ SpaceShip::~SpaceShip()
 {
 	delete mesh_instance_->getGLMesh();
 	delete mesh_instance_;
-	delete moveable_;
 }
 
 
@@ -61,20 +60,20 @@ void SpaceShip::update(JU::f32 milliseconds)
 
 	if (keyboard->isKeyDown(SDL_SCANCODE_LEFT))
 	{
-		moveable_->rotate(angle_delta_ * milliseconds);
+		moveable_.rotate(angle_delta_ * milliseconds);
 	}
 	else if (keyboard->isKeyDown(SDL_SCANCODE_RIGHT))
 	{
-		moveable_->rotate(-angle_delta_ * milliseconds);
+		moveable_.rotate(-angle_delta_ * milliseconds);
 	}
 
 	if (keyboard->isKeyDown(SDL_SCANCODE_UP))
 	{
-		moveable_->moveX(distance_ * milliseconds);
+		moveable_.moveX(distance_ * milliseconds);
 	}
 	else if (keyboard->isKeyDown(SDL_SCANCODE_DOWN))
 	{
-		moveable_->moveX(-distance_ * milliseconds);
+		moveable_.moveX(-distance_ * milliseconds);
 	}
 }
 
@@ -92,7 +91,7 @@ void SpaceShip::update(JU::f32 milliseconds)
 void SpaceShip::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
 	glm::mat3 toparent;
-	moveable_->getToParentTransformation(toparent);
+	moveable_.getToParentTransformation(toparent);
 
 	glm::mat3 new_model = model * toparent;
 
