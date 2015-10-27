@@ -94,7 +94,10 @@ void init()
     // GameObjects
     // -----------
     JU::SpaceShip* ship = new JU::SpaceShip(0.0f, 0.0f, 0.0f);
-    g_game_object_map["spaceship"] = ship;
+    g_game_object_map["spaceship1"] = ship;
+
+    ship = new JU::SpaceShip(2.0f, 0.0f, 0.0f);
+    g_game_object_map["spaceship2"] = ship;
 
     // Camera2D
     // --------
@@ -130,7 +133,7 @@ void loop()
 		// GAME OBJECT UPDATE
 		// ------------------
 		milliseconds = timer.getTicks();
-		g_game_object_map["spaceship"]->update(milliseconds);
+		g_game_object_map["spaceship1"]->update(milliseconds);
 		timer.start();
 
 		//////////////
