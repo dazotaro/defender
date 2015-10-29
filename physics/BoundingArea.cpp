@@ -15,6 +15,10 @@ namespace JU
 {
 
 
+BoundingCircle::BoundingCircle(const glm::vec2 center, f32 radius) : center_(center), radius_(radius)
+{
+}
+
 BoundingCircle::BoundingCircle(const glm::vec2* vertices, int size)
 {
 	glm::vec2 pmin, pmax;
@@ -27,6 +31,12 @@ BoundingCircle::BoundingCircle(const glm::vec2* vertices, int size)
 
 	center_ = (pmin + pmax) * 0.5f;
 	radius_ = glm::distance(pmin, pmax) * 0.5f;
+}
+
+
+BoundingRectangle::BoundingRectangle(const glm::vec2 pmin, const glm::vec2 pmax) : pmin_(pmin), pmax_(pmax)
+{
+
 }
 
 

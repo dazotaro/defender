@@ -7,6 +7,8 @@
 
 #include "GLMesh2D.hpp"
 
+#include "Mesh2D.hpp"		// Mesh2D
+
 namespace JU
 {
 /**
@@ -32,7 +34,7 @@ GLMesh2D::~GLMesh2D()
 *
 * @detail Set up the VBOs and VAO
 */
-void GLMesh2D::init()
+void GLMesh2D::init(const Mesh2D& pmesh)
 {
 	/*
     const float vertexPositions[] = {
@@ -42,6 +44,31 @@ void GLMesh2D::init()
         0.75f, -0.75f, 0.0f, 1.0f,  // V3
     };
 	*/
+
+	// Retrieve mesh data from Mesh2D object
+	const glm::vec2*	pvertices = nullptr;
+	JU::uint32 			num_vertices = 0;
+	const JU::uint32* 	pindices = nullptr;
+	JU::uint32			num_triangles = 0;
+
+	pmesh.getData(&pvertices, num_vertices, &pindices, num_triangles);
+
+	// Transfer all vertex positions from 2D to Homogeneous coordinates
+	glm::vec3* vertexPositions = new glm::vec3[num_vertices];
+	for (uint32 i = 0; i < num_vertices; ++i)
+	{
+		vertexPositions[i][0] = pvertices[i][0];
+		vertexPositions[i][1] = pvertices[i][1];
+		vertexPositions[i][2] = 1.0f;
+	}
+
+	JU::uint32* vertexIndices = new uint32[num_triangles];
+	for (uint32 i = 0; i < num_triangles; ++i)
+	{
+		vertexIndices[i] = pindices[i];
+	}
+
+	/*
     const float vertexPositions[] = {
         -0.5f,  0.5f, 1.0f,  // V0
         -0.5f, -0.5f, 1.0f, // V1
@@ -55,6 +82,7 @@ void GLMesh2D::init()
         // Second triangle: bottom right
         1, 3, 2,
     };
+    */
 
     num_vertices_ = sizeof(vertexIndices) / sizeof(vertexIndices[0]);
 

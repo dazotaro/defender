@@ -18,17 +18,20 @@ namespace JU
 // Forward Declarations
 class GLMesh2DInstance;
 class GLSLProgram;
+class RigidBody;
 
 class GameObject
 {
 	public:
 		GameObject();
-		GameObject(GLMesh2DInstance* mesh_instance, Moveable2D moveable);
+		GameObject(GLMesh2DInstance* mesh_instance, Moveable2D moveable, RigidBody* prigid_body = nullptr, bool collideable = false);
 		virtual ~GameObject();
 
 		const GLMesh2DInstance* getMeshInstance() const;
 		void setMeshInstance(GLMesh2DInstance* mesh_instance);
 		void setMoveable2D(Moveable2D moveable);
+		void setRigitBody(RigidBody* prigid_body);
+		void setCollideable(bool collideable);
 
 		virtual void update(JU::f32 milliseconds) = 0;
 		virtual void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
@@ -36,6 +39,8 @@ class GameObject
 	protected:
 		GLMesh2DInstance* mesh_instance_;	//!< Renderable component
 		Moveable2D		  moveable_;		//!< Position and orientation
+		RigidBody*		  prigid_body_;		//!< RigidBody
+		bool 			  collideable_;
 };
 
 } /* namespace JU */

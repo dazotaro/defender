@@ -14,13 +14,15 @@
 namespace JU
 {
 
+class Mesh2D;
+
 class GLMesh2D
 {
 	public:
 		GLMesh2D();
 		virtual ~GLMesh2D();
 
-		void init();
+		void init(const Mesh2D& pmesh);
 		void render() const;
 
 	private:

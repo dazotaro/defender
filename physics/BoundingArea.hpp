@@ -8,6 +8,7 @@
 #ifndef BOUNDINGAREA_HPP_
 #define BOUNDINGAREA_HPP_
 
+#include "../src/Defs.hpp"		// f32
 #include <glm/glm.hpp>			// vec2
 
 
@@ -18,16 +19,18 @@ namespace JU
 class BoundingCircle
 {
 	public:
+		BoundingCircle(const glm::vec2 center, f32 radius);
 		BoundingCircle(const glm::vec2* vertices, int size);
 
 		glm::vec2 center_;
-		glm::f32  radius_;
+		f32  radius_;
 };
 
 
 class BoundingRectangle
 {
 	public:
+		BoundingRectangle(const glm::vec2 pmin, const glm::vec2 pmax);
 		BoundingRectangle(const glm::vec2* vertices, int size);
 
 		glm::vec2 pmin_;

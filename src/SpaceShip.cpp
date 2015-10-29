@@ -11,6 +11,8 @@
 #include "Keyboard.hpp"			// Keyboard
 #include "Singleton.hpp"		// Singleton
 #include "Moveable2D.hpp"		// Moveable2D
+#include "SquareMesh.hpp"		// SquareMesh
+#include "../physics/BoundingArea.hpp"
 
 namespace JU
 {
@@ -23,17 +25,22 @@ namespace JU
 * @param angle Angle of orientation in radians
 *
 */
-SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delta) : distance_(distance), angle_delta_(angle_delta)
+SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delta)
+			: distance_(distance), angle_delta_(angle_delta)
 {
     // GLMesh2D
     // -------------
-    JU::GLMesh2D* p_glmesh = new JU::GLMesh2D();
-    p_glmesh->init();
+	const SquareMesh mesh;
+    GLMesh2D* pglmesh = new GLMesh2D();
+    pglmesh->init(mesh);
 
     // GLMesh2DInstance
     // -------------
-    GameObject::setMeshInstance(new JU::GLMesh2DInstance(p_glmesh));
+    GameObject::setMeshInstance(new JU::GLMesh2DInstance(pglmesh));
     GameObject::setMoveable2D(JU::Moveable2D(posx, posy, angle, 1.0f, 1.0f));
+
+    RigidBody* prigid_body = new RigidBody(BoundingCircle(glm::vec2(0.0f, 0.0f), 0.5f));
+    GameObject::setRigitBody(prigid_body);
 }
 
 

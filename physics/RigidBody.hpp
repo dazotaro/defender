@@ -15,18 +15,21 @@
 namespace JU
 {
 
+class Moveable2D;
 
-template <typename T>
 class RigidBody
 {
 	public:
-		RigidBody();
+		RigidBody(const BoundingCircle& bounding_area, Moveable2D* pmoveable = nullptr);
 		virtual ~RigidBody();
 
-	private:
-		BoundingArea<T> ba_;
+		void setMoveable(Moveable2D* pmoveable);
 
+	private:
+		BoundingCircle bounding_area_;  //!< BoundingArea object for collision detection/resolution
+		Moveable2D*	   pmoveable_;
 };
+
 
 } /* namespace JU */
 

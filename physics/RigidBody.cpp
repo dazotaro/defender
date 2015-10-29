@@ -6,22 +6,25 @@
  */
 
 #include "RigidBody.hpp"
+#include "../src/Moveable2D.hpp"		// Moveable2D
 
 namespace JU
 {
 
 
-template <typename T>
-RigidBody<T>::RigidBody()
+RigidBody::RigidBody(const BoundingCircle& bounding_area, Moveable2D* pmoveable) : bounding_area_(bounding_area), pmoveable_(pmoveable)
 {
-	// TODO Auto-generated constructor stub
-
 }
 
-template <typename T>
-RigidBody<T>::~RigidBody()
+RigidBody::~RigidBody()
 {
-	// TODO Auto-generated destructor stub
 }
+
+
+void RigidBody::setMoveable(Moveable2D* pmoveable)
+{
+	pmoveable_ = pmoveable;
+}
+
 
 } /* namespace JU */
