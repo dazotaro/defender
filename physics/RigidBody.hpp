@@ -10,11 +10,11 @@
 
 // Local includes
 #include "BoundingArea.hpp"
-// Global includes
 
 namespace JU
 {
 
+// Forward declarations
 class Moveable2D;
 
 class RigidBody
