@@ -29,7 +29,7 @@ class GLMesh2D
         GLuint vao_handle_;         //!< Handle to VAO
         GLuint *vbo_handles_;		//!< Handle to dynamically allocated VBOs
         JU::uint8 num_buffers_;
-        JU::uint32 num_vertices_;	//!< Number of vertices
+        JU::uint32 num_indices_;	//!< Number of vertices
 };
 
 } // namespace JU
