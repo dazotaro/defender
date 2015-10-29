@@ -12,7 +12,7 @@
 #include "Singleton.hpp"		// Singleton
 #include "Moveable2D.hpp"		// Moveable2D
 #include "SquareMesh.hpp"		// SquareMesh
-#include "../physics/BoundingArea.hpp"
+#include "../physics/RigidBody.hpp"
 
 namespace JU
 {
