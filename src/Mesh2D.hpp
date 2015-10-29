@@ -19,21 +19,21 @@ class Mesh2D
 {
 	public:
 		Mesh2D();
-		Mesh2D(const glm::vec2* pvertices, JU::uint32 num_vertices, const JU::uint32* pindices, JU::uint32 num_triangles);
+		Mesh2D(const glm::vec2* pvertices, uint32 num_vertices, const uint32* pindices, uint32 num_indices);
 		virtual ~Mesh2D();
 
 		// Getter
-		void getVertices(const glm::vec2** pvertices, JU::uint32& num_vertices) const;
-		void getData(const glm::vec2** pvertices, JU::uint32& num_vertices, const JU::uint32** pindices, JU::uint32& num_triangles) const;
+		void getVertices(const glm::vec2** pvertices, uint32& num_vertices) const;
+		void getData(const glm::vec2** pvertices, uint32& num_vertices, const uint32** pindices, uint32& num_indices) const;
 
 		// Setter
-		void setData(const glm::vec2* pvertices, JU::uint32 num_vertices, const JU::uint32* pindices, JU::uint32 num_triangles);
+		void setData(const glm::vec2* pvertices, uint32 num_vertices, const uint32* pindices, uint32 num_indices);
 
 	protected:
 		glm::vec2* 	pvertices_;
-		JU::uint32  num_vertices_;
-		JU::uint32*	pindices_;
-		JU::uint32	num_triangles_;
+		uint32  	num_vertices_;
+		uint32*		pindices_;
+		uint32		num_indices_;
 };
 
 } /* namespace JU */
