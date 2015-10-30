@@ -10,6 +10,7 @@
 #include "Keyboard.hpp"				// JU::Keyboard
 #include "SpaceShip.hpp"			// JU::SpaceShip
 #include "Timer.hpp"				// JU::Timer
+#include "../physics/PhysicsEngine.hpp"	// PhysicsEngine
 // Global includes
 #include <cstdio>					// printf
 #include <SDL.h>					// all SDL2
@@ -30,6 +31,7 @@ namespace
 	JU::SDLEventManager* g_SDL_event_manager;
 	JU::Keyboard*		 g_keyboard;
 	SDL_Window*	  		 g_mainwindow; /* Our window handle */
+	JU::PhysicsEngine*	 g_physics_engine;
 }
 
 
@@ -103,6 +105,10 @@ void init()
     // --------
     g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 10.0f, 10.0f));
 
+	// PHYSICS ENGINE
+	// --------------
+	g_physics_engine = JU::Singleton<JU::PhysicsEngine>::getInstance();
+	g_physics_engine->init();
 }
 
 
@@ -142,6 +148,10 @@ void loop()
 		SDL_Delay(20);
 		//////////////
 		//////////////
+
+		// COLLISIONS
+		// -----------
+		//collision_system.update(milliseconds;)
 
 		// RENDER
 		// ------

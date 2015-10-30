@@ -23,7 +23,9 @@ class RigidBody
 		RigidBody(const BoundingCircle& bounding_area, Moveable2D* pmoveable = nullptr);
 		virtual ~RigidBody();
 
-		void setMoveable(Moveable2D* pmoveable);
+		void setMoveable(Moveable2D* pmoveable) { pmoveable_ = pmoveable; }
+		const Moveable2D* getMoveable() const { return pmoveable_; }
+		const BoundingCircle& getBoundingArea() const { return bounding_area_; }
 
 	private:
 		BoundingCircle bounding_area_;  //!< BoundingArea object for collision detection/resolution

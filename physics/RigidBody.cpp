@@ -21,10 +21,4 @@ RigidBody::~RigidBody()
 }
 
 
-void RigidBody::setMoveable(Moveable2D* pmoveable)
-{
-	pmoveable_ = pmoveable;
-}
-
-
 } /* namespace JU */
