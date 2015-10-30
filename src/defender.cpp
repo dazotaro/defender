@@ -109,6 +109,8 @@ void init()
 	// --------------
 	g_physics_engine = JU::Singleton<JU::PhysicsEngine>::getInstance();
 	g_physics_engine->init();
+	g_physics_engine->addRigidBody("ship1", g_game_object_map["spaceship1"]->getRigidBody());
+	g_physics_engine->addRigidBody("ship2", g_game_object_map["spaceship2"]->getRigidBody());
 }
 
 
@@ -151,7 +153,7 @@ void loop()
 
 		// COLLISIONS
 		// -----------
-		//collision_system.update(milliseconds;)
+		g_physics_engine->updateCollisions(milliseconds);
 
 		// RENDER
 		// ------

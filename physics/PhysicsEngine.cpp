@@ -34,21 +34,42 @@ void PhysicsEngine::init()
 
 void PhysicsEngine::updateCollisions(uint32 milliseconds)
 {
-	// Brute Force all-pairs collision test
-	for (RigidBodyPointerMapIter iter1 = mrigid_bodies_.begin(); iter1 != mrigid_bodies_.end(); ++iter1)
+	uint32 num_bodies = mrigid_bodies_.size();
+	BoundingCircle* pcircles = new BoundingCircle[num_bodies];
+
+	uint32 i = 0;
+	for (RigidBodyPointerMapIter iter = mrigid_bodies_.begin(); iter != mrigid_bodies_.end(); ++iter)
 	{
-		for (RigidBodyPointerMapIter iter2 = iter1, ++iter2; iter2 != mrigid_bodies_.end(); ++iter2)
+		RigidBody* pbody = iter->second;
+		glm::mat3 model;
+		pbody->getMoveable()->getToParentTransformation(model);
+		const BoundingCircle& circle = pbody->getBoundingArea();
+		glm::vec3 new_center = model * glm::vec3(circle.center_[0], circle.center_[1], 1.0f);
+		pcircles[i].center_ = glm::vec2(new_center[0], new_center[1]);
+		pcircles[i].radius_ = circle.radius_ * glm::max(pbody->getMoveable()->scale_[0], pbody->getMoveable()->scale_[1]);
+
+		++i;
+	}
+
+	// Brute Force all-pairs collision test
+	for (uint32 i = 0; i < num_bodies - 1; ++i)
+	{
+		for (uint32 j = i; j < num_bodies; ++j)
 		{
-			glm::mat3 model1, model2;
-			iter1->second->getMoveable()->getToParentTransformation(model1);
+			if (testCollision(pcircles[i], pcircles[j]))
+			{
+				std::printf("Collision occurred\n");
+			}
 		}
 	}
+
+	delete [] pcircles;
 }
 
 
 void PhysicsEngine::addRigidBody(const std::string& name, RigidBody* prigid_body)
 {
-	if (!mrigid_bodies_.find(name))
+	if (mrigid_bodies_.find(name) == mrigid_bodies_.end())
 	{
 		mrigid_bodies_[name] = prigid_body;
 	}

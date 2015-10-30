@@ -33,6 +33,8 @@ class GameObject
 		void setRigitBody(RigidBody* prigid_body);
 		void setCollideable(bool collideable);
 
+		RigidBody* getRigidBody() const;
+
 		virtual void update(JU::f32 milliseconds) = 0;
 		virtual void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
 

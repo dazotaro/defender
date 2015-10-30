@@ -69,6 +69,13 @@ void GameObject::setCollideable(bool collideable)
 }
 
 
+RigidBody* GameObject::getRigidBody() const
+{
+	return prigid_body_;
+}
+
+
+
 void GameObject::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
 }

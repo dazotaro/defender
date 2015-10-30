@@ -19,11 +19,12 @@ namespace JU
 class BoundingCircle
 {
 	public:
+		BoundingCircle() : center_(glm::vec2(0.0f, 0.0f)), radius_(0.0f) {};
 		BoundingCircle(const glm::vec2 center, f32 radius);
 		BoundingCircle(const glm::vec2* vertices, int size);
 
 		glm::vec2 center_;
-		f32  radius_;
+		f32  	  radius_;
 };
 
 
