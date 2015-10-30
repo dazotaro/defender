@@ -5,7 +5,10 @@
  *      Author: jusabiaga
  */
 
+// Local includes
 #include "Geometry.hpp"
+// Global includes
+#include <cstdio>		// std::printf
 
 namespace JU
 {
@@ -50,8 +53,22 @@ bool computeBoundingRectangle(const glm::vec2* points, int size, glm::vec2& pmin
 
 bool testCollision(const BoundingCircle& circle1, const BoundingCircle& circle2)
 {
+	/*
+	std::printf("(%f, %f --- %f) and (%f, %f --- %f)\n",
+			circle1.center_[0],
+			circle1.center_[1],
+			circle1.radius_,
+			circle2.center_[0],
+			circle2.center_[1],
+			circle2.radius_);
+	std::printf("distance = %f, radiuses = %f\n",
+				glm::distance(circle1.center_, circle2.center_),
+				(circle1.radius_ + circle2.radius_));
+	*/
 	if (glm::distance(circle1.center_, circle2.center_) < (circle1.radius_ + circle2.radius_))
+	{
 		return true;
+	}
 
 	return false;
 }
