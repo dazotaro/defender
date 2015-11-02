@@ -27,13 +27,15 @@ class GameObject
 		GameObject(GLMesh2DInstance* mesh_instance, Moveable2D moveable, RigidBody* prigid_body = nullptr, bool collideable = false);
 		virtual ~GameObject();
 
+		// Getters
 		const GLMesh2DInstance* getMeshInstance() const;
+		RigidBody* getRigidBody() const;
+
+		// Setters
 		void setMeshInstance(GLMesh2DInstance* mesh_instance);
 		void setMoveable2D(Moveable2D moveable);
 		void setRigitBody(RigidBody* prigid_body);
 		void setCollideable(bool collideable);
-
-		RigidBody* getRigidBody() const;
 
 		virtual void update(JU::f32 milliseconds) = 0;
 		virtual void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
