@@ -54,26 +54,10 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.942743645.255021300" name="/" resourcePath="physics">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.debug.1875917187" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.debug" unusedChildren="">
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.64530782" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.1727326967"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2101053373" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1585367563">
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.764458922" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.62348224" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.317365589">
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1678454379" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1179857961" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1963785746"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1206188575" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.233564997"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.debug.1412555116" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug.604892119">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1769438148" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
 					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.942743645.1792315469" name="Geometry.hpp" rcbsApplicability="disable" resourcePath="physics/Geometry.hpp" toolsToInvoke=""/>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
-						<entry excluding="Singleton.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="ResourceManager.cpp|Singleton.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -134,7 +118,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
-						<entry excluding="Singleton.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="ResourceManager.cpp|Singleton.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

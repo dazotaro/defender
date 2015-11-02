@@ -12,6 +12,8 @@
 #include "Singleton.hpp"		// Singleton
 #include "Moveable2D.hpp"		// Moveable2D
 #include "SquareMesh.hpp"		// SquareMesh
+#include "Singleton.hpp"		// Singleton
+#include "ResourceManager.hpp"	// ResourceManager
 #include "../physics/RigidBody.hpp"
 
 namespace JU
@@ -30,16 +32,42 @@ SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
 {
     // GLMesh2D
     // -------------
+	ResourceManager<GLMesh2D>* prm_glmesh = Singleton<ResourceManager<GLMesh2D>>::getInstance();
+
 	const SquareMesh mesh;
-    GLMesh2D* pglmesh = new GLMesh2D();
-    pglmesh->init(mesh);
+    GLMesh2D* pglmesh;
+    if (!(pglmesh = prm_glmesh->referenceResource("/proc/glmesh/square")))
+    {
+    	pglmesh = new GLMesh2D();
+    	pglmesh->init(mesh);
+    	prm_glmesh->addResource("/proc/glmesh/square", pglmesh);
+    }
 
     // GLMesh2DInstance
     // -------------
-    GameObject::setMeshInstance(new JU::GLMesh2DInstance(pglmesh));
-    GameObject::setMoveable2D(JU::Moveable2D(posx, posy, angle, 1.0f, 1.0f));
+	ResourceManager<GLMesh2DInstance>* prm_glmeshinstance = Singleton<ResourceManager<GLMesh2DInstance>>::getInstance();
 
-    RigidBody* prigid_body = new RigidBody(BoundingCircle(glm::vec2(0.0f, 0.0f), 0.5f));
+    GLMesh2DInstance* pglmeshinstance;
+    if (!(pglmeshinstance = prm_glmeshinstance->referenceResource("/proc/glmeshinstance/square")))
+    {
+    	pglmeshinstance = new GLMesh2DInstance(pglmesh);
+    	prm_glmeshinstance->addResource("/proc/glmeshinstance/square", pglmeshinstance);
+    }
+
+    GameObject::setMeshInstance(pglmeshinstance);
+    GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.0f, 1.0f));
+
+    // RigidBody
+    // -------------
+	ResourceManager<RigidBody>* prm_rigidbody = Singleton<ResourceManager<RigidBody>>::getInstance();
+
+	RigidBody* prigid_body;
+    if (!(prigid_body = prm_rigidbody->referenceResource("/proc/rigidbody/square")))
+    {
+    	prigid_body = new RigidBody(BoundingCircle(glm::vec2(0.0f, 0.0f), 0.5f));
+    	prm_rigidbody->addResource("/proc/rigidbody/square", prigid_body);
+    }
+
     GameObject::setRigitBody(prigid_body);
 }
 
@@ -50,8 +78,6 @@ SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
 */
 SpaceShip::~SpaceShip()
 {
-	delete mesh_instance_->getGLMesh();
-	delete mesh_instance_;
 }
 
 
@@ -61,7 +87,7 @@ SpaceShip::~SpaceShip()
 * @param milliseconds  Time elapsed since the last call (in milliseconds)
 *
 */
-void SpaceShip::update(JU::f32 milliseconds)
+void SpaceShip::update(f32 milliseconds)
 {
 	Keyboard* keyboard = Singleton<Keyboard>::getInstance();
 
