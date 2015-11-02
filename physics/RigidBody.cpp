@@ -12,7 +12,7 @@ namespace JU
 {
 
 
-RigidBody::RigidBody(const BoundingCircle& bounding_area, Moveable2D* pmoveable) : bounding_area_(bounding_area), pmoveable_(pmoveable)
+RigidBody::RigidBody(const BoundingCircle* pbounding_area, Moveable2D* pmoveable) : pbounding_area_(pbounding_area), pmoveable_(pmoveable)
 {
 }
 

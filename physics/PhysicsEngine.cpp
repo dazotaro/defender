@@ -43,10 +43,10 @@ void PhysicsEngine::updateCollisions(uint32 milliseconds)
 		RigidBody* pbody = iter->second;
 		glm::mat3 model;
 		pbody->getMoveable()->getToParentTransformation(model);
-		const BoundingCircle& circle = pbody->getBoundingArea();
-		glm::vec3 new_center = model * glm::vec3(circle.center_[0], circle.center_[1], 1.0f);
+		const BoundingCircle* pcircle = pbody->getBoundingArea();
+		glm::vec3 new_center = model * glm::vec3(pcircle->center_[0], pcircle->center_[1], 1.0f);
 		pcircles[i].center_ = glm::vec2(new_center[0], new_center[1]);
-		pcircles[i].radius_ = circle.radius_ * glm::max(pbody->getMoveable()->scale_[0], pbody->getMoveable()->scale_[1]);
+		pcircles[i].radius_ = pcircle->radius_ * glm::max(pbody->getMoveable()->scale_[0], pbody->getMoveable()->scale_[1]);
 
 		++i;
 	}

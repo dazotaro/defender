@@ -59,16 +59,18 @@ SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
 
     // RigidBody
     // -------------
-	ResourceManager<RigidBody>* prm_rigidbody = Singleton<ResourceManager<RigidBody>>::getInstance();
+	ResourceManager<BoundingCircle>* prm_boundingcircle = Singleton<ResourceManager<BoundingCircle>>::getInstance();
 
-	RigidBody* prigid_body;
-    if (!(prigid_body = prm_rigidbody->referenceResource("/proc/rigidbody/square")))
+	BoundingCircle* pbounding_circle;
+    if (!(pbounding_circle = prm_boundingcircle->referenceResource("/proc/boundingarea/square")))
     {
-    	prigid_body = new RigidBody(BoundingCircle(glm::vec2(0.0f, 0.0f), 0.5f));
-    	prm_rigidbody->addResource("/proc/rigidbody/square", prigid_body);
+    	pbounding_circle = new BoundingCircle(glm::vec2(0.0f, 0.0f), 0.5f);
+    	prm_boundingcircle->addResource("/proc/boundingarea/square", pbounding_circle);
     }
 
-    GameObject::setRigitBody(prigid_body);
+    prigid_body_ = new RigidBody(pbounding_circle);
+
+    GameObject::setRigitBody(prigid_body_);
 }
 
 
