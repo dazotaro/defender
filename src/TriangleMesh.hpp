@@ -8,7 +8,7 @@
 #ifndef TRIANGLEMESH_HPP_
 #define TRIANGLEMESH_HPP_
 
-#include "Mesh2D.hpp"	// Mesh2D
+#include "../graphics/Mesh2D.hpp"	// Mesh2D
 
 namespace JU
 {

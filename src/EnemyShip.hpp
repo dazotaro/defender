@@ -8,8 +8,8 @@
 #ifndef ENEMYSHIP_HPP_
 #define ENEMYSHIP_HPP_
 
-#include "GameObject.hpp"		// GameObject
-#include "Defs.hpp"				// JU::f32
+#include "../core/GameObject.hpp"		// GameObject
+#include "../core/Defs.hpp"				// JU::f32
 
 namespace JU
 {

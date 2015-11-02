@@ -8,7 +8,7 @@
 #ifndef MESH2D_HPP_
 #define MESH2D_HPP_
 
-#include "Defs.hpp"			// JU::uint32
+#include "../core/Defs.hpp"			// JU::uint32
 #include <glm/glm.hpp>		// glm::vec2
 
 

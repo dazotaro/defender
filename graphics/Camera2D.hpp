@@ -8,8 +8,8 @@
 #ifndef CAMERA2D_HPP_
 #define CAMERA2D_HPP_
 
-#include "Moveable2D.hpp"	// Moveable2D
-#include "Defs.hpp"			// JU::uint32
+#include "../core/Moveable2D.hpp"	// Moveable2D
+#include "../core/Defs.hpp"			// JU::uint32
 
 namespace JU
 {

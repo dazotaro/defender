@@ -9,7 +9,8 @@
 #include "PhysicsEngine.hpp"
 #include "RigidBody.hpp"			// RigidBody
 #include "Geometry.hpp"				// testCollision
-#include "../src/Moveable2D.hpp"	// Moveable2D
+#include "../core/Moveable2D.hpp"	// Moveable2D
+// Global includes
 #include <glm/glm.hpp>				// mat3
 
 namespace JU

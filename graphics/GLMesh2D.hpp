@@ -8,8 +8,8 @@
 #ifndef GLMESH2D_HPP_
 #define GLMESH2D_HPP_
 
-#include "Defs.hpp"						// uint8
-#include "gl_core_4_2.hpp"          	// glLoadGen generated header file
+#include "../core/Defs.hpp"						// uint8
+#include "../graphics/gl_core_4_2.hpp"          	// glLoadGen generated header file
 
 namespace JU
 {

@@ -6,14 +6,14 @@
  */
 
 #include "SpaceShip.hpp"
-#include "GLMesh2DInstance.hpp"	// GLMesh2DInstance
-#include "GLMesh2D.hpp"			// GLMesh2D
-#include "Keyboard.hpp"			// Keyboard
-#include "Singleton.hpp"		// Singleton
-#include "Moveable2D.hpp"		// Moveable2D
+#include "../graphics/GLMesh2DInstance.hpp"	// GLMesh2DInstance
+#include "../graphics/GLMesh2D.hpp"			// GLMesh2D
+#include "../core/Keyboard.hpp"			// Keyboard
+#include "../core/Singleton.hpp"		// Singleton
+#include "../core/Moveable2D.hpp"		// Moveable2D
 #include "TriangleMesh.hpp"		// TriangleMesh
-#include "Singleton.hpp"		// Singleton
-#include "ResourceManager.hpp"	// ResourceManager
+#include "../core/Singleton.hpp"		// Singleton
+#include "../core/ResourceManager.hpp"	// ResourceManager
 #include "../physics/RigidBody.hpp"
 
 namespace JU

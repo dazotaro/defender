@@ -1,16 +1,16 @@
 // Local incluces
-#include "gl_core_4_2.hpp"			// glLoadGen generated header files (need to be included before 'SDL_oepngl.h')
-#include "GLSLProgramHelper.hpp"	// GLSLProgramHelper
-#include "GLSLProgram.hpp"			// GLSLProgram
-#include "GLMesh2D.hpp"				// GLMesh2D
-#include "GLMesh2DInstance.hpp"		// GLMesh2DInstance
-#include "Camera2D.hpp"				// Camera2D
-#include "SDLEventManager.hpp"		// JU::SDLEventManager
-#include "Singleton.hpp"			// JU::Singleton
-#include "Keyboard.hpp"				// JU::Keyboard
+#include "../graphics/gl_core_4_2.hpp"			// glLoadGen generated header files (need to be included before 'SDL_oepngl.h')
+#include "../graphics/GLSLProgramHelper.hpp"	// GLSLProgramHelper
+#include "../graphics/GLSLProgram.hpp"			// GLSLProgram
+#include "../graphics/GLMesh2D.hpp"				// GLMesh2D
+#include "../graphics/GLMesh2DInstance.hpp"		// GLMesh2DInstance
+#include "../graphics/Camera2D.hpp"				// Camera2D
+#include "../core/SDLEventManager.hpp"		// JU::SDLEventManager
+#include "../core/Singleton.hpp"			// JU::Singleton
+#include "../core/Keyboard.hpp"				// JU::Keyboard
 #include "SpaceShip.hpp"			// JU::SpaceShip
 #include "EnemyShip.hpp"			// JU::EnemyShip
-#include "Timer.hpp"				// JU::Timer
+#include "../core/Timer.hpp"				// JU::Timer
 #include "../physics/PhysicsEngine.hpp"	// PhysicsEngine
 // Global includes
 #include <cstdio>					// printf

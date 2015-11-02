@@ -6,8 +6,8 @@
  */
 
 #include "GameObject.hpp"
-#include "GLMesh2DInstance.hpp"		// JU::GLMesh2DInstance
-#include "GLSLProgram.hpp"			// JU::GLSLProgram
+#include "../graphics/GLMesh2DInstance.hpp"		// JU::GLMesh2DInstance
+#include "../graphics/GLSLProgram.hpp"			// JU::GLSLProgram
 #include "../physics/RigidBody.hpp" // JU::RigidBody
 
 namespace JU

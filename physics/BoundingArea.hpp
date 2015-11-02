@@ -8,7 +8,7 @@
 #ifndef BOUNDINGAREA_HPP_
 #define BOUNDINGAREA_HPP_
 
-#include "../src/Defs.hpp"		// f32
+#include "../core/Defs.hpp"		// f32
 #include <glm/glm.hpp>			// vec2
 
 

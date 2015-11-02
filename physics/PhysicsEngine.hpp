@@ -9,7 +9,7 @@
 #define PHYSICSENGINE_HPP_
 
 // Local includes
-#include "../src/Defs.hpp"		// uint32
+#include "../core/Defs.hpp"		// uint32
 // Global includes
 #include <map>					// std::map
 #include <string>				// std::string

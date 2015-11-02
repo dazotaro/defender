@@ -8,7 +8,7 @@
 #ifndef SQUAREMESH_HPP_
 #define SQUAREMESH_HPP_
 
-#include "Mesh2D.hpp"	// Mesh2D
+#include "../graphics/Mesh2D.hpp"	// Mesh2D
 
 namespace JU
 {

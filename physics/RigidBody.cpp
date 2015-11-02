@@ -6,7 +6,7 @@
  */
 
 #include "RigidBody.hpp"
-#include "../src/Moveable2D.hpp"		// Moveable2D
+#include "../core/Moveable2D.hpp"		// Moveable2D
 
 namespace JU
 {

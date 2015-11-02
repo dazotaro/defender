@@ -6,14 +6,14 @@
  */
 
 #include "EnemyShip.hpp"
-#include "GLMesh2DInstance.hpp"	// GLMesh2DInstance
-#include "GLMesh2D.hpp"			// GLMesh2D
-#include "Keyboard.hpp"			// Keyboard
-#include "Singleton.hpp"		// Singleton
-#include "Moveable2D.hpp"		// Moveable2D
+#include "../graphics/GLMesh2DInstance.hpp"	// GLMesh2DInstance
+#include "../graphics/GLMesh2D.hpp"			// GLMesh2D
+#include "../core/Keyboard.hpp"			// Keyboard
+#include "../core/Singleton.hpp"		// Singleton
+#include "../core/Moveable2D.hpp"		// Moveable2D
 #include "SquareMesh.hpp"		// SquareMesh
-#include "Singleton.hpp"		// Singleton
-#include "ResourceManager.hpp"	// ResourceManager
+#include "../core/Singleton.hpp"		// Singleton
+#include "../core/ResourceManager.hpp"	// ResourceManager
 #include "../physics/RigidBody.hpp"
 
 namespace JU
@@ -52,7 +52,6 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
     GLMesh2DInstance* pglmeshinstance;
     char instance_resource_name[80] = {0};
     sprintf(instance_resource_name, "%s/%g%g%g%g", resource_name.c_str(), color[0], color[1], color[2], color[3]);
-    std::printf("Instance id %s\n", instance_resource_name);
     if (!(pglmeshinstance = prm_glmeshinstance->referenceResource(instance_resource_name)))
     {
     	pglmeshinstance = new GLMesh2DInstance(pglmesh, color);
