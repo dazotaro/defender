@@ -1,17 +1,17 @@
 /*
- * SpaceShip.cpp
+ * EnemyShip.cpp
  *
  *  Created on: Oct 21, 2015
  *      Author: jusabiaga
  */
 
-#include "SpaceShip.hpp"
+#include "EnemyShip.hpp"
 #include "GLMesh2DInstance.hpp"	// GLMesh2DInstance
 #include "GLMesh2D.hpp"			// GLMesh2D
 #include "Keyboard.hpp"			// Keyboard
 #include "Singleton.hpp"		// Singleton
 #include "Moveable2D.hpp"		// Moveable2D
-#include "TriangleMesh.hpp"		// TriangleMesh
+#include "SquareMesh.hpp"		// SquareMesh
 #include "Singleton.hpp"		// Singleton
 #include "ResourceManager.hpp"	// ResourceManager
 #include "../physics/RigidBody.hpp"
@@ -27,16 +27,16 @@ namespace JU
 * @param angle Angle of orientation in radians
 *
 */
-SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delta)
+EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delta)
 			: distance_(distance), angle_delta_(angle_delta)
 {
-	const std::string resource_name ("/proc/triangle");
+	const std::string resource_name ("/proc/square");
 
     // GLMesh2D
     // -------------
 	ResourceManager<GLMesh2D>* prm_glmesh = Singleton<ResourceManager<GLMesh2D>>::getInstance();
 
-	const TriangleMesh mesh;
+	const SquareMesh mesh;
     GLMesh2D* pglmesh;
     if (!(pglmesh = prm_glmesh->referenceResource(resource_name)))
     {
@@ -80,7 +80,7 @@ SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
 * @brief Destructor
 *
 */
-SpaceShip::~SpaceShip()
+EnemyShip::~EnemyShip()
 {
 }
 
@@ -91,27 +91,8 @@ SpaceShip::~SpaceShip()
 * @param milliseconds  Time elapsed since the last call (in milliseconds)
 *
 */
-void SpaceShip::update(f32 milliseconds)
+void EnemyShip::update(f32 milliseconds)
 {
-	Keyboard* keyboard = Singleton<Keyboard>::getInstance();
-
-	if (keyboard->isKeyDown(SDL_SCANCODE_LEFT))
-	{
-		moveable_.rotate(angle_delta_ * milliseconds);
-	}
-	else if (keyboard->isKeyDown(SDL_SCANCODE_RIGHT))
-	{
-		moveable_.rotate(-angle_delta_ * milliseconds);
-	}
-
-	if (keyboard->isKeyDown(SDL_SCANCODE_UP))
-	{
-		moveable_.moveY(distance_ * milliseconds);
-	}
-	else if (keyboard->isKeyDown(SDL_SCANCODE_DOWN))
-	{
-		moveable_.moveY(-distance_ * milliseconds);
-	}
 }
 
 
@@ -125,7 +106,7 @@ void SpaceShip::update(f32 milliseconds)
 * @param view    Camera's view matrix (world to NDC)
 *
 */
-void SpaceShip::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
+void EnemyShip::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
 	glm::mat3 toparent;
 	moveable_.getToParentTransformation(toparent);

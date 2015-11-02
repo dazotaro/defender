@@ -9,6 +9,7 @@
 #include "Singleton.hpp"			// JU::Singleton
 #include "Keyboard.hpp"				// JU::Keyboard
 #include "SpaceShip.hpp"			// JU::SpaceShip
+#include "EnemyShip.hpp"			// JU::EnemyShip
 #include "Timer.hpp"				// JU::Timer
 #include "../physics/PhysicsEngine.hpp"	// PhysicsEngine
 // Global includes
@@ -95,11 +96,14 @@ void init()
 
     // GameObjects
     // -----------
-    JU::SpaceShip* ship = new JU::SpaceShip(0.0f, 0.0f, 0.0f);
-    g_game_object_map["spaceship1"] = ship;
+    JU::SpaceShip* spaceship = new JU::SpaceShip(0.0f, 0.0f, 0.0f);
+    g_game_object_map["spaceship"] = spaceship;
 
-    ship = new JU::SpaceShip(2.0f, 0.0f, 0.0f);
-    g_game_object_map["spaceship2"] = ship;
+    JU::EnemyShip* enemyship = new JU::EnemyShip(2.0f, 0.0f, 0.0f);
+    g_game_object_map["enemyship1"] = enemyship;
+
+    enemyship = new JU::EnemyShip(-2.0f, 2.0f, 0.0f);
+    g_game_object_map["enemyship2"] = enemyship;
 
     // Camera2D
     // --------
@@ -109,8 +113,9 @@ void init()
 	// --------------
 	g_physics_engine = JU::Singleton<JU::PhysicsEngine>::getInstance();
 	g_physics_engine->init();
-	g_physics_engine->addRigidBody("ship1", g_game_object_map["spaceship1"]->getRigidBody());
-	g_physics_engine->addRigidBody("ship2", g_game_object_map["spaceship2"]->getRigidBody());
+	g_physics_engine->addRigidBody("spaceship", g_game_object_map["spaceship"]->getRigidBody());
+	g_physics_engine->addRigidBody("enemyship1", g_game_object_map["enemyship1"]->getRigidBody());
+	g_physics_engine->addRigidBody("enemyship2", g_game_object_map["enemyship2"]->getRigidBody());
 }
 
 
@@ -141,7 +146,7 @@ void loop()
 		// GAME OBJECT UPDATE
 		// ------------------
 		milliseconds = timer.getTicks();
-		g_game_object_map["spaceship1"]->update(milliseconds);
+		g_game_object_map["spaceship"]->update(milliseconds);
 		timer.start();
 
 		//////////////

@@ -1,12 +1,12 @@
 /*
- * SpaceShip.hpp
+ * EnemyShip.hpp
  *
  *  Created on: Oct 21, 2015
  *      Author: jusabiaga
  */
 
-#ifndef SPACESHIP_HPP_
-#define SPACESHIP_HPP_
+#ifndef ENEMYSHIP_HPP_
+#define ENEMYSHIP_HPP_
 
 #include "GameObject.hpp"		// GameObject
 #include "Defs.hpp"				// JU::f32
@@ -14,12 +14,12 @@
 namespace JU
 {
 
-/*! SpaceShip class defining a 'protagonist' SpaceShip */
-class SpaceShip : public GameObject
+/*! EnemyShip class defining a generic enemy spaceship */
+class EnemyShip : public GameObject
 {
 	public:
-		SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance = 0.005f, f32 angle_delta = 0.003f);
-		virtual ~SpaceShip();
+		EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance = 0.005f, f32 angle_delta = 0.003f);
+		virtual ~EnemyShip();
 
 		void update(JU::f32 milliseconds) override;
 		virtual void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const override;
@@ -31,4 +31,4 @@ class SpaceShip : public GameObject
 
 } /* namespace JU */
 
-#endif /* SPACESHIP_HPP_ */
+#endif /* ENEMYSHIP_HPP_ */
