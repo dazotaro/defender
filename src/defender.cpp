@@ -99,11 +99,17 @@ void init()
     JU::SpaceShip* spaceship = new JU::SpaceShip(0.0f, 0.0f, 0.0f);
     g_game_object_map["spaceship"] = spaceship;
 
-    JU::EnemyShip* enemyship = new JU::EnemyShip(2.0f, 0.0f, 0.0f);
+    JU::EnemyShip* enemyship = new JU::EnemyShip(2.0f, -2.0f, 0.0f);
     g_game_object_map["enemyship1"] = enemyship;
 
-    enemyship = new JU::EnemyShip(-2.0f, 2.0f, 0.0f);
+    enemyship = new JU::EnemyShip(-2.0f, 2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
     g_game_object_map["enemyship2"] = enemyship;
+
+    enemyship = new JU::EnemyShip(-2.0f, -2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    g_game_object_map["enemyship3"] = enemyship;
+
+    enemyship = new JU::EnemyShip(2.0f, 2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    g_game_object_map["enemyship4"] = enemyship;
 
     // Camera2D
     // --------
@@ -116,6 +122,8 @@ void init()
 	g_physics_engine->addRigidBody("spaceship", g_game_object_map["spaceship"]->getRigidBody());
 	g_physics_engine->addRigidBody("enemyship1", g_game_object_map["enemyship1"]->getRigidBody());
 	g_physics_engine->addRigidBody("enemyship2", g_game_object_map["enemyship2"]->getRigidBody());
+	g_physics_engine->addRigidBody("enemyship3", g_game_object_map["enemyship3"]->getRigidBody());
+	g_physics_engine->addRigidBody("enemyship4", g_game_object_map["enemyship4"]->getRigidBody());
 }
 
 

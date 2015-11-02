@@ -27,7 +27,7 @@ namespace JU
 * @param angle Angle of orientation in radians
 *
 */
-EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delta)
+EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delta, const glm::vec4& color)
 			: distance_(distance), angle_delta_(angle_delta)
 {
 	const std::string resource_name ("/proc/square");
@@ -50,10 +50,13 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
 	ResourceManager<GLMesh2DInstance>* prm_glmeshinstance = Singleton<ResourceManager<GLMesh2DInstance>>::getInstance();
 
     GLMesh2DInstance* pglmeshinstance;
-    if (!(pglmeshinstance = prm_glmeshinstance->referenceResource(resource_name)))
+    char instance_resource_name[80] = {0};
+    sprintf(instance_resource_name, "%s/%g%g%g%g", resource_name.c_str(), color[0], color[1], color[2], color[3]);
+    std::printf("Instance id %s\n", instance_resource_name);
+    if (!(pglmeshinstance = prm_glmeshinstance->referenceResource(instance_resource_name)))
     {
-    	pglmeshinstance = new GLMesh2DInstance(pglmesh);
-    	prm_glmeshinstance->addResource(resource_name, pglmeshinstance);
+    	pglmeshinstance = new GLMesh2DInstance(pglmesh, color);
+    	prm_glmeshinstance->addResource(instance_resource_name, pglmeshinstance);
     }
 
     GameObject::setMeshInstance(pglmeshinstance);

@@ -19,7 +19,7 @@ class GLMesh2D;
 class GLMesh2DInstance : public Renderable2DInterface
 {
 	public:
-		GLMesh2DInstance(const GLMesh2D* gl_mesh);
+		GLMesh2DInstance(const GLMesh2D* gl_mesh, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		virtual ~GLMesh2DInstance();
 
 	public:
@@ -29,6 +29,7 @@ class GLMesh2DInstance : public Renderable2DInterface
 
 	private:
         const GLMesh2D* gl_mesh_;
+        glm::vec4 		color_;
 };
 
 } /* namespace JU */

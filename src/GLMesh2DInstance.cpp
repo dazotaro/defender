@@ -12,7 +12,7 @@
 namespace JU
 {
 
-GLMesh2DInstance::GLMesh2DInstance(const GLMesh2D* gl_mesh) : gl_mesh_(gl_mesh)
+GLMesh2DInstance::GLMesh2DInstance(const GLMesh2D* gl_mesh, const glm::vec4& color) : gl_mesh_(gl_mesh), color_(color)
 {
 }
 
@@ -30,6 +30,7 @@ void GLMesh2DInstance::render(const GLSLProgram &program, const glm::mat3 & mode
     // LOAD UNIFORMS
     program.setUniform("M", model);
     program.setUniform("MV", MV);
+    program.setUniform("color", color_);
 
 	// Tell the GLMesh2D to render
 	gl_mesh_->render();
