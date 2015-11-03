@@ -14,9 +14,8 @@
 namespace JU
 {
 
-CircleMesh::CircleMesh()
+CircleMesh::CircleMesh(uint32 num_vertices)
 {
-	const uint32 num_vertices = 32;
 	glm::vec2 vertexPositions[num_vertices];
 	const f32 angle_delta = 2.0f * M_PI / num_vertices;
 	f32 angle = 0.0f;

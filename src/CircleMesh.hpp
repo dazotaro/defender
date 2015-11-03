@@ -16,7 +16,7 @@ namespace JU
 class CircleMesh : public Mesh2D
 {
 	public:
-		CircleMesh();
+		CircleMesh(uint32 num_vertices);
 		virtual ~CircleMesh();
 };
 
