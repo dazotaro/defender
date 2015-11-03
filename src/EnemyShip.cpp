@@ -11,7 +11,7 @@
 #include "../core/Keyboard.hpp"			// Keyboard
 #include "../core/Singleton.hpp"		// Singleton
 #include "../core/Moveable2D.hpp"		// Moveable2D
-#include "SquareMesh.hpp"		// SquareMesh
+#include "SquareMesh.hpp"				// SquareMesh
 #include "../core/Singleton.hpp"		// Singleton
 #include "../core/ResourceManager.hpp"	// ResourceManager
 #include "../physics/RigidBody.hpp"
@@ -37,7 +37,7 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
 	ResourceManager<GLMesh2D>* prm_glmesh = Singleton<ResourceManager<GLMesh2D>>::getInstance();
 
 	const SquareMesh mesh;
-    GLMesh2D* pglmesh;
+	GLMesh2D* pglmesh;
     if (!(pglmesh = prm_glmesh->referenceResource(resource_name)))
     {
     	pglmesh = new GLMesh2D();
