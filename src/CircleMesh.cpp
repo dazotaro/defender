@@ -20,7 +20,7 @@ CircleMesh::CircleMesh(uint32 num_vertices)
 	const f32 angle_delta = 2.0f * M_PI / num_vertices;
 	f32 angle = 0.0f;
 
-	for (uint32 i = 0; i < 32; ++i)
+	for (uint32 i = 0; i < num_vertices; ++i)
 	{
 		vertexPositions[i][0] = 0.5f * std::cos(angle);
 		vertexPositions[i][1] = 0.5f * std::sin(angle);
@@ -30,7 +30,7 @@ CircleMesh::CircleMesh(uint32 num_vertices)
 
 	uint32 vertexIndices[num_vertices];
 
-	for (uint32 i = 0; i < 32; ++i)
+	for (uint32 i = 0; i < num_vertices; ++i)
 	{
 		vertexIndices[i] = i;
 	}
