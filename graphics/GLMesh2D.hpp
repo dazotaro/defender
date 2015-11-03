@@ -26,10 +26,11 @@ class GLMesh2D
 		void render() const;
 
 	private:
-        GLuint vao_handle_;         //!< Handle to VAO
-        GLuint *vbo_handles_;		//!< Handle to dynamically allocated VBOs
-        JU::uint8 num_buffers_;
-        JU::uint32 num_indices_;	//!< Number of vertices
+        GLuint 		vao_handle_;         //!< Handle to VAO
+        GLuint*		vbo_handles_;		//!< Handle to dynamically allocated VBOs
+        JU::uint8 	num_buffers_;
+        JU::uint32 	num_indices_;	//!< Number of vertices
+        GLenum		draw_mode_;
 };
 
 } // namespace JU

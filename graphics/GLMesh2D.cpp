@@ -18,7 +18,7 @@ namespace JU
 * @brief Default constructor
 *
 */
-GLMesh2D::GLMesh2D() : vao_handle_(0), vbo_handles_(nullptr), num_buffers_(0), num_indices_(0)
+GLMesh2D::GLMesh2D() : vao_handle_(0), vbo_handles_(nullptr), num_buffers_(0), num_indices_(0), draw_mode_(gl::TRIANGLES)
 {
 }
 
@@ -54,7 +54,7 @@ void GLMesh2D::init(const Mesh2D& pmesh)
 	const JU::uint32* 	pindices = nullptr;
 	JU::uint32			num_indices = 0;
 
-	pmesh.getData(&pvertices, num_vertices, &pindices, num_indices);
+	pmesh.getData(&pvertices, num_vertices, &pindices, num_indices, draw_mode_);
 
 	// Transfer all vertex positions from 2D to Homogeneous coordinates
 	f32* vertexPositions = new f32[num_vertices * 3];
@@ -111,7 +111,7 @@ void GLMesh2D::render() const
     gl::BindVertexArray(vao_handle_);
 
     // Draw using indices
-    gl::DrawElements(gl::TRIANGLES, num_indices_, gl::UNSIGNED_INT, 0);
+    gl::DrawElements(draw_mode_, num_indices_, gl::UNSIGNED_INT, 0);
 
     // Unbind
     gl::BindVertexArray(0);

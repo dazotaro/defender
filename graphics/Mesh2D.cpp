@@ -12,15 +12,19 @@
 namespace JU
 {
 
-Mesh2D::Mesh2D() : pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0)
+Mesh2D::Mesh2D() : pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0), draw_mode_(gl::TRIANGLES)
 {
 }
 
 
-Mesh2D::Mesh2D(const glm::vec2* pvertices, uint32 num_vertices, const uint32* pindices, uint32 num_indices)
-			: pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0)
+Mesh2D::Mesh2D(const glm::vec2* pvertices,
+			   uint32 			num_vertices,
+			   const uint32* 	pindices,
+			   uint32 			num_indices,
+			   GLenum			draw_mode)
+			: pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0), draw_mode_(draw_mode)
 {
-	setData(pvertices, num_vertices, pindices, num_indices);
+	setData(pvertices, num_vertices, pindices, num_indices, draw_mode);
 }
 
 
@@ -38,17 +42,27 @@ void Mesh2D::getVertices(const glm::vec2** pvertices, uint32& num_vertices) cons
 }
 
 
-void Mesh2D::getData(const glm::vec2** pvertices, uint32& num_vertices, const uint32** pindices, uint32& num_indices) const
+void Mesh2D::getData(const glm::vec2** pvertices,
+					 uint32& 		   num_vertices,
+					 const uint32**    pindices,
+					 uint32& 		   num_indices,
+					 GLenum&		   draw_mode) const
 {
 	*pvertices = pvertices_;
 	num_vertices = num_vertices_;
 
 	*pindices = pindices_;
 	num_indices = num_indices_;
+
+	draw_mode = draw_mode_;
 }
 
 
-void Mesh2D::setData(const glm::vec2* pvertices, uint32 num_vertices, const uint32* pindices, uint32 num_indices)
+void Mesh2D::setData(const glm::vec2* pvertices,
+					 uint32 		  num_vertices,
+					 const uint32* 	  pindices,
+					 uint32 		  num_indices,
+					 GLenum			  draw_mode)
 {
 	delete [] pvertices_;
 	num_vertices_ = num_vertices;
@@ -59,6 +73,8 @@ void Mesh2D::setData(const glm::vec2* pvertices, uint32 num_vertices, const uint
 	num_indices_ = num_indices;
 	pindices_ = new uint32[num_indices_];
 	std::memcpy(pindices_, pindices, sizeof(uint32) * num_indices_);
+
+	draw_mode_ = draw_mode;
 }
 
 

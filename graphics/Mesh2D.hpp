@@ -9,6 +9,7 @@
 #define MESH2D_HPP_
 
 #include "../core/Defs.hpp"			// JU::uint32
+#include "gl_core_4_2.hpp"			// GLenum
 #include <glm/glm.hpp>		// glm::vec2
 
 
@@ -19,21 +20,34 @@ class Mesh2D
 {
 	public:
 		Mesh2D();
-		Mesh2D(const glm::vec2* pvertices, uint32 num_vertices, const uint32* pindices, uint32 num_indices);
+		Mesh2D(const glm::vec2* pvertices,
+			   uint32 			num_vertices,
+			   const uint32* 	pindices,
+			   uint32 			num_indices,
+			   GLenum			draw_mode);
 		virtual ~Mesh2D();
 
 		// Getter
 		void getVertices(const glm::vec2** pvertices, uint32& num_vertices) const;
-		void getData(const glm::vec2** pvertices, uint32& num_vertices, const uint32** pindices, uint32& num_indices) const;
+		void getData(const glm::vec2** pvertices,
+					 uint32& 		   num_vertices,
+					 const uint32**    pindices,
+					 uint32& 		   num_indices,
+					 GLenum& 		   draw_mode) const;
 
 		// Setter
-		void setData(const glm::vec2* pvertices, uint32 num_vertices, const uint32* pindices, uint32 num_indices);
+		void setData(const glm::vec2* pvertices,
+					 uint32 		  num_vertices,
+					 const uint32* 	  pindices,
+					 uint32 		  num_indices,
+					 GLenum			  draw_mode = gl::TRIANGLES);
 
 	protected:
 		glm::vec2* 	pvertices_;
 		uint32  	num_vertices_;
 		uint32*		pindices_;
 		uint32		num_indices_;
+		GLenum 		draw_mode_;			//!< GL_TRIANGLE, GL_TRIANGLE_FAN, GL_LINE, GL_LINE_LOOP
 };
 
 } /* namespace JU */
