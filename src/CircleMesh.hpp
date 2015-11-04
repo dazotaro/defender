@@ -13,11 +13,11 @@
 namespace JU
 {
 
-class CircleMesh : public Mesh2D
+class CircleMesh: public Mesh2D
 {
-	public:
-		CircleMesh(uint32 num_vertices);
-		virtual ~CircleMesh();
+    public:
+        CircleMesh(uint32 num_vertices);
+        virtual ~CircleMesh();
 };
 
 } /* namespace JU */

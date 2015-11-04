@@ -10,56 +10,53 @@
 // Global include
 #include <SDL2/SDL.h>
 
-
 namespace JU
 {
 
-Timer::Timer() : start_ticks_(0), paused_ticks_(0), paused_(false), started_(false)
+Timer::Timer() :
+        start_ticks_(0), paused_ticks_(0), paused_(false), started_(false)
 {
 }
 
 void Timer::start()
 {
-	//Start the timer
-	started_ = true;
+    //Start the timer
+    started_ = true;
 
-	//Unpause the timer
-	paused_ = false;
+    //Unpause the timer
+    paused_ = false;
 
-	//Get the current clock time
-	start_ticks_ = SDL_GetTicks();
-	paused_ticks_ = 0;
+    //Get the current clock time
+    start_ticks_ = SDL_GetTicks();
+    paused_ticks_ = 0;
 }
-
 
 void Timer::stop()
 {
-	//Stop the timer
-	started_ = false;
+    //Stop the timer
+    started_ = false;
 
-	//Unpause the timer
-	paused_ = false;
+    //Unpause the timer
+    paused_ = false;
 
-	//Clear tick variables
-	start_ticks_ = 0;
-	paused_ticks_ = 0;
+    //Clear tick variables
+    start_ticks_ = 0;
+    paused_ticks_ = 0;
 }
-
 
 void Timer::pause()
 {
-	//If the timer is running and isn't already paused
-	if (started_ && !paused_)
-	{
-		//Pause the timer
-		paused_ = true;
+    //If the timer is running and isn't already paused
+    if (started_ && !paused_)
+    {
+        //Pause the timer
+        paused_ = true;
 
-		//Calculate the paused ticks
-		paused_ticks_ = SDL_GetTicks() - start_ticks_;
-		start_ticks_ = 0;
-	}
+        //Calculate the paused ticks
+        paused_ticks_ = SDL_GetTicks() - start_ticks_;
+        start_ticks_ = 0;
+    }
 }
-
 
 void Timer::unpause()
 {
@@ -76,7 +73,6 @@ void Timer::unpause()
         paused_ticks_ = 0;
     }
 }
-
 
 uint32 Timer::getTicks()
 {
@@ -102,19 +98,16 @@ uint32 Timer::getTicks()
     return time;
 }
 
-
 bool Timer::isStarted()
 {
     //Timer is running and paused or unpaused
     return started_;
 }
 
-
 bool Timer::isPaused()
 {
     //Timer is running and paused
     return paused_ && started_;
 }
-
 
 } /* namespace JU */

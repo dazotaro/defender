@@ -9,7 +9,7 @@
 #define KEYBOARD_HPP_
 
 // Local includes
-#include "SDLEventManager.hpp"	// JU::SDLEventHandler
+#include "SDLEventManager.hpp"  // JU::SDLEventHandler
 
 // Global includes
 #include <SDL2/SDL.h>    // SDL_Event
@@ -36,7 +36,7 @@ namespace JU
 #endif
 
         public:
-			void handleSDLEvent(const SDL_Event* event);
+            void handleSDLEvent(const SDL_Event* event);
 
         private:
             KeyState keyState_[SDL_NUM_SCANCODES];

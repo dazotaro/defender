@@ -16,20 +16,20 @@ Camera2D::Camera2D()
 
 
 Camera2D::Camera2D(Moveable2D moveable)
-			: moveable_(moveable)
+            : moveable_(moveable)
 {
 }
 
 
 void Camera2D::setMoveable(Moveable2D moveable)
 {
-	moveable_ = moveable;
+    moveable_ = moveable;
 }
 
 
 void Camera2D::getWorld2NDCTransformation(glm::mat3& view) const
 {
-	moveable_.getFromParentTransformation(view);
+    moveable_.getFromParentTransformation(view);
 }
 
 

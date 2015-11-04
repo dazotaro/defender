@@ -19,22 +19,20 @@
 #include <map>						// std::map
 #include <string>					// std::string
 
-
 namespace
 {
-	// CONSTANTS
-	const unsigned int WIDTH = 800;
-	const unsigned int HEIGHT = 800;
-	// Global variables
-	std::map<std::string, JU::GLSLProgram> 			g_shader_map;
-	std::map<std::string, JU::GameObject*>			g_game_object_map;
-	JU::Camera2D* 		 g_pcamera;
-	JU::SDLEventManager* g_SDL_event_manager;
-	JU::Keyboard*		 g_keyboard;
-	SDL_Window*	  		 g_mainwindow; /* Our window handle */
-	JU::PhysicsEngine*	 g_physics_engine;
+// CONSTANTS
+const unsigned int WIDTH = 800;
+const unsigned int HEIGHT = 800;
+// Global variables
+std::map<std::string, JU::GLSLProgram> g_shader_map;
+std::map<std::string, JU::GameObject*> g_game_object_map;
+JU::Camera2D* g_pcamera;
+JU::SDLEventManager* g_SDL_event_manager;
+JU::Keyboard* g_keyboard;
+SDL_Window* g_mainwindow; /* Our window handle */
+JU::PhysicsEngine* g_physics_engine;
 }
-
 
 /* A simple function that prints a message, the error code returned by SDL,
  * and quits the application */
@@ -45,54 +43,53 @@ void sdldie(const char *msg)
     exit(1);
 }
 
-
 void checkSDLError(int line = -1)
 {
 #ifndef NDEBUG
-	const char *error = SDL_GetError();
-	if (*error != '\0')
-	{
-		std::printf("SDL Error: %s\n", error);
-		if (line != -1)
-			std::printf(" + line: %i\n", line);
-		SDL_ClearError();
-	}
+    const char *error = SDL_GetError();
+    if (*error != '\0')
+    {
+        std::printf("SDL Error: %s\n", error);
+        if (line != -1)
+            std::printf(" + line: %i\n", line);
+        SDL_ClearError();
+    }
 #endif
 }
 
-
 /**
-* @brief Initialization function
-*
-* @detail Initialize application
-*/
+ * @brief Initialization function
+ *
+ * @detail Initialize application
+ */
 void init()
 {
-	// KEYBOARD
-	// --------
-	g_keyboard = JU::Singleton<JU::Keyboard>::getInstance();
-	g_keyboard->reset();
+    // KEYBOARD
+    // --------
+    g_keyboard = JU::Singleton<JU::Keyboard>::getInstance();
+    g_keyboard->reset();
 
-	// SDL EVENT MANAGER
-	// -----------------
-	g_SDL_event_manager = JU::Singleton<JU::SDLEventManager>::getInstance();
-	if (!g_SDL_event_manager->initialize())
-	{
-		std::printf("Input Manager failed to initialize!!!\n");
-		exit(0);
-	}
-	// Register window resize event
-	//g_SDL_event_manager->attachEventHandler(SDL_WINDOWEVENT, "MainWindowResize", &window_);
+    // SDL EVENT MANAGER
+    // -----------------
+    g_SDL_event_manager = JU::Singleton<JU::SDLEventManager>::getInstance();
+    if (!g_SDL_event_manager->initialize())
+    {
+        std::printf("Input Manager failed to initialize!!!\n");
+        exit(0);
+    }
+    // Register window resize event
+    //g_SDL_event_manager->attachEventHandler(SDL_WINDOWEVENT, "MainWindowResize", &window_);
 
-	// KEYBOARD
-	// --------
-	// Register window resize event
-	g_SDL_event_manager->attachEventHandler(SDL_KEYDOWN, "Keydown", g_keyboard);
-	g_SDL_event_manager->attachEventHandler(SDL_KEYUP, 	"Keyup",   g_keyboard);
+    // KEYBOARD
+    // --------
+    // Register window resize event
+    g_SDL_event_manager->attachEventHandler(SDL_KEYDOWN, "Keydown", g_keyboard);
+    g_SDL_event_manager->attachEventHandler(SDL_KEYUP, "Keyup", g_keyboard);
 
-	// GLSL PROGRAMS
+    // GLSL PROGRAMS
     // -------------
-    g_shader_map["simple"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
+    g_shader_map["simple"] = JU::GLSLProgramHelper::compileAndLinkShader(
+            "data/shaders/simple.vs", "data/shaders/simple.fs");
 
     // GameObjects
     // -----------
@@ -102,115 +99,124 @@ void init()
     JU::EnemyShip* enemyship = new JU::EnemyShip(2.0f, -2.0f, 0.0f);
     g_game_object_map["enemyship1"] = enemyship;
 
-    enemyship = new JU::EnemyShip(-2.0f, 2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    enemyship = new JU::EnemyShip(-2.0f, 2.0f, 0.0f, 0.005f, 0.003f,
+            glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
     g_game_object_map["enemyship2"] = enemyship;
 
-    enemyship = new JU::EnemyShip(-2.0f, -2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    enemyship = new JU::EnemyShip(-2.0f, -2.0f, 0.0f, 0.005f, 0.003f,
+            glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
     g_game_object_map["enemyship3"] = enemyship;
 
-    enemyship = new JU::EnemyShip(2.0f, 2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    enemyship = new JU::EnemyShip(2.0f, 2.0f, 0.0f, 0.005f, 0.003f,
+            glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
     g_game_object_map["enemyship4"] = enemyship;
 
     // Camera2D
     // --------
-    g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 10.0f, 10.0f));
+    g_pcamera = new JU::Camera2D(
+            JU::Moveable2D(0.0f, 0.0f, 0.0f, 10.0f, 10.0f));
 
-	// PHYSICS ENGINE
-	// --------------
-	g_physics_engine = JU::Singleton<JU::PhysicsEngine>::getInstance();
-	g_physics_engine->init();
-	g_physics_engine->addRigidBody("spaceship", g_game_object_map["spaceship"]->getRigidBody());
-	g_physics_engine->addRigidBody("enemyship1", g_game_object_map["enemyship1"]->getRigidBody());
-	g_physics_engine->addRigidBody("enemyship2", g_game_object_map["enemyship2"]->getRigidBody());
-	g_physics_engine->addRigidBody("enemyship3", g_game_object_map["enemyship3"]->getRigidBody());
-	g_physics_engine->addRigidBody("enemyship4", g_game_object_map["enemyship4"]->getRigidBody());
+    // PHYSICS ENGINE
+    // --------------
+    g_physics_engine = JU::Singleton<JU::PhysicsEngine>::getInstance();
+    g_physics_engine->init();
+    g_physics_engine->addRigidBody("spaceship",
+            g_game_object_map["spaceship"]->getRigidBody());
+    g_physics_engine->addRigidBody("enemyship1",
+            g_game_object_map["enemyship1"]->getRigidBody());
+    g_physics_engine->addRigidBody("enemyship2",
+            g_game_object_map["enemyship2"]->getRigidBody());
+    g_physics_engine->addRigidBody("enemyship3",
+            g_game_object_map["enemyship3"]->getRigidBody());
+    g_physics_engine->addRigidBody("enemyship4",
+            g_game_object_map["enemyship4"]->getRigidBody());
 }
 
-
 /**
-* @brief Game loop
-*
-* @detail Infinite game loop
-*/
+ * @brief Game loop
+ *
+ * @detail Infinite game loop
+ */
 void loop()
 {
-	bool running = true;
-	static JU::GLSLProgram* p_program;
-	static JU::Timer timer;
-	static JU::uint32 milliseconds = timer.getTicks();
+    bool running = true;
+    static JU::GLSLProgram* p_program;
+    static JU::Timer timer;
+    static JU::uint32 milliseconds = timer.getTicks();
 
-	while (running)
-	{
-		// EVENT HANDLING
-		// --------------
-		// sdl events
-		g_SDL_event_manager->update();
-		if (g_SDL_event_manager->quitting() || g_keyboard->isKeyDown(SDL_SCANCODE_ESCAPE))
-		{
-			running = false;
-			break;
-		}
+    while (running)
+    {
+        // EVENT HANDLING
+        // --------------
+        // sdl events
+        g_SDL_event_manager->update();
+        if (g_SDL_event_manager->quitting()
+                || g_keyboard->isKeyDown(SDL_SCANCODE_ESCAPE))
+        {
+            running = false;
+            break;
+        }
 
-		// GAME OBJECT UPDATE
-		// ------------------
-		milliseconds = timer.getTicks();
-		g_game_object_map["spaceship"]->update(milliseconds);
-		timer.start();
+        // GAME OBJECT UPDATE
+        // ------------------
+        milliseconds = timer.getTicks();
+        g_game_object_map["spaceship"]->update(milliseconds);
+        timer.start();
 
-		//////////////
-		// REMOVE IT!!!
-		//////////////
-		SDL_Delay(20);
-		//////////////
-		//////////////
+        //////////////
+        // REMOVE IT!!!
+        //////////////
+        SDL_Delay(20);
+        //////////////
+        //////////////
 
-		// COLLISIONS
-		// -----------
-		g_physics_engine->updateCollisions(milliseconds);
+        // COLLISIONS
+        // -----------
+        g_physics_engine->updateCollisions(milliseconds);
 
-		// RENDER
-		// ------
-		// Clear Buffer
-		gl::ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		gl::Clear(gl::COLOR_BUFFER_BIT);
+        // RENDER
+        // ------
+        // Clear Buffer
+        gl::ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        gl::Clear(gl::COLOR_BUFFER_BIT);
 
-		// Bind the GLSL program and this object's VAO
-		p_program = &g_shader_map["simple"];
-		p_program->use();
+        // Bind the GLSL program and this object's VAO
+        p_program = &g_shader_map["simple"];
+        p_program->use();
 
-		// Get World to Camera matrix
-		glm::mat3 view;
-		g_pcamera->getWorld2NDCTransformation(view);
+        // Get World to Camera matrix
+        glm::mat3 view;
+        g_pcamera->getWorld2NDCTransformation(view);
 
-		// Render all renderables
-		for (auto iter = g_game_object_map.begin(); iter != g_game_object_map.end(); ++iter)
-			iter->second->render(*p_program, glm::mat3(), view);
+        // Render all renderables
+        for (auto iter = g_game_object_map.begin();
+                iter != g_game_object_map.end(); ++iter)
+            iter->second->render(*p_program, glm::mat3(), view);
 
-	    /* Swap our back buffer to the front */
-	    SDL_GL_SwapWindow(g_mainwindow);
+        /* Swap our back buffer to the front */
+        SDL_GL_SwapWindow(g_mainwindow);
 
-	    // Unbind GLSL Program
-		gl::UseProgram(0);
-	}
+        // Unbind GLSL Program
+        gl::UseProgram(0);
+    }
 }
-
 
 /**
-* @brief Exit function
-*
-* @detail Clean up before termination
-*/
+ * @brief Exit function
+ *
+ * @detail Clean up before termination
+ */
 void exit()
 {
-	for(auto iter = g_game_object_map.begin(); iter != g_game_object_map.end(); ++iter)
-		delete iter->second;
+    for (auto iter = g_game_object_map.begin(); iter != g_game_object_map.end();
+            ++iter)
+        delete iter->second;
 
-	delete g_pcamera;
+    delete g_pcamera;
 
-	delete g_SDL_event_manager;
-	delete g_keyboard;
+    delete g_SDL_event_manager;
+    delete g_keyboard;
 }
-
 
 /* Our program's entry point */
 int main(int argc, char *argv[])
@@ -233,20 +239,21 @@ int main(int argc, char *argv[])
 
     //------------------------------------
     // glLoadGen required initialization
-	gl::exts::LoadTest loaded = gl::sys::LoadFunctions();
-	if(!loaded)
-	{
-		//Destroy the context and abort
-		return 0;
-	}
+    gl::exts::LoadTest loaded = gl::sys::LoadFunctions();
+    if (!loaded)
+    {
+        //Destroy the context and abort
+        return 0;
+    }
 
     //int num_failed = loaded - gl::sys::LOAD_SUCCEEDED;
     //std::printf("Number of functions that failed to load: %i.\n",num_failed);
     //------------------------------------
 
     /* Create our window centered at 512x512 resolution */
-    g_mainwindow = SDL_CreateWindow("Defender", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        WIDTH, HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    g_mainwindow = SDL_CreateWindow("Defender", SDL_WINDOWPOS_CENTERED,
+            SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT,
+            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (!g_mainwindow) /* Die if creation failed */
         sdldie("Unable to create window");
 
@@ -255,7 +262,6 @@ int main(int argc, char *argv[])
     /* Create our opengl context and attach it to our window */
     maincontext = SDL_GL_CreateContext(g_mainwindow);
     checkSDLError(__LINE__);
-
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
     SDL_GL_SetSwapInterval(0);

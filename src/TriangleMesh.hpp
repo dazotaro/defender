@@ -13,11 +13,11 @@
 namespace JU
 {
 
-class TriangleMesh : public Mesh2D
+class TriangleMesh: public Mesh2D
 {
-	public:
-		TriangleMesh();
-		virtual ~TriangleMesh();
+    public:
+        TriangleMesh();
+        virtual ~TriangleMesh();
 };
 
 } /* namespace JU */

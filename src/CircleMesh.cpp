@@ -16,26 +16,27 @@ namespace JU
 
 CircleMesh::CircleMesh(uint32 num_vertices)
 {
-	glm::vec2 vertexPositions[num_vertices];
-	const f32 angle_delta = 2.0f * M_PI / num_vertices;
-	f32 angle = 0.0f;
+    glm::vec2 vertexPositions[num_vertices];
+    const f32 angle_delta = 2.0f * M_PI / num_vertices;
+    f32 angle = 0.0f;
 
-	for (uint32 i = 0; i < num_vertices; ++i)
-	{
-		vertexPositions[i][0] = 0.5f * std::cos(angle);
-		vertexPositions[i][1] = 0.5f * std::sin(angle);
+    for (uint32 i = 0; i < num_vertices; ++i)
+    {
+        vertexPositions[i][0] = 0.5f * std::cos(angle);
+        vertexPositions[i][1] = 0.5f * std::sin(angle);
 
-		angle += angle_delta;
-	}
+        angle += angle_delta;
+    }
 
-	uint32 vertexIndices[num_vertices];
+    uint32 vertexIndices[num_vertices];
 
-	for (uint32 i = 0; i < num_vertices; ++i)
-	{
-		vertexIndices[i] = i;
-	}
+    for (uint32 i = 0; i < num_vertices; ++i)
+    {
+        vertexIndices[i] = i;
+    }
 
-    setData(vertexPositions, num_vertices, vertexIndices, num_vertices, gl::LINE_LOOP);
+    setData(vertexPositions, num_vertices, vertexIndices, num_vertices,
+            gl::LINE_LOOP);
 }
 
 CircleMesh::~CircleMesh()

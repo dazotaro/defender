@@ -13,11 +13,11 @@
 namespace JU
 {
 
-class SkylineMesh : public Mesh2D
+class SkylineMesh: public Mesh2D
 {
-	public:
-		SkylineMesh();
-		virtual ~SkylineMesh();
+    public:
+        SkylineMesh();
+        virtual ~SkylineMesh();
 };
 
 } /* namespace JU */

@@ -13,16 +13,14 @@ namespace JU
 
 TriangleMesh::TriangleMesh()
 {
-    const glm::vec2 vertexPositions[] = {
-        {-0.5f, -0.5f}, // V0
-        { 0.5f, -0.5f}, // V1
-        { 0.0f,  0.5f}, // V2
-    };
+    const glm::vec2 vertexPositions[] = { { -0.5f, -0.5f }, // V0
+            { 0.5f, -0.5f }, // V1
+            { 0.0f, 0.5f }, // V2
+            };
 
     const uint32 vertexIndices[] = {
-        // First triangle: upper left
-        0, 1, 2
-    };
+    // First triangle: upper left
+            0, 1, 2 };
 
     setData(vertexPositions, 3, vertexIndices, 3);
 }

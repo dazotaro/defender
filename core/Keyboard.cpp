@@ -8,10 +8,10 @@
 // Local includes
 #include "Keyboard.hpp"
 #include "Defs.hpp"         // JU::uint32
-#include "SystemLog.hpp"	// JU::SystemLog
+#include "SystemLog.hpp"    // JU::SystemLog
 
 // Global includes
-#include <cstdio>           	// std::printf
+#include <cstdio>               // std::printf
 
 namespace JU
 {
@@ -23,7 +23,7 @@ namespace JU
 */
 Keyboard::Keyboard()
 {
-	reset();
+    reset();
 }
 
 
@@ -35,9 +35,9 @@ Keyboard::Keyboard()
 */
 void Keyboard::reset()
 {
-	// All Keys are up
-	for (uint32 index = 0; index < SDL_NUM_SCANCODES; index++)
-		keyState_[index] = KEY_UP;
+    // All Keys are up
+    for (uint32 index = 0; index < SDL_NUM_SCANCODES; index++)
+        keyState_[index] = KEY_UP;
 }
 
 
@@ -53,21 +53,21 @@ void Keyboard::reset()
 */
 void Keyboard::handleSDLEvent(const SDL_Event* event)
 {
-	switch (event->key.state)
-	{
-		case SDL_PRESSED:
-			keyState_[event->key.keysym.scancode] = KEY_DOWN;
-			break;
+    switch (event->key.state)
+    {
+        case SDL_PRESSED:
+            keyState_[event->key.keysym.scancode] = KEY_DOWN;
+            break;
 
-		case SDL_RELEASED:
-			keyState_[event->key.keysym.scancode] = KEY_UP;
-			break;
+        case SDL_RELEASED:
+            keyState_[event->key.keysym.scancode] = KEY_UP;
+            break;
 
-		default:
-			SystemLog::logMessage("Keyboard", "handleEvent(): event state not handled", true);
-			break;
+        default:
+            SystemLog::logMessage("Keyboard", "handleEvent(): event state not handled", true);
+            break;
 
-	}
+    }
 }
 
 
@@ -83,10 +83,10 @@ void Keyboard::handleSDLEvent(const SDL_Event* event)
 */
 bool Keyboard::isKeyUp(SDL_Scancode code) const
 {
-	if (keyState_[code] == KEY_UP)
-		return true;
+    if (keyState_[code] == KEY_UP)
+        return true;
 
-	return false;
+    return false;
 }
 
 
@@ -102,22 +102,22 @@ bool Keyboard::isKeyUp(SDL_Scancode code) const
 */
 bool Keyboard::isKeyDown(SDL_Scancode code) const
 {
-	if (keyState_[code] == KEY_DOWN)
-		return true;
+    if (keyState_[code] == KEY_DOWN)
+        return true;
 
-	return false;
+    return false;
 }
 
 
 #ifdef _DEBUG
 void Keyboard::printKeyboard() const
 {
-	for (JU::uint32 scancode = SDL_SCANCODE_UNKNOWN; scancode < SDL_NUM_SCANCODES; ++scancode)
-	{
-		if (keyState_[scancode] == SDL_PRESSED)
-			std::printf("%s ", SDL_GetKeyName(SDL_GetKeyFromScancode((SDL_Scancode)scancode)));
-	}
-	std::printf("\n");
+    for (JU::uint32 scancode = SDL_SCANCODE_UNKNOWN; scancode < SDL_NUM_SCANCODES; ++scancode)
+    {
+        if (keyState_[scancode] == SDL_PRESSED)
+            std::printf("%s ", SDL_GetKeyName(SDL_GetKeyFromScancode((SDL_Scancode)scancode)));
+    }
+    std::printf("\n");
 }
 #endif
 

@@ -8,14 +8,14 @@
 #ifndef GLSLPROGRAMHELPER_HPP_
 #define GLSLPROGRAMHELPER_HPP_
 
-#include "GLSLProgram.hpp"		// JU::GLSLProgram
+#include "GLSLProgram.hpp"      // JU::GLSLProgram
 
 namespace JU
 {
 
 namespace GLSLProgramHelper
 {
-	GLSLProgram compileAndLinkShader(const char* vertex, const char* fragment);
+    GLSLProgram compileAndLinkShader(const char* vertex, const char* fragment);
 }
 
 }

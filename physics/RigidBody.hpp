@@ -19,19 +19,28 @@ class Moveable2D;
 
 class RigidBody
 {
-	public:
-		RigidBody(const BoundingCircle* pbounding_area, Moveable2D* pmoveable = nullptr);
-		virtual ~RigidBody();
+    public:
+        RigidBody(const BoundingCircle* pbounding_area, Moveable2D* pmoveable =
+                nullptr);
+        virtual ~RigidBody();
 
-		void setMoveable(Moveable2D* pmoveable) { pmoveable_ = pmoveable; }
-		const Moveable2D* getMoveable() const { return pmoveable_; }
-		const BoundingCircle* getBoundingArea() const { return pbounding_area_; }
+        void setMoveable(Moveable2D* pmoveable)
+        {
+            pmoveable_ = pmoveable;
+        }
+        const Moveable2D* getMoveable() const
+        {
+            return pmoveable_;
+        }
+        const BoundingCircle* getBoundingArea() const
+        {
+            return pbounding_area_;
+        }
 
-	private:
-		const BoundingCircle* pbounding_area_;  //!< BoundingArea object for collision detection/resolution
-		Moveable2D*	   pmoveable_;
+    private:
+        const BoundingCircle* pbounding_area_; //!< BoundingArea object for collision detection/resolution
+        Moveable2D* pmoveable_;
 };
-
 
 } /* namespace JU */
 

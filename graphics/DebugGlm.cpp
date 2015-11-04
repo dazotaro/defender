@@ -59,9 +59,9 @@ void print(const char* string, const glm::mat3& mat)
 {
     std::printf("%s = \n", string);
 
-	std::printf("(%6.2f, %6.2f, %6.2f\n",  mat[0][0], mat[1][0], mat[2][0]);
-	std::printf(" %6.2f, %6.2f, %6.2f\n",  mat[0][1], mat[1][1], mat[2][1]);
-	std::printf(" %6.2f, %6.2f, %6.2f\n",  mat[0][2], mat[1][2], mat[2][2]);
+    std::printf("(%6.2f, %6.2f, %6.2f\n",  mat[0][0], mat[1][0], mat[2][0]);
+    std::printf(" %6.2f, %6.2f, %6.2f\n",  mat[0][1], mat[1][1], mat[2][1]);
+    std::printf(" %6.2f, %6.2f, %6.2f\n",  mat[0][2], mat[1][2], mat[2][2]);
 }
 
 
@@ -69,10 +69,10 @@ void print(const char* string, const glm::mat4& mat)
 {
     std::printf("%s = \n", string);
 
-	std::printf("(%6.2f, %6.2f, %6.2f, %6.2f\n",  mat[0][0], mat[1][0], mat[2][0], mat[3][0]);
-	std::printf(" %6.2f, %6.2f, %6.2f, %6.2f\n",  mat[0][1], mat[1][1], mat[2][1], mat[3][1]);
-	std::printf(" %6.2f, %6.2f, %6.2f, %6.2f\n",  mat[0][2], mat[1][2], mat[2][2], mat[3][2]);
-	std::printf(" %6.2f, %6.2f, %6.2f, %6.2f)\n", mat[0][3], mat[1][3], mat[2][3], mat[3][3]);
+    std::printf("(%6.2f, %6.2f, %6.2f, %6.2f\n",  mat[0][0], mat[1][0], mat[2][0], mat[3][0]);
+    std::printf(" %6.2f, %6.2f, %6.2f, %6.2f\n",  mat[0][1], mat[1][1], mat[2][1], mat[3][1]);
+    std::printf(" %6.2f, %6.2f, %6.2f, %6.2f\n",  mat[0][2], mat[1][2], mat[2][2], mat[3][2]);
+    std::printf(" %6.2f, %6.2f, %6.2f, %6.2f)\n", mat[0][3], mat[1][3], mat[2][3], mat[3][3]);
 }
 
 }

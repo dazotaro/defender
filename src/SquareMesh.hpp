@@ -13,11 +13,11 @@
 namespace JU
 {
 
-class SquareMesh : public Mesh2D
+class SquareMesh: public Mesh2D
 {
-	public:
-		SquareMesh();
-		virtual ~SquareMesh();
+    public:
+        SquareMesh();
+        virtual ~SquareMesh();
 };
 
 } /* namespace JU */

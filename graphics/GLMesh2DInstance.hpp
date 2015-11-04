@@ -8,7 +8,7 @@
 #ifndef GLMESH2DINSTANCE_HPP_
 #define GLMESH2DINSTANCE_HPP_
 
-#include "Renderable2DInterface.hpp"	// Renderable2DInterface
+#include "Renderable2DInterface.hpp"    // Renderable2DInterface
 
 namespace JU
 {
@@ -18,18 +18,18 @@ class GLMesh2D;
 
 class GLMesh2DInstance : public Renderable2DInterface
 {
-	public:
-		GLMesh2DInstance(const GLMesh2D* gl_mesh, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		virtual ~GLMesh2DInstance();
+    public:
+        GLMesh2DInstance(const GLMesh2D* gl_mesh, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        virtual ~GLMesh2DInstance();
 
-	public:
-		const GLMesh2D* getGLMesh() const { return gl_mesh_; }
-		// Renderable2DInterface
-        void render(const GLSLProgram &program,	const glm::mat3 & model, const glm::mat3 &view) const;
+    public:
+        const GLMesh2D* getGLMesh() const { return gl_mesh_; }
+        // Renderable2DInterface
+        void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
 
-	private:
+    private:
         const GLMesh2D* gl_mesh_;
-        glm::vec4 		color_;
+        glm::vec4       color_;
 };
 
 } /* namespace JU */

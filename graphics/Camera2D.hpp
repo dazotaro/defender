@@ -8,23 +8,23 @@
 #ifndef CAMERA2D_HPP_
 #define CAMERA2D_HPP_
 
-#include "../core/Moveable2D.hpp"	// Moveable2D
-#include "../core/Defs.hpp"			// JU::uint32
+#include "../core/Moveable2D.hpp"   // Moveable2D
+#include "../core/Defs.hpp"         // JU::uint32
 
 namespace JU
 {
 
 class Camera2D
 {
-	public:
-		Camera2D();
-		Camera2D(Moveable2D moveable);
+    public:
+        Camera2D();
+        Camera2D(Moveable2D moveable);
 
-		void setMoveable(Moveable2D moveable);
-		void getWorld2NDCTransformation(glm::mat3& view) const;
+        void setMoveable(Moveable2D moveable);
+        void getWorld2NDCTransformation(glm::mat3& view) const;
 
-	private:
-		Moveable2D moveable_;	//!< Moveable data
+    private:
+        Moveable2D moveable_;   //!< Moveable data
 };
 
 } /* namespace JU */

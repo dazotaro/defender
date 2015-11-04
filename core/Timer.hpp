@@ -15,30 +15,30 @@ namespace JU
 
 class Timer
 {
-	public:
-		Timer();
+    public:
+        Timer();
 
-		 //The various clock actions
-		void start();
-		void stop();
-		void pause();
-		void unpause();
+        //The various clock actions
+        void start();
+        void stop();
+        void pause();
+        void unpause();
 
-		//Gets the timer's time
-		uint32 getTicks();
+        //Gets the timer's time
+        uint32 getTicks();
 
-		//Checks the status of the timer
-		bool isStarted();
-		bool isPaused();
+        //Checks the status of the timer
+        bool isStarted();
+        bool isPaused();
 
-		private:
-		//The clock time when the timer started
-		uint32 start_ticks_;
-		//The ticks stored when the timer was paused
-		uint32 paused_ticks_;
-		//The timer status
-		bool paused_;
-		bool started_;
+    private:
+        //The clock time when the timer started
+        uint32 start_ticks_;
+        //The ticks stored when the timer was paused
+        uint32 paused_ticks_;
+        //The timer status
+        bool paused_;
+        bool started_;
 };
 
 } /* namespace JU */

@@ -7,9 +7,9 @@
 
 // Local includes
 #include "GLMesh2D.hpp"
-#include "Mesh2D.hpp"		// Mesh2D
+#include "Mesh2D.hpp"       // Mesh2D
 // Global includes
-#include <cstdio>			// std::printf
+#include <cstdio>           // std::printf
 
 
 namespace JU
@@ -39,39 +39,39 @@ GLMesh2D::~GLMesh2D()
 */
 void GLMesh2D::init(const Mesh2D& pmesh)
 {
-	/*
+    /*
     const float vertexPositions[] = {
         -0.75f, 0.75f, 0.0f, 1.0f,  // V0
         -0.75f, -0.75f, 0.0f, 1.0f, // V1
         0.75f, 0.75f, 0.0f, 1.0f,   // V2
         0.75f, -0.75f, 0.0f, 1.0f,  // V3
     };
-	*/
+    */
 
-	// Retrieve mesh data from Mesh2D object
-	const glm::vec2*	pvertices = nullptr;
-	JU::uint32 			num_vertices = 0;
-	const JU::uint32* 	pindices = nullptr;
-	JU::uint32			num_indices = 0;
+    // Retrieve mesh data from Mesh2D object
+    const glm::vec2*    pvertices = nullptr;
+    JU::uint32          num_vertices = 0;
+    const JU::uint32*   pindices = nullptr;
+    JU::uint32          num_indices = 0;
 
-	pmesh.getData(&pvertices, num_vertices, &pindices, num_indices, draw_mode_);
+    pmesh.getData(&pvertices, num_vertices, &pindices, num_indices, draw_mode_);
 
-	// Transfer all vertex positions from 2D to Homogeneous coordinates
-	f32* vertexPositions = new f32[num_vertices * 3];
-	for (uint32 i = 0; i < num_vertices; ++i)
-	{
-		vertexPositions[i*3 + 0] = pvertices[i][0];
-		vertexPositions[i*3 + 1] = pvertices[i][1];
-		vertexPositions[i*3 + 2] = 1.0f;
-	}
+    // Transfer all vertex positions from 2D to Homogeneous coordinates
+    f32* vertexPositions = new f32[num_vertices * 3];
+    for (uint32 i = 0; i < num_vertices; ++i)
+    {
+        vertexPositions[i*3 + 0] = pvertices[i][0];
+        vertexPositions[i*3 + 1] = pvertices[i][1];
+        vertexPositions[i*3 + 2] = 1.0f;
+    }
 
-	JU::uint32* vertexIndices = new uint32[num_indices];
-	for (uint32 i = 0; i < num_indices; ++i)
-	{
-		vertexIndices[i] = pindices[i];
-	}
+    JU::uint32* vertexIndices = new uint32[num_indices];
+    for (uint32 i = 0; i < num_indices; ++i)
+    {
+        vertexIndices[i] = pindices[i];
+    }
 
-	num_indices_ = num_indices;
+    num_indices_ = num_indices;
 
     // VAO
     gl::GenVertexArrays(1, &vao_handle_);

@@ -14,16 +14,16 @@ namespace JU
 template <typename T>
 class Singleton
 {
-	private:
-		Singleton() {}
-		Singleton(const Singleton& rhs) {}
-		const Singleton<T>& operator=(const Singleton<T>& rhs);
+    private:
+        Singleton() {}
+        Singleton(const Singleton& rhs) {}
+        const Singleton<T>& operator=(const Singleton<T>& rhs);
 
-	public:
-		static T* getInstance();
+    public:
+        static T* getInstance();
 
-	private:
-		static T* instance_;
+    private:
+        static T* instance_;
 };
 
 } /* namespace JU */

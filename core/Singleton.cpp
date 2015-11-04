@@ -16,10 +16,10 @@ T* Singleton<T>::instance_ = nullptr;
 template <typename T>
 T* Singleton<T>::getInstance()
 {
-	if(instance_ == nullptr)
-		instance_ = new T;
+    if(instance_ == nullptr)
+        instance_ = new T;
 
-	return instance_;
+    return instance_;
 }
 
 

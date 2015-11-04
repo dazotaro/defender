@@ -22,20 +22,20 @@ class RigidBody;
 
 class PhysicsEngine
 {
-	public:
-		PhysicsEngine();
-		virtual ~PhysicsEngine();
+    public:
+        PhysicsEngine();
+        virtual ~PhysicsEngine();
 
-		void init();
+        void init();
 
-		void updateCollisions(uint32 milliseconds);
-		void addRigidBody(const std::string& name, RigidBody* prigid_body);
-		void removeRigidBody(const std::string& name);
+        void updateCollisions(uint32 milliseconds);
+        void addRigidBody(const std::string& name, RigidBody* prigid_body);
+        void removeRigidBody(const std::string& name);
 
-	private:
-		typedef std::map<std::string, RigidBody*> RigidBodyPointerMap;
-		typedef RigidBodyPointerMap::iterator     RigidBodyPointerMapIter;
-		std::map<std::string, RigidBody*>	mrigid_bodies_;
+    private:
+        typedef std::map<std::string, RigidBody*> RigidBodyPointerMap;
+        typedef RigidBodyPointerMap::iterator RigidBodyPointerMapIter;
+        std::map<std::string, RigidBody*> mrigid_bodies_;
 };
 
 } /* namespace JU */
