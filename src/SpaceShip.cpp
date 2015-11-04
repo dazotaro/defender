@@ -27,16 +27,17 @@ namespace JU
  * @param angle Angle of orientation in radians
  *
  */
-SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance,
-        f32 angle_delta) :
-        distance_(distance), angle_delta_(angle_delta)
+SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delta)
+            : distance_(distance), angle_delta_(angle_delta)
 {
     const std::string resource_name("/proc/triangle");
 
-    // GLMesh2D
+    // GLMesh2D (Shared Resource)
+    GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.0f, 1.0f));
+
+
     // -------------
-    ResourceManager<GLMesh2D>* prm_glmesh =
-            Singleton<ResourceManager<GLMesh2D>>::getInstance();
+    ResourceManager<GLMesh2D>* prm_glmesh = Singleton<ResourceManager<GLMesh2D>>::getInstance();
 
     const TriangleMesh mesh;
     GLMesh2D* pglmesh;
@@ -48,24 +49,14 @@ SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance,
     }
 
     // GLMesh2DInstance
-    // -------------
-    ResourceManager<GLMesh2DInstance>* prm_glmeshinstance = Singleton<
-            ResourceManager<GLMesh2DInstance>>::getInstance();
-
-    GLMesh2DInstance* pglmeshinstance;
-    if (!(pglmeshinstance = prm_glmeshinstance->referenceResource(resource_name)))
-    {
-        pglmeshinstance = new GLMesh2DInstance(pglmesh);
-        prm_glmeshinstance->addResource(resource_name, pglmeshinstance);
-    }
-
+    // ----------------
+    GLMesh2DInstance* pglmeshinstance = new GLMesh2DInstance(pglmesh);
     GameObject::setMeshInstance(pglmeshinstance);
-    GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.0f, 1.0f));
 
     // RigidBody
     // -------------
-    ResourceManager<BoundingCircle>* prm_boundingcircle = Singleton<
-            ResourceManager<BoundingCircle>>::getInstance();
+    // Bounding objects are SHARED resources
+    ResourceManager<BoundingCircle>* prm_boundingcircle = Singleton<ResourceManager<BoundingCircle>>::getInstance();
 
     BoundingCircle* pbounding_circle;
     if (!(pbounding_circle = prm_boundingcircle->referenceResource(
@@ -135,7 +126,7 @@ void SpaceShip::render(const GLSLProgram &program, const glm::mat3 & model,
 
     glm::mat3 new_model = model * toparent;
 
-    mesh_instance_->render(program, new_model, view);
+    pmesh_instance_->render(program, new_model, view);
 }
 
 } /* namespace JU */

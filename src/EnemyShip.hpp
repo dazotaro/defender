@@ -18,9 +18,9 @@ namespace JU
 class EnemyShip: public GameObject
 {
     public:
-        EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance = 0.005f,
-                f32 angle_delta = 0.003f,
-                const glm::vec4& color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+        EnemyShip(f32 posx, f32 posy, f32 angle,
+                  f32 distance = 0.005f, f32 angle_delta = 0.003f,
+                  const glm::vec4& color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
         virtual ~EnemyShip();
 

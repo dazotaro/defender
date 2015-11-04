@@ -24,7 +24,7 @@ class GameObject
 {
     public:
         GameObject();
-        GameObject(GLMesh2DInstance* mesh_instance, Moveable2D moveable, RigidBody* prigid_body = nullptr, bool collideable = false);
+        GameObject(GLMesh2DInstance* pmesh_instance, Moveable2D moveable, RigidBody* prigid_body = nullptr, bool collideable = false);
         virtual ~GameObject();
 
         // Getters
@@ -32,7 +32,7 @@ class GameObject
         RigidBody* getRigidBody() const;
 
         // Setters
-        void setMeshInstance(GLMesh2DInstance* mesh_instance);
+        void setMeshInstance(GLMesh2DInstance* pmesh_instance);
         void setMoveable2D(Moveable2D moveable);
         void setRigitBody(RigidBody* prigid_body);
         void setCollideable(bool collideable);
@@ -41,7 +41,7 @@ class GameObject
         virtual void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
 
     protected:
-        GLMesh2DInstance* mesh_instance_;   //!< Renderable component
+        GLMesh2DInstance* pmesh_instance_;  //!< Renderable component
         Moveable2D        moveable_;        //!< Position and orientation
         RigidBody*        prigid_body_;     //!< RigidBody
         bool              collideable_;

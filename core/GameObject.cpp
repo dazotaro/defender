@@ -13,18 +13,18 @@
 namespace JU
 {
 
-GameObject::GameObject() : mesh_instance_(nullptr),
+GameObject::GameObject() : pmesh_instance_(nullptr),
                            prigid_body_(nullptr),
                            collideable_(false)
 {
 }
 
 
-GameObject::GameObject(GLMesh2DInstance* mesh_instance,
+GameObject::GameObject(GLMesh2DInstance* pmesh_instance,
                        Moveable2D        moveable,
                        RigidBody*        prigid_body,
                        bool              collideable)
-                           : mesh_instance_(mesh_instance),
+                           : pmesh_instance_(pmesh_instance),
                              moveable_(moveable),
                              prigid_body_(prigid_body),
                              collideable_(collideable)
@@ -34,19 +34,20 @@ GameObject::GameObject(GLMesh2DInstance* mesh_instance,
 
 GameObject::~GameObject()
 {
+    delete pmesh_instance_;
     delete prigid_body_;
 }
 
 
 const GLMesh2DInstance* GameObject::getMeshInstance() const
 {
-    return mesh_instance_;
+    return pmesh_instance_;
 }
 
 
-void GameObject::setMeshInstance(GLMesh2DInstance* mesh_instance)
+void GameObject::setMeshInstance(GLMesh2DInstance* pmesh_instance)
 {
-    mesh_instance_ = mesh_instance;
+    pmesh_instance_ = pmesh_instance;
 }
 
 

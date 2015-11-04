@@ -27,16 +27,18 @@ namespace JU
  * @param angle Angle of orientation in radians
  *
  */
-EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance,
-        f32 angle_delta, const glm::vec4& color) :
-        distance_(distance), angle_delta_(angle_delta)
+EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle,
+                     f32 distance, f32 angle_delta,
+                     const glm::vec4& color)
+            : distance_(distance), angle_delta_(angle_delta)
 {
     const std::string resource_name("/proc/square");
 
+    GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.0f, 1.0f));
+
     // GLMesh2D
     // -------------
-    ResourceManager<GLMesh2D>* prm_glmesh =
-            Singleton<ResourceManager<GLMesh2D>>::getInstance();
+    ResourceManager<GLMesh2D>* prm_glmesh = Singleton<ResourceManager<GLMesh2D>>::getInstance();
 
     const SquareMesh mesh;
     GLMesh2D* pglmesh;
@@ -48,24 +50,11 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance,
     }
 
     // GLMesh2DInstance
-    // -------------
-    ResourceManager<GLMesh2DInstance>* prm_glmeshinstance = Singleton<
-            ResourceManager<GLMesh2DInstance>>::getInstance();
-
-    GLMesh2DInstance* pglmeshinstance;
-    char instance_resource_name[80] = { 0 };
-    sprintf(instance_resource_name, "%s/%g%g%g%g", resource_name.c_str(),
-            color[0], color[1], color[2], color[3]);
-    if (!(pglmeshinstance = prm_glmeshinstance->referenceResource(
-            instance_resource_name)))
-    {
-        pglmeshinstance = new GLMesh2DInstance(pglmesh, color);
-        prm_glmeshinstance->addResource(instance_resource_name,
-                pglmeshinstance);
-    }
-
+    // ----------------
+    // GLMesh2DInstance
+    // ----------------
+    GLMesh2DInstance* pglmeshinstance = new GLMesh2DInstance(pglmesh, color);
     GameObject::setMeshInstance(pglmeshinstance);
-    GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.0f, 1.0f));
 
     // RigidBody
     // -------------
@@ -91,6 +80,7 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle, f32 distance,
  */
 EnemyShip::~EnemyShip()
 {
+
 }
 
 /**
@@ -121,7 +111,7 @@ void EnemyShip::render(const GLSLProgram &program, const glm::mat3 & model,
 
     glm::mat3 new_model = model * toparent;
 
-    mesh_instance_->render(program, new_model, view);
+    pmesh_instance_->render(program, new_model, view);
 }
 
 } /* namespace JU */

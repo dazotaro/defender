@@ -189,8 +189,7 @@ void loop()
         g_pcamera->getWorld2NDCTransformation(view);
 
         // Render all renderables
-        for (auto iter = g_game_object_map.begin();
-                iter != g_game_object_map.end(); ++iter)
+        for (auto iter = g_game_object_map.begin(); iter != g_game_object_map.end(); ++iter)
             iter->second->render(*p_program, glm::mat3(), view);
 
         /* Swap our back buffer to the front */
