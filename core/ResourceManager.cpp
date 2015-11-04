@@ -14,36 +14,39 @@ namespace JU
 template <typename T>
 ResourceManager<T>::ResourceManager()
 {
+	std::printf("%s\n", __PRETTY_FUNCTION__);
 }
 
 
 template <typename T>
 ResourceManager<T>::~ResourceManager()
 {
-    typename ResourceHashMap::iterator iter;
-    for(iter = resource_manager_hm_.begin(); iter != resource_manager_hm_.end(); ++iter)
-    {
-        delete iter->second.second;
-    }
+	std::printf("%s\n", __PRETTY_FUNCTION__);
 
-    resource_manager_hm_.clear();
+	typename ResourceHashMap::iterator iter;
+	for(iter = resource_manager_hm_.begin(); iter != resource_manager_hm_.end(); ++iter)
+	{
+        delete iter->second.second;
+	}
+
+	resource_manager_hm_.clear();
 }
 
 
 /**
 * @brief Find a Resource in the hash-map
 *
-* @param id Id of the resource
+* @param id	Id of the resource
 *
 * @return True/False if found/not-found
 */
 template <typename T>
 bool ResourceManager<T>::findResource(const std::string& id) const
 {
-    if (resource_manager_hm_.find(id) == resource_manager_hm_.end())
-        return false;
+	if (resource_manager_hm_.find(id) == resource_manager_hm_.end())
+		return false;
 
-    return true;
+	return true;
 }
 
 
@@ -53,91 +56,107 @@ bool ResourceManager<T>::findResource(const std::string& id) const
 * @detail This function assumes that the resource does not exist, so it should be
 * called after findResource.
 *
-* @param id         Id of the resource
-* @param p_resource Pointer to the T to be added
+* @param id			Id of the resource
+* @param p_resource	Pointer to the T to be added
 *
 * @return True/False if found/not-found
 */
 template <typename T>
-bool ResourceManager<T>::addResource(const std::string& id, T* presource)
+ShareableResource<T>* ResourceManager<T>::addResource(const std::string& id, T* pdata)
 {
-    if (resource_manager_hm_.find(id) != resource_manager_hm_.end())
-        return false;
+    auto iter = resource_manager_hm_.find(id);
 
-    resource_manager_hm_.insert(std::make_pair(id, std::make_pair(0, presource)));
+    // If a reasource with this type and id is already in the hash map
+	if (iter != resource_manager_hm_.end())
+	{
+		std::printf("Resource with that name already exits");
 
-    return true;
+		return iter->second.second;
+	}
+
+	ShareableResource<T>* presource (new ShareableResource<T>(id, pdata));
+
+	resource_manager_hm_.insert(std::make_pair(id, std::make_pair(1, presource)));
+
+	return presource;
 }
 
 
 /**
 * @brief Get a resource
 *
-* @param id Id of the resource
+* @param id	Id of the resource
 *
 * @return Pointer to T identified by id if resource present, 'nullptr' otherwise
 */
 template <typename T>
-T* ResourceManager<T>::getResource(const std::string& id) const
+ShareableResource<T>* ResourceManager<T>::getResource(const std::string& id) const
 {
-    typename ResourceHashMap::const_iterator iter = resource_manager_hm_.find(id);
+	typename ResourceHashMap::const_iterator iter = resource_manager_hm_.find(id);
 
-    if (iter != resource_manager_hm_.end())
-    {
-        return iter->second.second;
-    }
+	if (iter != resource_manager_hm_.end())
+	{
+		return iter->second.second;
+	}
 
-    return nullptr;
+	return nullptr;
 }
 
 
 /**
 * @brief Reference an existing resource
 *
-* @param id         Id of the resource
+* @param id			Id of the resource
 *
-* @return Pointer to T identified by id if resource present, 'nullptr' otherwise
+* @return Pointer to ShareableResource identified by id if resource present, 'nullptr' otherwise
 */
 template <typename T>
-T* ResourceManager<T>::referenceResource(const std::string& id)
+ShareableResource<T>* ResourceManager<T>::referenceResource(const std::string& id)
 {
-    typename ResourceHashMap::iterator iter = resource_manager_hm_.find(id);
+	typename ResourceHashMap::iterator iter = resource_manager_hm_.find(id);
 
-    if (iter != resource_manager_hm_.end())
-    {
-        iter->second.first++;
+	if (iter != resource_manager_hm_.end())
+	{
+		iter->second.first++;
 
-        return iter->second.second;
-    }
+		std::printf("%s: %s reference count = %i\n", __PRETTY_FUNCTION__,
+												iter->first.c_str(),
+												iter->second.first);
+		return iter->second.second;
+	}
 
-    return nullptr;
+	return nullptr;
 }
 
 
 /**
 * @brief Release a resource
 *
-* @param id         Id of the resource
+* @param id			Id of the resource
 *
 * @return True/False if found/not-found
 */
 template <typename T>
-bool ResourceManager<T>::releaseResource(const std::string& id)
+bool ResourceManager<T>::releaseResource(ShareableResource<T>* presource)
 {
-    typename ResourceHashMap::const_iterator iter = resource_manager_hm_.find(id);
+	typename ResourceHashMap::iterator iter = resource_manager_hm_.find(presource->id_);
 
-    if (iter == resource_manager_hm_.end())
-        return false;
+	if (iter == resource_manager_hm_.end())
+		return false;
 
-    if(--iter->second.first == 0)
-    {
-        // Delete Resource
+	std::printf("%s: %s reference count = %i\n", __PRETTY_FUNCTION__,
+											    iter->first.c_str(),
+											    iter->second.first);
+
+	if(--iter->second.first == 0)
+	{
+		// Delete Resource
         delete iter->second.second;
-        // Remove Resource entry in Hash Map
-        resource_manager_hm_.erase(iter);
-    }
+		// Remove Resource entry in Hash Map
+		resource_manager_hm_.erase(iter);
+	}
 
-    return true;
+	return true;
 }
 
 

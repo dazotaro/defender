@@ -88,8 +88,7 @@ void init()
 
     // GLSL PROGRAMS
     // -------------
-    g_shader_map["simple"] = JU::GLSLProgramHelper::compileAndLinkShader(
-            "data/shaders/simple.vs", "data/shaders/simple.fs");
+    g_shader_map["simple"] = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
 
     // GameObjects
     // -----------
@@ -120,16 +119,11 @@ void init()
     // --------------
     g_physics_engine = JU::Singleton<JU::PhysicsEngine>::getInstance();
     g_physics_engine->init();
-    g_physics_engine->addRigidBody("spaceship",
-            g_game_object_map["spaceship"]->getRigidBody());
-    g_physics_engine->addRigidBody("enemyship1",
-            g_game_object_map["enemyship1"]->getRigidBody());
-    g_physics_engine->addRigidBody("enemyship2",
-            g_game_object_map["enemyship2"]->getRigidBody());
-    g_physics_engine->addRigidBody("enemyship3",
-            g_game_object_map["enemyship3"]->getRigidBody());
-    g_physics_engine->addRigidBody("enemyship4",
-            g_game_object_map["enemyship4"]->getRigidBody());
+    g_physics_engine->addRigidBody("spaceship",  g_game_object_map["spaceship"]->getRigidBody());
+    g_physics_engine->addRigidBody("enemyship1", g_game_object_map["enemyship1"]->getRigidBody());
+    g_physics_engine->addRigidBody("enemyship2", g_game_object_map["enemyship2"]->getRigidBody());
+    g_physics_engine->addRigidBody("enemyship3", g_game_object_map["enemyship3"]->getRigidBody());
+    g_physics_engine->addRigidBody("enemyship4", g_game_object_map["enemyship4"]->getRigidBody());
 }
 
 /**

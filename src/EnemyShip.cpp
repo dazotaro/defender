@@ -41,37 +41,32 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle,
     ResourceManager<GLMesh2D>* prm_glmesh = Singleton<ResourceManager<GLMesh2D>>::getInstance();
 
     const SquareMesh mesh;
-    GLMesh2D* pglmesh;
-    if (!(pglmesh = prm_glmesh->referenceResource(resource_name)))
+    ShareableResource<GLMesh2D>* pglmesh_resource;
+    if (!(pglmesh_resource = prm_glmesh->referenceResource(resource_name)))
     {
-        pglmesh = new GLMesh2D();
+        GLMesh2D* pglmesh = new GLMesh2D();
         pglmesh->init(mesh);
-        prm_glmesh->addResource(resource_name, pglmesh);
+        pglmesh_resource = prm_glmesh->addResource(resource_name, pglmesh);
     }
 
     // GLMesh2DInstance
     // ----------------
     // GLMesh2DInstance
     // ----------------
-    GLMesh2DInstance* pglmeshinstance = new GLMesh2DInstance(pglmesh, color);
-    GameObject::setMeshInstance(pglmeshinstance);
+    GameObject::pmesh_instance_ = new GLMesh2DInstance(pglmesh_resource, color);
 
     // RigidBody
     // -------------
-    ResourceManager<BoundingCircle>* prm_boundingcircle = Singleton<
-            ResourceManager<BoundingCircle>>::getInstance();
+    ResourceManager<BoundingCircle>* prm_boundingcircle = Singleton<ResourceManager<BoundingCircle>>::getInstance();
 
-    BoundingCircle* pbounding_circle;
-    if (!(pbounding_circle = prm_boundingcircle->referenceResource(
-            resource_name)))
+    ShareableResource<BoundingCircle>* pboundingcircle_resource;
+    if (!(pboundingcircle_resource = prm_boundingcircle->referenceResource(resource_name)))
     {
-        pbounding_circle = new BoundingCircle(glm::vec2(0.0f, 0.0f), 0.5f);
-        prm_boundingcircle->addResource(resource_name, pbounding_circle);
+       BoundingCircle* pbounding_circle = new BoundingCircle(glm::vec2(0.0f, 0.0f), 0.5f);
+       pboundingcircle_resource = prm_boundingcircle->addResource(resource_name, pbounding_circle);
     }
 
-    prigid_body_ = new RigidBody(pbounding_circle);
-
-    GameObject::setRigitBody(prigid_body_);
+    GameObject::setRigitBody(new RigidBody(pboundingcircle_resource));
 }
 
 /**
@@ -80,7 +75,6 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle,
  */
 EnemyShip::~EnemyShip()
 {
-
 }
 
 /**

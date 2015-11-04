@@ -17,29 +17,22 @@ namespace JU
 // Forward declarations
 class Moveable2D;
 
+template <typename T>
+class ShareableResource;
+
 class RigidBody
 {
     public:
-        RigidBody(const BoundingCircle* pbounding_area, Moveable2D* pmoveable =
-                nullptr);
+        RigidBody(ShareableResource<BoundingCircle>* pboundingarea_resource, Moveable2D* pmoveable = nullptr);
         virtual ~RigidBody();
 
-        void setMoveable(Moveable2D* pmoveable)
-        {
-            pmoveable_ = pmoveable;
-        }
-        const Moveable2D* getMoveable() const
-        {
-            return pmoveable_;
-        }
-        const BoundingCircle* getBoundingArea() const
-        {
-            return pbounding_area_;
-        }
+        void setMoveable(Moveable2D* pmoveable);
+        const Moveable2D* getMoveable() const;
+        const BoundingCircle* getBoundingArea() const;
 
     private:
-        const BoundingCircle* pbounding_area_; //!< BoundingArea object for collision detection/resolution
-        Moveable2D* pmoveable_;
+        ShareableResource<BoundingCircle>* pboundingarea_resource_; //!< BoundingArea object for collision detection/resolution
+        Moveable2D*                        pmoveable_;
 };
 
 } /* namespace JU */

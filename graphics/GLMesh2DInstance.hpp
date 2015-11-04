@@ -13,23 +13,26 @@
 namespace JU
 {
 
+template <typename T>
+class ShareableResource;
+
 // Forward Declarations
 class GLMesh2D;
 
 class GLMesh2DInstance : public Renderable2DInterface
 {
     public:
-        GLMesh2DInstance(const GLMesh2D* gl_mesh, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        GLMesh2DInstance(ShareableResource<GLMesh2D>* pmesh_resource = nullptr, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         virtual ~GLMesh2DInstance();
 
     public:
-        const GLMesh2D* getGLMesh() const { return gl_mesh_; }
+        const GLMesh2D* getGLMesh() const;
         // Renderable2DInterface
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
 
     private:
-        const GLMesh2D* gl_mesh_;
-        glm::vec4       color_;
+        ShareableResource<GLMesh2D>* pmesh_resource_;
+        glm::vec4                    color_;
 };
 
 } /* namespace JU */
