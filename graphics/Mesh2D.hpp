@@ -8,8 +8,9 @@
 #ifndef MESH2D_HPP_
 #define MESH2D_HPP_
 
-#include "../core/Defs.hpp"         // JU::uint32
-#include "gl_core_4_2.hpp"          // GLenum
+#include "../core/Defs.hpp" // JU::uint32
+#include "gl_core_4_2.hpp"  // GLenum
+// Global includes
 #include <glm/glm.hpp>      // glm::vec2
 
 
