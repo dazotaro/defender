@@ -30,7 +30,7 @@ namespace JU
 SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delta)
             : distance_(distance), angle_delta_(angle_delta)
 {
-    const std::string resource_name("/proc/triangle");
+    const std::string resource_name(TriangleMesh::getId());
 
     GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.0f, 1.0f));
 

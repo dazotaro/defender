@@ -32,7 +32,7 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle,
                      const glm::vec4& color)
             : distance_(distance), angle_delta_(angle_delta)
 {
-    const std::string resource_name("/proc/square");
+    const std::string resource_name(SquareMesh::getId());
 
     GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.0f, 1.0f));
 
