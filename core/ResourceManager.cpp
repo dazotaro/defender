@@ -18,6 +18,9 @@ ResourceManager<T>::ResourceManager()
 }
 
 
+/**
+* @brief Destructor
+*/
 template <typename T>
 ResourceManager<T>::~ResourceManager()
 {
