@@ -55,26 +55,10 @@
 						</toolChain>
 					</folderInfo>
 					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.942743645.1792315469" name="Geometry.hpp" rcbsApplicability="disable" resourcePath="physics/Geometry.hpp" toolsToInvoke=""/>
-					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.942743645.1351820427" name="/" resourcePath="src">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.debug.129533189" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.debug" unusedChildren="">
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1881733986" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.1727326967"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1519514777" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1585367563">
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.578597700" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.2099421369" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.317365589">
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1815470718" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1605474628" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1963785746"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1003504017" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.233564997"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.debug.1055587480" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug.604892119">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.962485296" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
 					<sourceEntries>
 						<entry excluding="Singleton.cpp|ResourceManager.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="graphics"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
+						<entry excluding="Collideable.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
@@ -134,26 +118,10 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<folderInfo id="cdt.managedbuild.config.gnu.exe.release.457727336.1171417389" name="/" resourcePath="src">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.release.61969679" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.release" unusedChildren="">
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.412203310" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.897578290"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1943269310" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.89733129">
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.61020738" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.release.1805020442" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.release.199245209">
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.976323481" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.release.1924810160" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.release.1735548625"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.release.185633406" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.release.95856762"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.release.244786967" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.release.204380597">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1036542371" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
 					<sourceEntries>
 						<entry excluding="Singleton.cpp|ResourceManager.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="graphics"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
+						<entry excluding="Collideable.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
