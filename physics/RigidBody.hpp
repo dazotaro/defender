@@ -18,12 +18,12 @@ namespace JU
 class Moveable2D;
 
 template <typename T>
-class ShareableResource;
+class Shareable;
 
 class RigidBody
 {
     public:
-        RigidBody(ShareableResource<BoundingCircle>* pboundingarea_resource, Moveable2D* pmoveable = nullptr);
+        RigidBody(Shareable<BoundingCircle>* pshare_boundingbox, Moveable2D* pmoveable = nullptr);
         virtual ~RigidBody();
 
         void setMoveable(Moveable2D* pmoveable);
@@ -31,8 +31,8 @@ class RigidBody
         const BoundingCircle* getBoundingArea() const;
 
     private:
-        ShareableResource<BoundingCircle>* pboundingarea_resource_; //!< BoundingArea object for collision detection/resolution
-        Moveable2D*                        pmoveable_;
+        Shareable<BoundingCircle>* pshare_boundingbox_; //!< BoundingArea object for collision detection/resolution
+        Moveable2D*                pmoveable_;
 };
 
 } /* namespace JU */

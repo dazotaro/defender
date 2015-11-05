@@ -18,14 +18,14 @@ namespace JU
 {
 
 template<typename T>
-class ShareableResource
+class Shareable
 {
     public:
-        ShareableResource(const std::string& id, T* pdata) :
+        Shareable(const std::string& id, T* pdata) :
                 id_(id), pdata_(pdata)
         {
         }
-        ~ShareableResource()
+        ~Shareable()
         {
             delete pdata_;
         }
@@ -60,14 +60,14 @@ class ResourceManager
 
     public:
         bool findResource(const std::string& id) const;
-        ShareableResource<T>* addResource(const std::string& id, T* pdata);
-        ShareableResource<T>* getResource(const std::string& id) const;
-        ShareableResource<T>* referenceResource(const std::string& id);
-        bool releaseResource(ShareableResource<T>* presource);
+        Shareable<T>* addResource(const std::string& id, T* pdata);
+        Shareable<T>* getResource(const std::string& id) const;
+        Shareable<T>* referenceResource(const std::string& id);
+        bool releaseResource(Shareable<T>* presource);
 
     private:
         // Typedefs
-        typedef std::unordered_map<std::string, std::pair<unsigned, ShareableResource<T>*> > ResourceHashMap;
+        typedef std::unordered_map<std::string, std::pair<unsigned, Shareable<T>*> > ResourceHashMap;
 
         // Data Members
         ResourceHashMap resource_manager_hm_; //!< Hash-Map to store the pointers to Resources based on their ids

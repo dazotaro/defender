@@ -8,19 +8,19 @@
 #include "RigidBody.hpp"
 #include "../core/Moveable2D.hpp"		// Moveable2D
 #include "../core/Singleton.hpp"        // Singleton
-#include "../core/ResourceManager.hpp"  // ResourceManager, ShareableResource
+#include "../core/ResourceManager.hpp"  // ResourceManager, Shareable
 namespace JU
 {
 
-RigidBody::RigidBody(ShareableResource<BoundingCircle>* pboundingarea_resource, Moveable2D* pmoveable)
-                : pboundingarea_resource_(pboundingarea_resource), pmoveable_(pmoveable)
+RigidBody::RigidBody(Shareable<BoundingCircle>* pshare_boundingbox, Moveable2D* pmoveable)
+                : pshare_boundingbox_(pshare_boundingbox), pmoveable_(pmoveable)
 {
 }
 
 
 RigidBody::~RigidBody()
 {
-    Singleton<ResourceManager<BoundingCircle>>::getInstance()->releaseResource(pboundingarea_resource_);
+    Singleton<ResourceManager<BoundingCircle>>::getInstance()->releaseResource(pshare_boundingbox_);
 }
 
 
@@ -38,7 +38,7 @@ const Moveable2D* RigidBody::getMoveable() const
 
 const BoundingCircle* RigidBody::getBoundingArea() const
 {
-    return pboundingarea_resource_->pdata_;
+    return pshare_boundingbox_->pdata_;
 }
 
 

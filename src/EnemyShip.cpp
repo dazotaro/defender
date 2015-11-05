@@ -41,32 +41,32 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle,
     ResourceManager<GLMesh2D>* prm_glmesh = Singleton<ResourceManager<GLMesh2D>>::getInstance();
 
     const SquareMesh mesh;
-    ShareableResource<GLMesh2D>* pglmesh_resource;
-    if (!(pglmesh_resource = prm_glmesh->referenceResource(resource_name)))
+    Shareable<GLMesh2D>* pshare_mesh;
+    if (!(pshare_mesh = prm_glmesh->referenceResource(resource_name)))
     {
         GLMesh2D* pglmesh = new GLMesh2D();
         pglmesh->init(mesh);
-        pglmesh_resource = prm_glmesh->addResource(resource_name, pglmesh);
+        pshare_mesh = prm_glmesh->addResource(resource_name, pglmesh);
     }
 
     // GLMesh2DInstance
     // ----------------
     // GLMesh2DInstance
     // ----------------
-    GameObject::pmesh_instance_ = new GLMesh2DInstance(pglmesh_resource, color);
+    GameObject::pmesh_instance_ = new GLMesh2DInstance(pshare_mesh, color);
 
     // RigidBody
     // -------------
     ResourceManager<BoundingCircle>* prm_boundingcircle = Singleton<ResourceManager<BoundingCircle>>::getInstance();
 
-    ShareableResource<BoundingCircle>* pboundingcircle_resource;
-    if (!(pboundingcircle_resource = prm_boundingcircle->referenceResource(resource_name)))
+    Shareable<BoundingCircle>* pshare_boundingbox;
+    if (!(pshare_boundingbox = prm_boundingcircle->referenceResource(resource_name)))
     {
        BoundingCircle* pbounding_circle = new BoundingCircle(glm::vec2(0.0f, 0.0f), 0.5f);
-       pboundingcircle_resource = prm_boundingcircle->addResource(resource_name, pbounding_circle);
+       pshare_boundingbox = prm_boundingcircle->addResource(resource_name, pbounding_circle);
     }
 
-    GameObject::setRigitBody(new RigidBody(pboundingcircle_resource));
+    GameObject::setRigitBody(new RigidBody(pshare_boundingbox));
 }
 
 /**
