@@ -168,6 +168,10 @@ void loop()
         // -----------
         g_physics_engine->updateCollisions(milliseconds);
 
+        // CAMERA
+        // -----------
+        g_pcamera->getMoveable().position_ = g_game_object_map["spaceship"]->getMoveable().position_;
+
         // RENDER
         // ------
         // Clear Buffer

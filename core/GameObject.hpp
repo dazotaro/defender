@@ -30,6 +30,8 @@ class GameObject
         // Getters
         const GLMesh2DInstance* getMeshInstance() const;
         RigidBody* getRigidBody() const;
+        const Moveable2D& getMoveable() const;
+        Moveable2D& getMoveable();
 
         // Setters
         void setMeshInstance(GLMesh2DInstance* pmesh_instance);

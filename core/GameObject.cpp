@@ -45,6 +45,18 @@ const GLMesh2DInstance* GameObject::getMeshInstance() const
 }
 
 
+const Moveable2D& GameObject::getMoveable() const
+{
+    return moveable_;
+}
+
+
+Moveable2D& GameObject::getMoveable()
+{
+    return moveable_;
+}
+
+
 void GameObject::setMeshInstance(GLMesh2DInstance* pmesh_instance)
 {
     pmesh_instance_ = pmesh_instance;

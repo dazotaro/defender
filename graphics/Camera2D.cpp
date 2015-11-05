@@ -21,6 +21,18 @@ Camera2D::Camera2D(Moveable2D moveable)
 }
 
 
+const Moveable2D& Camera2D::getMoveable() const
+{
+    return moveable_;
+}
+
+
+Moveable2D& Camera2D::getMoveable()
+{
+    return moveable_;
+}
+
+
 void Camera2D::setMoveable(Moveable2D moveable)
 {
     moveable_ = moveable;

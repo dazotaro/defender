@@ -20,6 +20,11 @@ class Camera2D
         Camera2D();
         Camera2D(Moveable2D moveable);
 
+        // Getters
+        const Moveable2D& getMoveable() const;
+        Moveable2D& getMoveable();
+
+        // Setters
         void setMoveable(Moveable2D moveable);
         void getWorld2NDCTransformation(glm::mat3& view) const;
 
