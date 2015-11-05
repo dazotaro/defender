@@ -67,7 +67,8 @@ class ResourceManager
 
     private:
         // Typedefs
-        typedef std::unordered_map<std::string, std::pair<unsigned, Shareable<T>*> > ResourceHashMap;
+        typedef std::pair<unsigned, Shareable<T>*> ShareableResource;   //!< First = reference counter; second = Pointer to shareable data
+        typedef std::unordered_map<std::string, ShareableResource> ResourceHashMap;
 
         // Data Members
         ResourceHashMap resource_manager_hm_; //!< Hash-Map to store the pointers to Resources based on their ids
