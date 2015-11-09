@@ -37,8 +37,7 @@ SkylineMesh::SkylineMesh()
         vertexIndices[i] = i;
     }
 
-    setData(vertexPositions, num_vertices, vertexIndices, num_vertices,
-            gl::LINE_STRIP);
+    setData(vertexPositions, num_vertices, vertexIndices, num_vertices, nullptr, gl::LINE_STRIP);
 }
 
 SkylineMesh::~SkylineMesh()

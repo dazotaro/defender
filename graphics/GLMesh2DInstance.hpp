@@ -9,6 +9,7 @@
 #define GLMESH2DINSTANCE_HPP_
 
 #include "Renderable2DInterface.hpp"    // Renderable2DInterface
+#include "Texture.hpp"                  // Texture
 
 namespace JU
 {
@@ -22,7 +23,9 @@ class GLMesh2D;
 class GLMesh2DInstance : public Renderable2DInterface
 {
     public:
-        GLMesh2DInstance(Shareable<GLMesh2D>* pshare_mesh = nullptr, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        GLMesh2DInstance(Shareable<const GLMesh2D>* pshare_mesh = nullptr,
+                         Shareable<const Texture>* pshare_texture = nullptr,
+                         const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         virtual ~GLMesh2DInstance();
 
     public:
@@ -31,8 +34,9 @@ class GLMesh2DInstance : public Renderable2DInterface
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
 
     private:
-        Shareable<GLMesh2D>* pshare_mesh_;
-        glm::vec4            color_;
+        Shareable<const GLMesh2D>*        pshare_mesh_;
+        Shareable<const Texture>*   pshare_texture_;
+        glm::vec4                   color_;
 };
 
 } /* namespace JU */

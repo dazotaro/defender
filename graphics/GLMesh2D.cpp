@@ -53,9 +53,11 @@ void GLMesh2D::init(const Mesh2D& pmesh)
     JU::uint32          num_vertices = 0;
     const JU::uint32*   pindices = nullptr;
     JU::uint32          num_indices = 0;
+    const glm::vec2*    ptexcoordinates = nullptr;
 
-    pmesh.getData(&pvertices, num_vertices, &pindices, num_indices, draw_mode_);
+    pmesh.getData(&pvertices, num_vertices, &pindices, num_indices, &ptexcoordinates, draw_mode_);
 
+    // VERTICES
     // Transfer all vertex positions from 2D to Homogeneous coordinates
     f32* vertexPositions = new f32[num_vertices * 3];
     for (uint32 i = 0; i < num_vertices; ++i)
@@ -65,6 +67,7 @@ void GLMesh2D::init(const Mesh2D& pmesh)
         vertexPositions[i*3 + 2] = 1.0f;
     }
 
+    // INDICES
     JU::uint32* vertexIndices = new uint32[num_indices];
     for (uint32 i = 0; i < num_indices; ++i)
     {
@@ -73,13 +76,17 @@ void GLMesh2D::init(const Mesh2D& pmesh)
 
     num_indices_ = num_indices;
 
+    int num_vbos = 2;
+    if (ptexcoordinates)
+        num_vbos = 3;
+
     // VAO
     gl::GenVertexArrays(1, &vao_handle_);
     gl::BindVertexArray(vao_handle_);
 
     // VBO
-    vbo_handles_ = new GLuint[2];
-    gl::GenBuffers(2, vbo_handles_);
+    vbo_handles_ = new GLuint[num_vbos];
+    gl::GenBuffers(num_vbos, vbo_handles_);
 
     // Allocate and initialize VBO for vertex positions
     gl::BindBuffer(gl::ARRAY_BUFFER, vbo_handles_[0]);
@@ -92,6 +99,14 @@ void GLMesh2D::init(const Mesh2D& pmesh)
     gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, vbo_handles_[1]);
     gl::BufferData(gl::ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices[0]) * num_indices_, vertexIndices, gl::STATIC_DRAW);
 
+    if (ptexcoordinates)
+    {
+        gl::BindBuffer(gl::ARRAY_BUFFER, vbo_handles_[2]);
+        gl::BufferData(gl::ARRAY_BUFFER, sizeof(ptexcoordinates[0]) * num_vertices * 2, ptexcoordinates, gl::STATIC_DRAW);
+        // Insert the VBO into the VAO
+        gl::EnableVertexAttribArray(1);
+        gl::VertexAttribPointer(1, 2, gl::FLOAT, gl::FALSE_, 0, 0);
+    }
     // Unbind
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
     gl::BindVertexArray(0);

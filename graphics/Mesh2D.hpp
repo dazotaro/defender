@@ -25,6 +25,7 @@ class Mesh2D
                uint32           num_vertices,
                const uint32*    pindices,
                uint32           num_indices,
+               const glm::vec2* ptexcoordinates,
                GLenum           draw_mode);
         virtual ~Mesh2D();
 
@@ -34,6 +35,7 @@ class Mesh2D
                      uint32&           num_vertices,
                      const uint32**    pindices,
                      uint32&           num_indices,
+                     const glm::vec2** ptexcoordinates,
                      GLenum&           draw_mode) const;
 
         // Setter
@@ -41,13 +43,15 @@ class Mesh2D
                      uint32           num_vertices,
                      const uint32*    pindices,
                      uint32           num_indices,
-                     GLenum           draw_mode = gl::TRIANGLES);
+                     const glm::vec2* ptexcoordinates,
+                     GLenum           draw_mode);
 
     protected:
         glm::vec2*  pvertices_;
         uint32      num_vertices_;
         uint32*     pindices_;
         uint32      num_indices_;
+        glm::vec2*  ptexcoordinates_;
         GLenum      draw_mode_;         //!< GL_TRIANGLE, GL_TRIANGLE_FAN, GL_LINE, GL_LINE_LOOP
 };
 

@@ -7,13 +7,15 @@
 
 #include "SpaceShip.hpp"
 #include "../graphics/GLMesh2DInstance.hpp"	// GLMesh2DInstance
-#include "../graphics/GLMesh2D.hpp"			// GLMesh2D
-#include "../core/Keyboard.hpp"			// Keyboard
-#include "../core/Singleton.hpp"		// Singleton
-#include "../core/Moveable2D.hpp"		// Moveable2D
-#include "TriangleMesh.hpp"		// TriangleMesh
-#include "../core/Singleton.hpp"		// Singleton
-#include "../core/ResourceManager.hpp"	// ResourceManager
+#include "../graphics/GLMesh2D.hpp"         // GLMesh2D
+#include "../graphics/Texture.hpp"          // Texture
+#include "../graphics/TextureManager.hpp"   // TextureManager
+#include "../core/Keyboard.hpp"			    // Keyboard
+#include "../core/Singleton.hpp"		    // Singleton
+#include "../core/Moveable2D.hpp"		    // Moveable2D
+#include "SquareMesh.hpp"		            // SquareMesh
+#include "../core/Singleton.hpp"		    // Singleton
+#include "../core/ResourceManager.hpp"	    // ResourceManager
 #include "../physics/RigidBody.hpp"
 
 namespace JU
@@ -30,16 +32,16 @@ namespace JU
 SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delta)
             : distance_(distance), angle_delta_(angle_delta)
 {
-    const std::string resource_name(TriangleMesh::getId());
+    const std::string resource_name(SquareMesh::getId());
 
     GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.0f, 1.0f));
 
     // GLMesh2D
     // -------------
-    ResourceManager<GLMesh2D>* prm_glmesh = Singleton<ResourceManager<GLMesh2D>>::getInstance();
+    ResourceManager<const GLMesh2D>* prm_glmesh = Singleton<ResourceManager<const GLMesh2D>>::getInstance();
 
-    const TriangleMesh mesh;
-    Shareable<GLMesh2D>* pshare_mesh;
+    const SquareMesh mesh;
+    Shareable<const GLMesh2D>* pshare_mesh;
     if (!(pshare_mesh = prm_glmesh->referenceResource(resource_name)))
     {
         GLMesh2D* pglmesh = new GLMesh2D();
@@ -47,11 +49,20 @@ SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
         pshare_mesh = prm_glmesh->addResource(resource_name, pglmesh);
     }
 
+    // Texture
+    // ----------------
+    const char* filename("./data/textures/goodFighter.png");
+    ResourceManager<const Texture>* prm_texture = Singleton<ResourceManager<const Texture>>::getInstance();
+    Shareable<const Texture>* pshare_texture;
+    if (!(pshare_texture = prm_texture->referenceResource(filename)))
+    {
+        Texture* ptexture = new Texture(filename);
+        pshare_texture = prm_texture->addResource(filename, ptexture);
+    }
+
     // GLMesh2DInstance
     // ----------------
-    // GLMesh2DInstance
-    // ----------------
-    GameObject::pmesh_instance_ = new GLMesh2DInstance(pshare_mesh);
+    GameObject::pmesh_instance_ = new GLMesh2DInstance(pshare_mesh, pshare_texture);
 
     // RigidBody
     // -------------

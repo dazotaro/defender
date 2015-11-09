@@ -86,9 +86,17 @@ void init()
     g_SDL_event_manager->attachEventHandler(SDL_KEYDOWN, "Keydown", g_keyboard);
     g_SDL_event_manager->attachEventHandler(SDL_KEYUP, "Keyup", g_keyboard);
 
+    // OPENGL
+    // -------------
+    // Enable blending
+    gl::Enable(gl::BLEND);
+    gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);// Clear Buffer
+
+
     // GLSL PROGRAMS
     // -------------
-    g_shader_map["simple"] = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
+    g_shader_map["simple"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
+    g_shader_map["texture"] = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/texture.vs", "data/shaders/texture.fs");
 
     // GameObjects
     // -----------
@@ -174,12 +182,11 @@ void loop()
 
         // RENDER
         // ------
-        // Clear Buffer
         gl::ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         gl::Clear(gl::COLOR_BUFFER_BIT);
 
         // Bind the GLSL program and this object's VAO
-        p_program = &g_shader_map["simple"];
+        p_program = &g_shader_map["texture"];
         p_program->use();
 
         // Get World to Camera matrix

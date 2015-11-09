@@ -38,10 +38,10 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle,
 
     // GLMesh2D
     // -------------
-    ResourceManager<GLMesh2D>* prm_glmesh = Singleton<ResourceManager<GLMesh2D>>::getInstance();
+    ResourceManager<const GLMesh2D>* prm_glmesh = Singleton<ResourceManager<const GLMesh2D>>::getInstance();
 
     const SquareMesh mesh;
-    Shareable<GLMesh2D>* pshare_mesh;
+    Shareable<const GLMesh2D>* pshare_mesh;
     if (!(pshare_mesh = prm_glmesh->referenceResource(resource_name)))
     {
         GLMesh2D* pglmesh = new GLMesh2D();
@@ -49,11 +49,20 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle,
         pshare_mesh = prm_glmesh->addResource(resource_name, pglmesh);
     }
 
+    // Texture
+    // ----------------
+    const char* filename("./data/textures/enemy.png");
+    ResourceManager<const Texture>* prm_texture = Singleton<ResourceManager<const Texture>>::getInstance();
+    Shareable<const Texture>* pshare_texture;
+    if (!(pshare_texture = prm_texture->referenceResource(filename)))
+    {
+        Texture* ptexture = new Texture(filename);
+        pshare_texture = prm_texture->addResource(filename, ptexture);
+    }
+
     // GLMesh2DInstance
     // ----------------
-    // GLMesh2DInstance
-    // ----------------
-    GameObject::pmesh_instance_ = new GLMesh2DInstance(pshare_mesh, color);
+    GameObject::pmesh_instance_ = new GLMesh2DInstance(pshare_mesh, pshare_texture);
 
     // RigidBody
     // -------------
