@@ -22,8 +22,8 @@
 namespace
 {
 // CONSTANTS
-const unsigned int WIDTH = 800;
-const unsigned int HEIGHT = 800;
+const unsigned int WIDTH = 1000;
+const unsigned int HEIGHT = 600;
 // Global variables
 std::map<std::string, JU::GLSLProgram> g_shader_map;
 std::map<std::string, JU::GameObject*> g_game_object_map;
@@ -106,22 +106,18 @@ void init()
     JU::EnemyShip* enemyship = new JU::EnemyShip(2.0f, -2.0f, 0.0f);
     g_game_object_map["enemyship1"] = enemyship;
 
-    enemyship = new JU::EnemyShip(-2.0f, 2.0f, 0.0f, 0.005f, 0.003f,
-            glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    enemyship = new JU::EnemyShip(-2.0f, 2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
     g_game_object_map["enemyship2"] = enemyship;
 
-    enemyship = new JU::EnemyShip(-2.0f, -2.0f, 0.0f, 0.005f, 0.003f,
-            glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    enemyship = new JU::EnemyShip(-2.0f, -2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
     g_game_object_map["enemyship3"] = enemyship;
 
-    enemyship = new JU::EnemyShip(2.0f, 2.0f, 0.0f, 0.005f, 0.003f,
-            glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    enemyship = new JU::EnemyShip(2.0f, 2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
     g_game_object_map["enemyship4"] = enemyship;
 
     // Camera2D
     // --------
-    g_pcamera = new JU::Camera2D(
-            JU::Moveable2D(0.0f, 0.0f, 0.0f, 10.0f, 10.0f));
+    g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 10.0f, 10.0f * HEIGHT / WIDTH));
 
     // PHYSICS ENGINE
     // --------------
