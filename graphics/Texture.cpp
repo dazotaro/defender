@@ -44,6 +44,12 @@ bool Texture::loadTexture(const char* filename)
     int width, height, channels;
     unsigned char *image = SOIL_load_image(filename, &width, &height, &channels, SOIL_LOAD_AUTO);
 
+    if (!image)
+    {
+        std::printf("Image %s not found\n", filename);
+        std::exit(EXIT_FAILURE);
+    }
+
     std::printf("%s: %s: number of channels = %i\n", __PRETTY_FUNCTION__, filename, channels);
 
     GLuint mode;
