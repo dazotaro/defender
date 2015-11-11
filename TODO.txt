@@ -1,0 +1,1 @@
+- Write 'Sprite' GameObject that replaces 'EnemyShip', 'SpaceShip' and 'Background'
