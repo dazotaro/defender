@@ -35,6 +35,7 @@ SDL_Window* g_mainwindow; /* Our window handle */
 JU::PhysicsEngine* g_physics_engine;
 }
 
+
 /* A simple function that prints a message, the error code returned by SDL,
  * and quits the application */
 void sdldie(const char *msg)
@@ -43,6 +44,7 @@ void sdldie(const char *msg)
     SDL_Quit();
     exit(1);
 }
+
 
 void checkSDLError(int line = -1)
 {
@@ -57,6 +59,7 @@ void checkSDLError(int line = -1)
     }
 #endif
 }
+
 
 /**
  * @brief Initialization function
@@ -134,6 +137,7 @@ void init()
     g_physics_engine->addRigidBody("enemyship4", g_game_object_map["enemyship4"]->getRigidBody());
 }
 
+
 /**
  * @brief Game loop
  *
@@ -207,6 +211,7 @@ void loop()
     }
 }
 
+
 /**
  * @brief Exit function
  *
@@ -223,6 +228,7 @@ void exit()
     delete g_SDL_event_manager;
     delete g_keyboard;
 }
+
 
 /* Our program's entry point */
 int main(int argc, char *argv[])
