@@ -95,6 +95,20 @@ EnemyShip::~EnemyShip()
  */
 void EnemyShip::update(f32 milliseconds)
 {
+    static uint32 counter = 0;
+
+    if (counter < 200)
+        moveable_.moveY(distance_ * milliseconds);
+    else if (counter < 400)
+        moveable_.moveX(distance_ * milliseconds);
+    else if (counter < 600)
+        moveable_.moveY(-distance_ * milliseconds);
+    else if (counter < 800)
+        moveable_.moveX(-distance_ * milliseconds);
+    else
+        counter = 0;
+
+    ++counter;
 }
 
 /**

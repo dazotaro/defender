@@ -23,12 +23,16 @@
 namespace
 {
 // CONSTANTS
-const unsigned int WIDTH = 1000;
-const unsigned int HEIGHT = 600;
-// Global variables
+const unsigned int WIDTH = 1000;                            // Main viewport
+const unsigned int HEIGHT = 600;                            // Main viewport
+const unsigned int MINI_WIDTH  = 600;                       // Mini viewport
+const unsigned int MINI_HEIGHT = 100;                       // Mini viewport
+
+// GLOBAL VARIABLES
 std::map<std::string, JU::GLSLProgram> g_shader_map;
 std::map<std::string, JU::GameObject*> g_game_object_map;
-JU::Camera2D* g_pcamera;
+JU::Camera2D* g_pcamera;                                    // Main camera
+JU::Camera2D* g_pminicamera;                                // Mini-viewport's camera
 JU::SDLEventManager* g_SDL_event_manager;
 JU::Keyboard* g_keyboard;
 SDL_Window* g_mainwindow; /* Our window handle */
@@ -107,16 +111,16 @@ void init()
     JU::SpaceShip* spaceship = new JU::SpaceShip(0.0f, 0.0f, 0.0f);
     g_game_object_map["spaceship"] = spaceship;
 
-    JU::EnemyShip* enemyship = new JU::EnemyShip(2.0f, -2.0f, 0.0f);
+    JU::EnemyShip* enemyship = new JU::EnemyShip(2.0f, -2.0f, 0.0f, 0.002f, 0.003f);
     g_game_object_map["enemyship1"] = enemyship;
 
-    enemyship = new JU::EnemyShip(-2.0f, 2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    enemyship = new JU::EnemyShip(-2.0f, 2.0f, 0.0f, 0.002f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
     g_game_object_map["enemyship2"] = enemyship;
 
-    enemyship = new JU::EnemyShip(-2.0f, -2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    enemyship = new JU::EnemyShip(-2.0f, -2.0f, 0.0f, 0.002f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
     g_game_object_map["enemyship3"] = enemyship;
 
-    enemyship = new JU::EnemyShip(2.0f, 2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    enemyship = new JU::EnemyShip(2.0f, 2.0f, 0.0f, 0.002f, 0.003f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
     g_game_object_map["enemyship4"] = enemyship;
 
     JU::Background* background = new JU::Background(0.0f, 0.0f, 0.0f);
@@ -124,7 +128,8 @@ void init()
 
     // Camera2D
     // --------
-    g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 10.0f, 10.0f * HEIGHT / WIDTH));
+    g_pcamera     = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 10.0f, 10.0f * HEIGHT / WIDTH));
+    g_pminicamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 20.0f, 20.0f * MINI_HEIGHT / MINI_WIDTH));
 
     // PHYSICS ENGINE
     // --------------
@@ -167,6 +172,10 @@ void loop()
         // ------------------
         milliseconds = timer.getTicks();
         g_game_object_map["spaceship"]->update(milliseconds);
+        g_game_object_map["enemyship1"]->update(milliseconds);
+        g_game_object_map["enemyship2"]->update(milliseconds);
+        g_game_object_map["enemyship3"]->update(milliseconds);
+        g_game_object_map["enemyship4"]->update(milliseconds);
         timer.start();
 
         //////////////
@@ -186,6 +195,9 @@ void loop()
 
         // RENDER
         // ------
+        // Main VIEWPORT
+        // *********************************************
+        gl::Viewport(0, 0, WIDTH, HEIGHT);
         gl::ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         gl::Clear(gl::COLOR_BUFFER_BIT);
 
@@ -195,13 +207,29 @@ void loop()
 
         // Get World to Camera matrix
         glm::mat3 view;
+
         g_pcamera->getWorld2NDCTransformation(view);
 
+        // Render all renderables
         g_game_object_map["background"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemyship1"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemyship2"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemyship3"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemyship4"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["spaceship"]->render(*p_program, glm::mat3(), view);
+
+        // Mini (overview) VIEWPORT
+        // *********************************************
+        gl::Viewport((WIDTH - MINI_WIDTH)/2, (HEIGHT - MINI_HEIGHT), MINI_WIDTH, MINI_HEIGHT);
+
+        g_pminicamera->getWorld2NDCTransformation(view);
 
         // Render all renderables
-        for (auto iter = g_game_object_map.begin(); iter != g_game_object_map.end(); ++iter)
-            iter->second->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemyship1"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemyship2"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemyship3"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemyship4"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["spaceship"]->render(*p_program, glm::mat3(), view);
 
         /* Swap our back buffer to the front */
         SDL_GL_SwapWindow(g_mainwindow);
@@ -224,6 +252,7 @@ void exit()
         delete iter->second;
 
     delete g_pcamera;
+    delete g_pminicamera;
 
     delete g_SDL_event_manager;
     delete g_keyboard;
