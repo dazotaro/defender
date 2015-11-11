@@ -46,7 +46,7 @@ bool Texture::loadTexture(const char* filename)
 
     if (!image)
     {
-        std::printf("Image %s not found\n", filename);
+        std::printf( "SOIL loading error: '%s'\n", SOIL_last_result() );
         std::exit(EXIT_FAILURE);
     }
 

@@ -5,19 +5,20 @@
 #include "../graphics/GLMesh2D.hpp"				// GLMesh2D
 #include "../graphics/GLMesh2DInstance.hpp"		// GLMesh2DInstance
 #include "../graphics/Camera2D.hpp"				// Camera2D
-#include "../core/SDLEventManager.hpp"		// JU::SDLEventManager
-#include "../core/Singleton.hpp"			// JU::Singleton
-#include "../core/Keyboard.hpp"				// JU::Keyboard
-#include "SpaceShip.hpp"			// JU::SpaceShip
-#include "EnemyShip.hpp"			// JU::EnemyShip
-#include "../core/Timer.hpp"				// JU::Timer
-#include "../physics/PhysicsEngine.hpp"	// PhysicsEngine
+#include "../core/SDLEventManager.hpp"		    // JU::SDLEventManager
+#include "../core/Singleton.hpp"			    // JU::Singleton
+#include "../core/Keyboard.hpp"				    // JU::Keyboard
+#include "SpaceShip.hpp"			            // JU::SpaceShip
+#include "EnemyShip.hpp"			            // JU::EnemyShip
+#include "Background.hpp"                       // JU::Background
+#include "../core/Timer.hpp"				    // JU::Timer
+#include "../physics/PhysicsEngine.hpp"	        // PhysicsEngine
 // Global includes
-#include <cstdio>					// printf
-#include <SDL.h>					// all SDL2
+#include <cstdio>					            // printf
+#include <SDL.h>					            // all SDL2
 #include <SDL_opengl.h>
-#include <map>						// std::map
-#include <string>					// std::string
+#include <map>						            // std::map
+#include <string>					            // std::string
 
 namespace
 {
@@ -115,6 +116,9 @@ void init()
     enemyship = new JU::EnemyShip(2.0f, 2.0f, 0.0f, 0.005f, 0.003f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
     g_game_object_map["enemyship4"] = enemyship;
 
+    JU::Background* background = new JU::Background(0.0f, 0.0f, 0.0f);
+    g_game_object_map["background"] = background;
+
     // Camera2D
     // --------
     g_pcamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 10.0f, 10.0f * HEIGHT / WIDTH));
@@ -188,6 +192,8 @@ void loop()
         // Get World to Camera matrix
         glm::mat3 view;
         g_pcamera->getWorld2NDCTransformation(view);
+
+        g_game_object_map["background"]->render(*p_program, glm::mat3(), view);
 
         // Render all renderables
         for (auto iter = g_game_object_map.begin(); iter != g_game_object_map.end(); ++iter)
