@@ -34,7 +34,7 @@ SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
 {
     const std::string resource_name(SquareMesh::getId());
 
-    GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.0f, 1.0f));
+    GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.3f, 1.3f));
 
     // GLMesh2D
     // -------------
@@ -51,7 +51,7 @@ SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
 
     // Texture
     // ----------------
-    const char* filename("./data/textures/goodFighter.png");
+    const char* filename("./data/textures/spaceship.png");
     ResourceManager<const Texture>* prm_texture = Singleton<ResourceManager<const Texture>>::getInstance();
     Shareable<const Texture>* pshare_texture;
     if (!(pshare_texture = prm_texture->referenceResource(filename)))
@@ -75,7 +75,7 @@ SpaceShip::SpaceShip(f32 posx, f32 posy, f32 angle, f32 distance, f32 angle_delt
        pboundingcircle_resource = pshare_boundingbox->addResource(resource_name, pbounding_circle);
     }
 
-    GameObject::setRigitBody(new RigidBody(pboundingcircle_resource));
+    GameObject::setRigidBody(new RigidBody(pboundingcircle_resource));
 }
 
 /**

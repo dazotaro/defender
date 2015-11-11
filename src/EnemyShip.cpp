@@ -34,7 +34,7 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle,
 {
     const std::string resource_name(SquareMesh::getId());
 
-    GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.0f, 1.0f));
+    GameObject::setMoveable2D(Moveable2D(posx, posy, angle, 1.3f, 1.3f));
 
     // GLMesh2D
     // -------------
@@ -75,7 +75,7 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle,
        pshare_boundingbox = prm_boundingcircle->addResource(resource_name, pbounding_circle);
     }
 
-    GameObject::setRigitBody(new RigidBody(pshare_boundingbox));
+    GameObject::setRigidBody(new RigidBody(pshare_boundingbox));
 }
 
 /**
@@ -85,6 +85,7 @@ EnemyShip::EnemyShip(f32 posx, f32 posy, f32 angle,
 EnemyShip::~EnemyShip()
 {
 }
+
 
 /**
  * @brief Update function

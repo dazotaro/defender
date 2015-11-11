@@ -69,7 +69,7 @@ void GameObject::setMoveable2D(Moveable2D moveable)
 }
 
 
-void GameObject::setRigitBody(RigidBody* prigid_body)
+void GameObject::setRigidBody(RigidBody* prigid_body)
 {
     prigid_body_ = prigid_body;
     prigid_body_->setMoveable(&moveable_);

@@ -23,7 +23,7 @@ class SpaceShip: public GameObject
         virtual ~SpaceShip();
 
         void update(JU::f32 milliseconds) override;
-        virtual void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const override;
+        void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const override;
 
     private:
         JU::f32 distance_;

@@ -36,7 +36,7 @@ class GameObject
         // Setters
         void setMeshInstance(GLMesh2DInstance* pmesh_instance);
         void setMoveable2D(Moveable2D moveable);
-        void setRigitBody(RigidBody* prigid_body);
+        void setRigidBody(RigidBody* prigid_body);
         void setCollideable(bool collideable);
 
         virtual void update(JU::f32 milliseconds) = 0;
