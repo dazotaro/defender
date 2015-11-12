@@ -29,7 +29,12 @@ class GLMesh2DInstance : public Renderable2DInterface
         virtual ~GLMesh2DInstance();
 
     public:
+        // Getters
         const GLMesh2D* getGLMesh() const;
+
+        // Setters
+        void setColor(const glm::vec4& color);
+
         // Renderable2DInterface
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
 

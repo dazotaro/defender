@@ -36,6 +36,12 @@ const GLMesh2D* GLMesh2DInstance::getGLMesh() const
 }
 
 
+void GLMesh2DInstance::setColor(const glm::vec4& color)
+{
+    color_ = color;
+}
+
+
 void GLMesh2DInstance::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
     glm::mat3 MV = view * model;
