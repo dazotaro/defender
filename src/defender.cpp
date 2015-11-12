@@ -7,6 +7,7 @@
 #include "../graphics/Camera2D.hpp"				// Camera2D
 #include "../core/SDLEventManager.hpp"		    // JU::SDLEventManager
 #include "../core/Singleton.hpp"			    // JU::Singleton
+#include "../graphics/TextureManager.hpp"       // JU::TextureManager
 #include "../core/Keyboard.hpp"				    // JU::Keyboard
 #include "SpaceShip.hpp"			            // JU::SpaceShip
 #include "EnemyShip.hpp"			            // JU::EnemyShip
@@ -218,6 +219,8 @@ void loop()
         g_game_object_map["enemyship4"]->render(*p_program, glm::mat3(), view);
         g_game_object_map["spaceship"]->render(*p_program, glm::mat3(), view);
 
+        JU::Singleton<JU::TextureManager>::getInstance()->unbindAllTextures();
+
         // Mini (overview) VIEWPORT
         // *********************************************
         gl::Viewport((WIDTH - MINI_WIDTH)/2, (HEIGHT - MINI_HEIGHT), MINI_WIDTH, MINI_HEIGHT);
@@ -230,6 +233,8 @@ void loop()
         g_game_object_map["enemyship3"]->render(*p_program, glm::mat3(), view);
         g_game_object_map["enemyship4"]->render(*p_program, glm::mat3(), view);
         g_game_object_map["spaceship"]->render(*p_program, glm::mat3(), view);
+
+        JU::Singleton<JU::TextureManager>::getInstance()->unbindAllTextures();
 
         /* Swap our back buffer to the front */
         SDL_GL_SwapWindow(g_mainwindow);
