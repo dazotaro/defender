@@ -9,7 +9,6 @@
 // Global Includes
 #include <string>               // std::string
 #include <glm/glm.hpp>          // glm::vecX
-#include <unordered_map>        // std::unordered_map
 
 namespace JU
 {
@@ -35,10 +34,6 @@ namespace GLSLShader
  */
 class GLSLProgram
 {
-    public:
-        // TYPEDEFS
-        typedef std::unordered_map<std::string, JU::uint32> HashMapSamplerTexUnit;
-
     public:
 
         static const std::string COLOR_TEX_PREFIX;
@@ -68,9 +63,6 @@ class GLSLProgram
         void setUniform(const char* name, float val ) const;
         void setUniform(const char* name, int val ) const;
         void setUniform(const char* name, bool val ) const;
-        void setSamplerUniform(const char* name);
-
-        JU::int32 getSamplerTexUnit(const char* name) const;
 
         void printActiveUniforms() const;
         void printActiveAttribs() const;
@@ -83,7 +75,6 @@ class GLSLProgram
         GLuint                  handle_;
         bool                    linked_;
         std::string             log_string_;
-        HashMapSamplerTexUnit   hmSamplerToTexUnit_;
 };
 
 } // namespace JU

@@ -344,35 +344,6 @@ void GLSLProgram::setUniform(const char* name, bool val) const
 
 
 
-void GLSLProgram::setSamplerUniform(const char* name)
-{
-    HashMapSamplerTexUnit::const_iterator iter = hmSamplerToTexUnit_.find(std::string(name));
-
-    if (iter == hmSamplerToTexUnit_.end())
-    {
-        JU::int32 id = hmSamplerToTexUnit_.size() + 7;
-        hmSamplerToTexUnit_[name] = id;
-        setUniform(name, id);
-    }
-}
-
-
-
-JU::int32 GLSLProgram::getSamplerTexUnit(const char* name) const
-{
-    HashMapSamplerTexUnit::const_iterator iter = hmSamplerToTexUnit_.find(std::string(name));
-
-    if (iter == hmSamplerToTexUnit_.end())
-    {
-        std::printf("%s: %s: sampler %s not found\n", __FILE__, __FUNCTION__, name);
-        exit(EXIT_FAILURE);
-    }
-
-    return iter->second;
-}
-
-
-
 void GLSLProgram::printActiveUniforms()  const
 {
     GLint nUniforms, size, location, maxLen;
