@@ -145,8 +145,8 @@ void init()
     g_game_object_map[pspaceship->getName()] = pspaceship;
     g_physics_engine->addRigidBody(pspaceship->getName(),  g_game_object_map[pspaceship->getName()]->getRigidBody());
 
-    JU::DynamicGridObject* pgrid = new JU::DynamicGridObject ("grid", 50, 50);
-    pgrid->setMoveable2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 3.0f, 3.0f));
+    JU::DynamicGridObject* pgrid = new JU::DynamicGridObject ("grid", 30, 30);
+    pgrid->setMoveable2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f));
     g_game_object_map[pgrid->getName()] = pgrid;
 
     // PHYSICS ENGINE
