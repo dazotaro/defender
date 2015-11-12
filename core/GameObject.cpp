@@ -20,14 +20,16 @@ GameObject::GameObject() : pmesh_instance_(nullptr),
 }
 
 
-GameObject::GameObject(GLMesh2DInstance* pmesh_instance,
+GameObject::GameObject(const std::string& name,
+                       GLMesh2DInstance* pmesh_instance,
                        Moveable2D        moveable,
                        RigidBody*        prigid_body,
                        bool              collideable)
-                           : pmesh_instance_(pmesh_instance),
-                             moveable_(moveable),
-                             prigid_body_(prigid_body),
-                             collideable_(collideable)
+               :    name_(name),
+                    pmesh_instance_(pmesh_instance),
+                    moveable_(moveable),
+                    prigid_body_(prigid_body),
+                    collideable_(collideable)
 {
 }
 
@@ -36,6 +38,18 @@ GameObject::~GameObject()
 {
     delete pmesh_instance_;
     delete prigid_body_;
+}
+
+
+const std::string& GameObject::getName() const
+{
+    return name_;
+}
+
+
+void GameObject::setName(const std::string& name)
+{
+    name_ = name;
 }
 
 

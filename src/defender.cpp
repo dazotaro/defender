@@ -9,8 +9,8 @@
 #include "../core/Singleton.hpp"			    // JU::Singleton
 #include "../graphics/TextureManager.hpp"       // JU::TextureManager
 #include "../core/Keyboard.hpp"				    // JU::Keyboard
+#include "SpriteObject.hpp"                     // JU::SpriteObject
 #include "SpaceShip.hpp"			            // JU::SpaceShip
-#include "EnemyShip.hpp"			            // JU::EnemyShip
 #include "Background.hpp"                       // JU::Background
 #include "../core/Timer.hpp"				    // JU::Timer
 #include "../physics/PhysicsEngine.hpp"	        // PhysicsEngine
@@ -109,38 +109,48 @@ void init()
 
     // GameObjects
     // -----------
-    JU::SpaceShip* spaceship = new JU::SpaceShip(0.0f, 0.0f, 0.0f);
-    g_game_object_map["spaceship"] = spaceship;
+    g_physics_engine = JU::Singleton<JU::PhysicsEngine>::getInstance();
 
-    JU::EnemyShip* enemyship = new JU::EnemyShip(2.0f, -2.0f, 0.0f, 0.002f, 0.003f);
-    g_game_object_map["enemyship1"] = enemyship;
+    JU::SpriteObject* psprite = nullptr;
 
-    enemyship = new JU::EnemyShip(-2.0f, 2.0f, 0.0f, 0.002f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-    g_game_object_map["enemyship2"] = enemyship;
+    psprite = new JU::SpriteObject("enemy1", "data/textures/enemy.png", true);
+    psprite->setMoveable2D(JU::Moveable2D(-2.0f, -2.0f, 0.0f, 1.3f, 1.3f));
+    g_game_object_map[psprite->getName()] = psprite;
+    g_physics_engine->addRigidBody(psprite->getName(),  g_game_object_map[psprite->getName()]->getRigidBody());
 
-    enemyship = new JU::EnemyShip(-2.0f, -2.0f, 0.0f, 0.002f, 0.003f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-    g_game_object_map["enemyship3"] = enemyship;
+    psprite = new JU::SpriteObject("enemy2", "data/textures/enemy.png", true);
+    psprite->setMoveable2D(JU::Moveable2D(2.0f, -2.0f, 0.0f, 1.3f, 1.3f));
+    g_game_object_map[psprite->getName()] = psprite;
+    g_physics_engine->addRigidBody(psprite->getName(),  g_game_object_map[psprite->getName()]->getRigidBody());
 
-    enemyship = new JU::EnemyShip(2.0f, 2.0f, 0.0f, 0.002f, 0.003f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-    g_game_object_map["enemyship4"] = enemyship;
+    psprite = new JU::SpriteObject("enemy3", "data/textures/enemy.png", true);
+    psprite->setMoveable2D(JU::Moveable2D(2.0f, 2.0f, 0.0f, 1.3f, 1.3f));
+    g_game_object_map[psprite->getName()] = psprite;
+    g_physics_engine->addRigidBody(psprite->getName(),  g_game_object_map[psprite->getName()]->getRigidBody());
 
-    JU::Background* background = new JU::Background(0.0f, 0.0f, 0.0f);
-    g_game_object_map["background"] = background;
+    psprite = new JU::SpriteObject("enemy4", "data/textures/enemy.png", true);
+    psprite->setMoveable2D(JU::Moveable2D(-2.0f, 2.0f, 0.0f, 1.3f, 1.3f));
+    g_game_object_map[psprite->getName()] = psprite;
+    g_physics_engine->addRigidBody(psprite->getName(),  g_game_object_map[psprite->getName()]->getRigidBody());
+
+    psprite = new JU::SpriteObject("background", "data/textures/background.jpg",false);
+    psprite->setMoveable2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 80.0f, 80.0f * HEIGHT / WIDTH));
+    g_game_object_map[psprite->getName()] = psprite;
+
+    JU::SpaceShip* pspaceship = new JU::SpaceShip("spaceship", "data/textures/spaceship.png", true);
+    pspaceship->setMoveable2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 1.3f, 1.3f));
+    g_game_object_map[pspaceship->getName()] = pspaceship;
+    g_physics_engine->addRigidBody(pspaceship->getName(),  g_game_object_map[pspaceship->getName()]->getRigidBody());
+
+    // PHYSICS ENGINE
+    // --------------
+    g_physics_engine->init();
 
     // Camera2D
     // --------
     g_pcamera     = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 10.0f, 10.0f * HEIGHT / WIDTH));
     g_pminicamera = new JU::Camera2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 20.0f, 20.0f * MINI_HEIGHT / MINI_WIDTH));
 
-    // PHYSICS ENGINE
-    // --------------
-    g_physics_engine = JU::Singleton<JU::PhysicsEngine>::getInstance();
-    g_physics_engine->init();
-    g_physics_engine->addRigidBody("spaceship",  g_game_object_map["spaceship"]->getRigidBody());
-    g_physics_engine->addRigidBody("enemyship1", g_game_object_map["enemyship1"]->getRigidBody());
-    g_physics_engine->addRigidBody("enemyship2", g_game_object_map["enemyship2"]->getRigidBody());
-    g_physics_engine->addRigidBody("enemyship3", g_game_object_map["enemyship3"]->getRigidBody());
-    g_physics_engine->addRigidBody("enemyship4", g_game_object_map["enemyship4"]->getRigidBody());
 }
 
 
@@ -173,10 +183,11 @@ void loop()
         // ------------------
         milliseconds = timer.getTicks();
         g_game_object_map["spaceship"]->update(milliseconds);
-        g_game_object_map["enemyship1"]->update(milliseconds);
-        g_game_object_map["enemyship2"]->update(milliseconds);
-        g_game_object_map["enemyship3"]->update(milliseconds);
-        g_game_object_map["enemyship4"]->update(milliseconds);
+        g_game_object_map["enemy1"]->update(milliseconds);
+        g_game_object_map["enemy2"]->update(milliseconds);
+        g_game_object_map["enemy3"]->update(milliseconds);
+        g_game_object_map["enemy4"]->update(milliseconds);
+
         timer.start();
 
         //////////////
@@ -213,10 +224,10 @@ void loop()
 
         // Render all renderables
         g_game_object_map["background"]->render(*p_program, glm::mat3(), view);
-        g_game_object_map["enemyship1"]->render(*p_program, glm::mat3(), view);
-        g_game_object_map["enemyship2"]->render(*p_program, glm::mat3(), view);
-        g_game_object_map["enemyship3"]->render(*p_program, glm::mat3(), view);
-        g_game_object_map["enemyship4"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemy1"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemy2"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemy3"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemy4"]->render(*p_program, glm::mat3(), view);
         g_game_object_map["spaceship"]->render(*p_program, glm::mat3(), view);
 
         JU::Singleton<JU::TextureManager>::getInstance()->unbindAllTextures();
@@ -228,10 +239,10 @@ void loop()
         g_pminicamera->getWorld2NDCTransformation(view);
 
         // Render all renderables
-        g_game_object_map["enemyship1"]->render(*p_program, glm::mat3(), view);
-        g_game_object_map["enemyship2"]->render(*p_program, glm::mat3(), view);
-        g_game_object_map["enemyship3"]->render(*p_program, glm::mat3(), view);
-        g_game_object_map["enemyship4"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemy1"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemy2"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemy3"]->render(*p_program, glm::mat3(), view);
+        g_game_object_map["enemy4"]->render(*p_program, glm::mat3(), view);
         g_game_object_map["spaceship"]->render(*p_program, glm::mat3(), view);
 
         JU::Singleton<JU::TextureManager>::getInstance()->unbindAllTextures();
