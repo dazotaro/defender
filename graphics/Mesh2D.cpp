@@ -12,7 +12,7 @@
 namespace JU
 {
 
-Mesh2D::Mesh2D() : pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0), ptexcoordinates_(nullptr), draw_mode_(gl::TRIANGLES)
+Mesh2D::Mesh2D() : pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0), draw_mode_(gl::TRIANGLES), ptexcoordinates_(nullptr)
 {
 }
 
@@ -23,9 +23,9 @@ Mesh2D::Mesh2D(const glm::vec2* pvertices,
                uint32           num_indices,
                const glm::vec2* ptexcoordinates,
                GLenum           draw_mode)
-            : pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0), ptexcoordinates_(nullptr), draw_mode_(draw_mode)
+            : pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0), draw_mode_(draw_mode), ptexcoordinates_(nullptr)
 {
-    setData(pvertices, num_vertices, pindices, num_indices, ptexcoordinates, draw_mode);
+    setData(pvertices, num_vertices, pindices, num_indices, draw_mode, ptexcoordinates);
 }
 
 
@@ -47,8 +47,8 @@ void Mesh2D::getData(const glm::vec2** pvertices,
                      uint32&           num_vertices,
                      const uint32**    pindices,
                      uint32&           num_indices,
-                     const glm::vec2** ptexcoordinates,
-                     GLenum&           draw_mode) const
+                     GLenum&           draw_mode,
+                     const glm::vec2** ptexcoordinates) const
 {
     *pvertices = pvertices_;
     num_vertices = num_vertices_;
@@ -66,8 +66,8 @@ void Mesh2D::setData(const glm::vec2* pvertices,
                      uint32           num_vertices,
                      const uint32*    pindices,
                      uint32           num_indices,
-                     const glm::vec2* ptexcoordinates,
-                     GLenum           draw_mode)
+                     GLenum           draw_mode,
+                     const glm::vec2* ptexcoordinates)
 {
     delete [] pvertices_;
     num_vertices_ = num_vertices;

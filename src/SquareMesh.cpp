@@ -33,7 +33,7 @@ SquareMesh::SquareMesh()
             // Second triangle: bottom right
             1, 3, 2, };
 
-    setData(vertexPositions, 4, vertexIndices, 6, texCoordinates, gl::TRIANGLES);
+    setData(vertexPositions, 4, vertexIndices, 6, gl::TRIANGLES, texCoordinates);
 }
 
 SquareMesh::~SquareMesh()

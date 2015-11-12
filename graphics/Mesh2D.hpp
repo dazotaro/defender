@@ -35,24 +35,24 @@ class Mesh2D
                      uint32&           num_vertices,
                      const uint32**    pindices,
                      uint32&           num_indices,
-                     const glm::vec2** ptexcoordinates,
-                     GLenum&           draw_mode) const;
+                     GLenum&           draw_mode,
+                     const glm::vec2** ptexcoordinates) const;
 
         // Setter
         void setData(const glm::vec2* pvertices,
                      uint32           num_vertices,
                      const uint32*    pindices,
                      uint32           num_indices,
-                     const glm::vec2* ptexcoordinates,
-                     GLenum           draw_mode);
+                     GLenum           draw_mode,
+                     const glm::vec2* ptexcoordinates);
 
     protected:
         glm::vec2*  pvertices_;
         uint32      num_vertices_;
         uint32*     pindices_;
         uint32      num_indices_;
-        glm::vec2*  ptexcoordinates_;
         GLenum      draw_mode_;         //!< GL_TRIANGLE, GL_TRIANGLE_FAN, GL_LINE, GL_LINE_LOOP
+        glm::vec2*  ptexcoordinates_;
 };
 
 } /* namespace JU */

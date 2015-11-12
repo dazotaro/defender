@@ -47,7 +47,7 @@ CircleMesh::CircleMesh(uint32 num_vertices)
         angle += angle_delta;
     }
 
-    setData(vertexPositions, num_vertices, vertexIndices, num_vertices, textureCoordinates, gl::LINE_LOOP);
+    setData(vertexPositions, num_vertices, vertexIndices, num_vertices, gl::LINE_LOOP, textureCoordinates);
 }
 
 CircleMesh::~CircleMesh()

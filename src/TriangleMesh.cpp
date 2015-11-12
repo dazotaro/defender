@@ -29,7 +29,7 @@ TriangleMesh::TriangleMesh()
             { 0.5f, 0.5f }, // V2
             };
 
-    setData(vertexPositions, 3, vertexIndices, 3, textureCoordinates, gl::TRIANGLES);
+    setData(vertexPositions, 3, vertexIndices, 3, gl::TRIANGLES, textureCoordinates);
 }
 
 TriangleMesh::~TriangleMesh()
