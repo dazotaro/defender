@@ -22,13 +22,13 @@ class GLMesh2D
         GLMesh2D();
         virtual ~GLMesh2D();
 
-        void init(const Mesh2D& pmesh);
+        void init(const Mesh2D& pmesh, GLenum usage = gl::STATIC_DRAW);
         void render() const;
 
     private:
         GLuint      vao_handle_;         //!< Handle to VAO
         GLuint*     vbo_handles_;       //!< Handle to dynamically allocated VBOs
-        JU::uint8   num_buffers_;
+        JU::uint8   num_vbos_;
         JU::uint32  num_indices_;   //!< Number of vertices
         GLenum      draw_mode_;
 };

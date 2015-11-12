@@ -18,7 +18,7 @@ namespace JU
 * @brief Default constructor
 *
 */
-GLMesh2D::GLMesh2D() : vao_handle_(0), vbo_handles_(nullptr), num_buffers_(0), num_indices_(0), draw_mode_(gl::TRIANGLES)
+GLMesh2D::GLMesh2D() : vao_handle_(0), vbo_handles_(nullptr), num_vbos_(0), num_indices_(0), draw_mode_(gl::TRIANGLES)
 {
 }
 
@@ -29,6 +29,8 @@ GLMesh2D::GLMesh2D() : vao_handle_(0), vbo_handles_(nullptr), num_buffers_(0), n
 */
 GLMesh2D::~GLMesh2D()
 {
+    gl::DeleteBuffers(num_vbos_, vbo_handles_);
+    gl::DeleteVertexArrays(1, &vao_handle_);
 }
 
 
@@ -37,7 +39,7 @@ GLMesh2D::~GLMesh2D()
 *
 * @detail Set up the VBOs and VAO
 */
-void GLMesh2D::init(const Mesh2D& pmesh)
+void GLMesh2D::init(const Mesh2D& pmesh, GLenum usage)
 {
     /*
     const float vertexPositions[] = {
@@ -55,7 +57,7 @@ void GLMesh2D::init(const Mesh2D& pmesh)
     JU::uint32          num_indices = 0;
     const glm::vec2*    ptexcoordinates = nullptr;
 
-    pmesh.getData(&pvertices, num_vertices, &pindices, num_indices, &ptexcoordinates, draw_mode_);
+    pmesh.getData(&pvertices, num_vertices, &pindices, num_indices, draw_mode_, &ptexcoordinates);
 
     // VERTICES
     // Transfer all vertex positions from 2D to Homogeneous coordinates
@@ -76,21 +78,21 @@ void GLMesh2D::init(const Mesh2D& pmesh)
 
     num_indices_ = num_indices;
 
-    int num_vbos = 2;
+    num_vbos_ = 2;
     if (ptexcoordinates)
-        num_vbos = 3;
+        num_vbos_ = 3;
 
     // VAO
     gl::GenVertexArrays(1, &vao_handle_);
     gl::BindVertexArray(vao_handle_);
 
     // VBO
-    vbo_handles_ = new GLuint[num_vbos];
-    gl::GenBuffers(num_vbos, vbo_handles_);
+    vbo_handles_ = new GLuint[num_vbos_];
+    gl::GenBuffers(num_vbos_, vbo_handles_);
 
     // Allocate and initialize VBO for vertex positions
     gl::BindBuffer(gl::ARRAY_BUFFER, vbo_handles_[0]);
-    gl::BufferData(gl::ARRAY_BUFFER, sizeof(vertexPositions[0]) * num_vertices * 3, vertexPositions, gl::STATIC_DRAW);
+    gl::BufferData(gl::ARRAY_BUFFER, sizeof(vertexPositions[0]) * num_vertices * 3, vertexPositions, usage);
     // Insert the VBO into the VAO
     gl::EnableVertexAttribArray(0);
     gl::VertexAttribPointer(0, 3, gl::FLOAT, gl::FALSE_, 0, 0);
