@@ -37,26 +37,6 @@ GridMesh::GridMesh(uint32 sizex, uint32 sizey)
         x += xinc;
     }
 
-    // TEXTURE COORDINATES
-    const f32 uinc = 1.0f / (sizex - 1);
-    const f32 vinc = 1.0f / (sizey - 1);
-
-    glm::vec2 texCoordinates[sizex * sizey];
-
-    f32 u = 0.0f;
-    for (uint32 i = 0; i < sizex; ++i)
-    {
-        f32 v = 0.0;
-        for (uint32 j = 0; j < sizey; ++j)
-        {
-            texCoordinates[i*sizey + j][0] = u;
-            texCoordinates[i*sizey + j][1] = v;
-
-            v += vinc;
-        }
-        u += uinc;
-    }
-
     // INDICES
     const uint32 num_indices = 2 * ( (sizex-1)*sizey + sizex*(sizey-1) );
     uint32 vertexIndices[num_indices];
@@ -81,7 +61,29 @@ GridMesh::GridMesh(uint32 sizex, uint32 sizey)
         }
     }
 
-    setData(vertexPositions, num_vertices, vertexIndices, num_indices, gl::LINE, texCoordinates);
+    /*
+    // TEXTURE COORDINATES
+    const f32 uinc = 1.0f / (sizex - 1);
+    const f32 vinc = 1.0f / (sizey - 1);
+
+    glm::vec2 texCoordinates[sizex * sizey];
+
+    f32 u = 0.0f;
+    for (uint32 i = 0; i < sizex; ++i)
+    {
+        f32 v = 0.0;
+        for (uint32 j = 0; j < sizey; ++j)
+        {
+            texCoordinates[i*sizey + j][0] = u;
+            texCoordinates[i*sizey + j][1] = v;
+
+            v += vinc;
+        }
+        u += uinc;
+    }
+    */
+
+    setData(vertexPositions, num_vertices, vertexIndices, num_indices, gl::LINES, nullptr);
 }
 
 GridMesh::~GridMesh()
