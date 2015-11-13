@@ -39,7 +39,7 @@ class GLMesh2DInstance : public Renderable2DInterface
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
 
     private:
-        Shareable<const GLMesh2D>*        pshare_mesh_;
+        Shareable<const GLMesh2D>*  pshare_mesh_;
         Shareable<const Texture>*   pshare_texture_;
         glm::vec4                   color_;
 };

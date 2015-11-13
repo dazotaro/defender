@@ -22,7 +22,7 @@ Texture::Texture() : tex_id_(0)
 }
 
 
-Texture::Texture(const char* filename)
+Texture::Texture(const char* filename) : tex_id_(0)
 {
     loadTexture(filename);
 }

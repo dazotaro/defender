@@ -277,9 +277,10 @@ void loop()
  */
 void exit()
 {
-    for (auto iter = g_game_object_map.begin(); iter != g_game_object_map.end();
-            ++iter)
+    for (auto iter = g_game_object_map.begin(); iter != g_game_object_map.end(); iter++)
+    {
         delete iter->second;
+    }
 
     delete g_pcamera;
     delete g_pminicamera;

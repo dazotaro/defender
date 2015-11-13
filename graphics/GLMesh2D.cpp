@@ -104,7 +104,7 @@ void GLMesh2D::init(const Mesh2D& pmesh, GLenum usage)
     if (ptexcoordinates)
     {
         gl::BindBuffer(gl::ARRAY_BUFFER, vbo_handles_[2]);
-        gl::BufferData(gl::ARRAY_BUFFER, sizeof(ptexcoordinates[0]) * num_vertices * 2, ptexcoordinates, gl::STATIC_DRAW);
+        gl::BufferData(gl::ARRAY_BUFFER, sizeof(ptexcoordinates[0]) * num_vertices, ptexcoordinates, gl::STATIC_DRAW);
         // Insert the VBO into the VAO
         gl::EnableVertexAttribArray(1);
         gl::VertexAttribPointer(1, 2, gl::FLOAT, gl::FALSE_, 0, 0);
@@ -112,6 +112,9 @@ void GLMesh2D::init(const Mesh2D& pmesh, GLenum usage)
     // Unbind
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
     gl::BindVertexArray(0);
+
+    delete [] vertexPositions;
+    delete [] vertexIndices;
 }
 
 

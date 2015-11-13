@@ -25,8 +25,10 @@ GLMesh2DInstance::GLMesh2DInstance(Shareable<const GLMesh2D>* pshare_mesh,
 
 GLMesh2DInstance::~GLMesh2DInstance()
 {
-    Singleton<ResourceManager<const GLMesh2D>>::getInstance()->releaseResource(pshare_mesh_);
-    Singleton<ResourceManager<const Texture>>::getInstance()->releaseResource(pshare_texture_);
+    if (pshare_mesh_)
+        Singleton<ResourceManager<const GLMesh2D>>::getInstance()->releaseResource(pshare_mesh_);
+    if (pshare_texture_)
+        Singleton<ResourceManager<const Texture>>::getInstance()->releaseResource(pshare_texture_);
 }
 
 

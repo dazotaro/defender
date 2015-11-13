@@ -20,7 +20,8 @@ RigidBody::RigidBody(Shareable<BoundingCircle>* pshare_boundingbox, Moveable2D* 
 
 RigidBody::~RigidBody()
 {
-    Singleton<ResourceManager<BoundingCircle>>::getInstance()->releaseResource(pshare_boundingbox_);
+    if (pshare_boundingbox_)
+        Singleton<ResourceManager<BoundingCircle>>::getInstance()->releaseResource(pshare_boundingbox_);
 }
 
 
