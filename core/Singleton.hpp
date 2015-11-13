@@ -16,6 +16,7 @@ class Singleton
 {
     private:
         Singleton() {}
+        ~Singleton();
         Singleton(const Singleton& rhs) {}
         const Singleton<T>& operator=(const Singleton<T>& rhs);
 

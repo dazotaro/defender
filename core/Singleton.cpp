@@ -14,6 +14,12 @@ template <typename T>
 T* Singleton<T>::instance_ = nullptr;
 
 template <typename T>
+Singleton<T>::~Singleton()
+{
+    delete instance_;
+}
+
+template <typename T>
 T* Singleton<T>::getInstance()
 {
     if(instance_ == nullptr)
