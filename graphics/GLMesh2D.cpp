@@ -30,6 +30,7 @@ GLMesh2D::GLMesh2D() : vao_handle_(0), vbo_handles_(nullptr), num_vbos_(0), num_
 GLMesh2D::~GLMesh2D()
 {
     gl::DeleteBuffers(num_vbos_, vbo_handles_);
+    delete [] vbo_handles_;
     gl::DeleteVertexArrays(1, &vao_handle_);
 }
 
