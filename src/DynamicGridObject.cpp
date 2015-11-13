@@ -49,7 +49,7 @@ DynamicGridObject::DynamicGridObject(const char* name, uint32 sizex, uint32 size
     // GLMesh2DInstance
     // ----------------
     GameObject::pmesh_instance_ = new GLMesh2DInstance(pshare_mesh);
-    pmesh_instance_->setColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    pmesh_instance_->setColor(glm::vec4(0.0f, 0.5f, 1.0f, 1.0f));
 }
 
 /**
