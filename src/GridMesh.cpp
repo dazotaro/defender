@@ -23,7 +23,6 @@ GridMesh::GridMesh(uint32 sizex, uint32 sizey)
     glm::vec2 vertexPositions[num_vertices];
 
     f32 x = -width / 2.0f;
-    uint32 counter = 0;
     for (uint32 i = 0; i < sizex; ++i)
     {
         f32 y = -height / 2.0;
