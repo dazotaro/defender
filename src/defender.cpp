@@ -293,8 +293,6 @@ void exit()
 /* Our program's entry point */
 int main(int argc, char *argv[])
 {
-    SDL_GLContext maincontext; /* Our opengl context handle */
-
     if (SDL_Init(SDL_INIT_VIDEO) < 0) /* Initialize SDL's Video subsystem */
         sdldie("Unable to initialize SDL"); /* Or die on error */
 
@@ -323,16 +321,15 @@ int main(int argc, char *argv[])
     //------------------------------------
 
     /* Create our window centered at 512x512 resolution */
-    g_mainwindow = SDL_CreateWindow("Defender", SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT,
-            SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    g_mainwindow = SDL_CreateWindow("Defender", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                    WIDTH, HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (!g_mainwindow) /* Die if creation failed */
         sdldie("Unable to create window");
 
     checkSDLError(__LINE__);
 
     /* Create our opengl context and attach it to our window */
-    maincontext = SDL_GL_CreateContext(g_mainwindow);
+    SDL_GLContext maincontext = SDL_GL_CreateContext(g_mainwindow);
     checkSDLError(__LINE__);
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
