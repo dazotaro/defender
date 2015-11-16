@@ -22,7 +22,9 @@ class GLMesh2D
         GLMesh2D();
         virtual ~GLMesh2D();
 
-        void init(const Mesh2D& pmesh, GLenum usage = gl::STATIC_DRAW);
+        void init(const Mesh2D& mesh, GLenum usage = gl::STATIC_DRAW);
+        void release();
+
         void render() const;
 
     private:

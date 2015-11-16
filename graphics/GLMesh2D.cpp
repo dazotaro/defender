@@ -29,6 +29,16 @@ GLMesh2D::GLMesh2D() : vao_handle_(0), vbo_handles_(nullptr), num_vbos_(0), num_
 */
 GLMesh2D::~GLMesh2D()
 {
+    release();
+}
+
+
+/**
+* @brief Destructor
+*
+*/
+void GLMesh2D::release()
+{
     gl::DeleteBuffers(num_vbos_, vbo_handles_);
     delete [] vbo_handles_;
     gl::DeleteVertexArrays(1, &vao_handle_);
@@ -40,7 +50,7 @@ GLMesh2D::~GLMesh2D()
 *
 * @detail Set up the VBOs and VAO
 */
-void GLMesh2D::init(const Mesh2D& pmesh, GLenum usage)
+void GLMesh2D::init(const Mesh2D& mesh, GLenum usage)
 {
     /*
     const float vertexPositions[] = {
@@ -58,7 +68,7 @@ void GLMesh2D::init(const Mesh2D& pmesh, GLenum usage)
     JU::uint32          num_indices = 0;
     const glm::vec2*    ptexcoordinates = nullptr;
 
-    pmesh.getData(&pvertices, num_vertices, &pindices, num_indices, draw_mode_, &ptexcoordinates);
+    mesh.getData(&pvertices, num_vertices, &pindices, num_indices, draw_mode_, &ptexcoordinates);
 
     // VERTICES
     // Transfer all vertex positions from 2D to Homogeneous coordinates
