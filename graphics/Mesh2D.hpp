@@ -30,7 +30,8 @@ class Mesh2D
         virtual ~Mesh2D();
 
         // Getter
-        void getVertices(const glm::vec2** pvertices, uint32& num_vertices) const;
+        void getVertexCoordinates(const glm::vec2* & pvertices, uint32& num_vertices) const;
+        void getVertexCoordinates(glm::vec2* & pvertices, uint32& num_vertices);
         void getData(const glm::vec2** pvertices,
                      uint32&           num_vertices,
                      const uint32**    pindices,
@@ -39,6 +40,7 @@ class Mesh2D
                      const glm::vec2** ptexcoordinates) const;
 
         // Setter
+        void updateVertexCoordinates(const glm::vec2* pvertices);
         void setData(const glm::vec2* pvertices,
                      uint32           num_vertices,
                      const uint32*    pindices,

@@ -36,11 +36,38 @@ Mesh2D::~Mesh2D()
 }
 
 
-void Mesh2D::getVertices(const glm::vec2** pvertices, uint32& num_vertices) const
+/**
+* @brief Get vertex position data (const version)
+*
+* @detail Get vertex position data.
+*
+* @param pvertices      The address of the pointer to the array of vertices
+* @param num_vertices   Number of vertices in the mesh
+*
+*/
+void Mesh2D::getVertexCoordinates(const glm::vec2* & pvertices, uint32& num_vertices) const
 {
-    *pvertices = pvertices_;
+    pvertices = pvertices_;
     num_vertices = num_vertices_;
 }
+
+
+
+/**
+* @brief Get vertex position data (non-const version)
+*
+* @detail Get vertex position data. Non-const version for actually modifying this data.
+*
+* @param pvertices      The address of the pointer to the array of vertices
+* @param num_vertices   Number of vertices in the mesh
+*
+*/
+void Mesh2D::getVertexCoordinates(glm::vec2* & pvertices, uint32& num_vertices)
+{
+    pvertices = pvertices_;
+    num_vertices = num_vertices_;
+}
+
 
 
 void Mesh2D::getData(const glm::vec2** pvertices,
@@ -59,6 +86,22 @@ void Mesh2D::getData(const glm::vec2** pvertices,
     *ptexcoordinates = ptexcoordinates_;
 
     draw_mode = draw_mode_;
+}
+
+
+
+/**
+* @brief Set the vertex positions
+*
+* @detail Update the vertex data. It assumes that the number of vertices is already set and is
+*         equal to num_vertices_
+*
+* @param pvertices Vertex coordinates
+*
+*/
+void Mesh2D::updateVertexCoordinates(const glm::vec2* pvertices)
+{
+    std::memcpy(pvertices_, pvertices, num_vertices_* sizeof(num_vertices_));
 }
 
 
