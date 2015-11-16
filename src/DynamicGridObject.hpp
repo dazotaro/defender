@@ -10,6 +10,7 @@
 
 // Local includes
 #include "../core/GameObject.hpp"   // GameObject
+#include "GridMesh.hpp"             // GridMesh
 
 namespace JU
 {
@@ -23,6 +24,9 @@ class DynamicGridObject : public GameObject
     public:
         void update(JU::f32 milliseconds) override;
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const override;
+
+    private:
+        GridMesh mesh_;
 };
 
 } /* namespace JU */
