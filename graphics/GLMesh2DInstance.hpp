@@ -14,11 +14,10 @@
 namespace JU
 {
 
-template <typename T>
-class Shareable;
-
 // Forward Declarations
 class GLMesh2D;
+template <typename T>
+class Shareable;
 
 class GLMesh2DInstance : public Renderable2DInterface
 {
