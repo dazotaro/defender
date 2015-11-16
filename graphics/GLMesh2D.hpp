@@ -22,8 +22,8 @@ class GLMesh2D
         GLMesh2D();
         virtual ~GLMesh2D();
 
-        void init(const Mesh2D& mesh, GLenum usage = gl::STATIC_DRAW);
-        void release();
+        void transferDataGPU(const Mesh2D& mesh, GLenum usage = gl::STATIC_DRAW);
+        void releaseDataGPU();
 
         void render() const;
 

@@ -41,7 +41,7 @@ DynamicGridObject::DynamicGridObject(const char* name, uint32 sizex, uint32 size
     if (!(pshare_mesh = prm_glmesh->referenceResource(resource_name)))
     {
         GLMesh2D* pglmesh = new GLMesh2D();
-        pglmesh->init(mesh_, gl::DYNAMIC_DRAW);
+        pglmesh->transferDataGPU(mesh_, gl::DYNAMIC_DRAW);
         pshare_mesh = prm_glmesh->addResource(resource_name, pglmesh);
     }
 

@@ -41,7 +41,7 @@ Background::Background(f32 posx, f32 posy, f32 angle)
     if (!(pshare_mesh = prm_glmesh->referenceResource(resource_name)))
     {
         GLMesh2D* pglmesh = new GLMesh2D();
-        pglmesh->init(mesh);
+        pglmesh->transferDataGPU(mesh);
         pshare_mesh = prm_glmesh->addResource(resource_name, pglmesh);
     }
 

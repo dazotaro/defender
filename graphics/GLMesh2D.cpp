@@ -29,15 +29,17 @@ GLMesh2D::GLMesh2D() : vao_handle_(0), vbo_handles_(nullptr), num_vbos_(0), num_
 */
 GLMesh2D::~GLMesh2D()
 {
-    release();
+    releaseDataGPU();
 }
 
 
 /**
-* @brief Destructor
+* @brief Release the data stored in the GPU
+*
+* @detail Release the VBOs and VAOs storing the mesh data in the GPU
 *
 */
-void GLMesh2D::release()
+void GLMesh2D::releaseDataGPU()
 {
     gl::DeleteBuffers(num_vbos_, vbo_handles_);
     delete [] vbo_handles_;
@@ -46,11 +48,15 @@ void GLMesh2D::release()
 
 
 /**
-* @brief Initialization function
+* @brief Transfer the mesh data to the GPU
 *
-* @detail Set up the VBOs and VAO
+* @detail Transfer the mesh data to the GPU
+*
+* @param mesh  Mesh2D object with the mesh
+* @param usage Hint for glBufferData: GL_STATIC_DRAW, GL_DYNAMIC_DRAW
+*
 */
-void GLMesh2D::init(const Mesh2D& mesh, GLenum usage)
+void GLMesh2D::transferDataGPU(const Mesh2D& mesh, GLenum usage)
 {
     /*
     const float vertexPositions[] = {
