@@ -21,6 +21,7 @@ class Mesh2D
 {
     public:
         Mesh2D();
+        Mesh2D(const Mesh2D& rhs);
         Mesh2D(const glm::vec2* pvertices,
                uint32           num_vertices,
                const uint32*    pindices,
@@ -28,6 +29,8 @@ class Mesh2D
                const glm::vec2* ptexcoordinates,
                GLenum           draw_mode);
         virtual ~Mesh2D();
+
+        const Mesh2D& operator=(const Mesh2D& rhs);
 
         // Getter
         void getVertexCoordinates(const glm::vec2* & pvertices, uint32& num_vertices) const;

@@ -16,7 +16,6 @@ Mesh2D::Mesh2D() : pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), nu
 {
 }
 
-
 Mesh2D::Mesh2D(const glm::vec2* pvertices,
                uint32           num_vertices,
                const uint32*    pindices,
@@ -29,11 +28,30 @@ Mesh2D::Mesh2D(const glm::vec2* pvertices,
 }
 
 
+Mesh2D::Mesh2D(const Mesh2D& rhs)
+        : pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0), draw_mode_(gl::STATIC_DRAW), ptexcoordinates_(nullptr)
+{
+    setData(rhs.pvertices_, rhs.num_vertices_, rhs.pindices_, rhs.num_indices_, rhs.draw_mode_, rhs.ptexcoordinates_);
+}
+
+
 Mesh2D::~Mesh2D()
 {
     delete [] pvertices_;
     delete [] pindices_;
 }
+
+
+const Mesh2D& Mesh2D::operator=(const Mesh2D& rhs)
+{
+    if (&rhs != this)
+    {
+        setData(rhs.pvertices_, rhs.num_vertices_, rhs.pindices_, rhs.num_indices_, rhs.draw_mode_, rhs.ptexcoordinates_);
+    }
+
+    return *this;
+}
+
 
 
 /**

@@ -1,13 +1,14 @@
 /*
- * DynamicGridObject.cpp
+ * DynamicGrid.cpp
  *
  *  Created on: Nov 12, 2015
  *      Author: jusabiaga
  */
 
-#include "DynamicGridObject.hpp"
+#include "DynamicGrid.hpp"
 #include "../graphics/GLMesh2DInstance.hpp" // GLMesh2DInstance
 #include "../graphics/GLMesh2D.hpp"         // GLMesh2D
+#include "../graphics/GLSLProgram.hpp"      // GLSLProgram
 #include "../core/Keyboard.hpp"             // Keyboard
 #include "../core/Singleton.hpp"            // Singleton
 #include "../core/Moveable2D.hpp"           // Moveable2D
@@ -26,37 +27,21 @@ namespace JU
  * @param angle Angle of orientation in radians
  *
  */
-DynamicGridObject::DynamicGridObject(const char* name, uint32 sizex, uint32 sizey) : mesh_(sizex, sizey)
+DynamicGrid::DynamicGrid(Moveable2D moveable, uint32 sizex, uint32 sizey, const glm::vec4& color)
+                : moveable_(moveable), mesh_(sizex, sizey), color_(color)
 {
-    GameObject::setName(std::string(name));
-
-    const std::string resource_name(GridMesh::getId());
-
     // GLMesh2D
     // -------------
-    ResourceManager<const GLMesh2D>* prm_glmesh = Singleton<ResourceManager<const GLMesh2D>>::getInstance();
-
-    //mesh_ = GridMesh(sizex, sizey);
-    Shareable<const GLMesh2D>* pshare_mesh;
-    if (!(pshare_mesh = prm_glmesh->referenceResource(resource_name)))
-    {
-        GLMesh2D* pglmesh = new GLMesh2D();
-        pglmesh->transferDataGPU(mesh_, gl::DYNAMIC_DRAW);
-        pshare_mesh = prm_glmesh->addResource(resource_name, pglmesh);
-    }
-
-    // GLMesh2DInstance
-    // ----------------
-    GameObject::pmesh_instance_ = new GLMesh2DInstance(pshare_mesh);
-    pmesh_instance_->setColor(glm::vec4(0.0f, 0.5f, 1.0f, 1.0f));
+    glmesh_.transferDataGPU(mesh_, gl::DYNAMIC_DRAW);
 }
 
 /**
  * @brief Destructor
  *
  */
-DynamicGridObject::~DynamicGridObject()
+DynamicGrid::~DynamicGrid()
 {
+    glmesh_.releaseDataGPU();
 }
 
 
@@ -66,18 +51,25 @@ DynamicGridObject::~DynamicGridObject()
  * @param milliseconds  Time elapsed since the last call (in milliseconds)
  *
  */
-void DynamicGridObject::update(f32 milliseconds)
+void DynamicGrid::update(f32 milliseconds)
 {
+    static f32 elapsed_time = milliseconds;
+
+    elapsed_time += milliseconds;
+
+    Mesh2D tmpmesh(mesh_);
+
     glm::vec2* pvertices = nullptr;
     uint32 num_vertices = 0;
-    mesh_.getVertexCoordinates(pvertices, num_vertices);
+    tmpmesh.getVertexCoordinates(pvertices, num_vertices);
 
     if (num_vertices)
     {
         glm::vec2 origin(0.0f, 0.0f);
-        f32 max_displacement = 2.0f;
-        f32 range = 10.0f;
-        f32 slope = max_displacement / range;
+        f32 amplitud = 0.01f;
+        const f32 freq = 8.0f;
+        f32 angle = 2.0f * M_PI * freq;
+        f32 phase = elapsed_time * 2.0f * M_PI * 0.001f;
 
         for (uint32 i = 0; i < num_vertices; ++i)
         {
@@ -86,15 +78,15 @@ void DynamicGridObject::update(f32 milliseconds)
 
             f32 radius = std::sqrt((vertex[0] - origin[0])*(vertex[0] - origin[0]) + (vertex[1] - origin[1])*(vertex[1] - origin[1]));
 
-            if (radius < range)
-            {
-                f32 displacement = max_displacement - radius * slope;
-                vertex += displacement * dir;
-            }
+            f32 displacement = amplitud * std::sin(angle * radius + phase);
+            vertex += displacement * dir;
 
             pvertices[i] = vertex;
         }
     }
+
+    glmesh_.releaseDataGPU();
+    glmesh_.transferDataGPU(tmpmesh, gl::DYNAMIC_DRAW);
 }
 
 /**
@@ -107,15 +99,17 @@ void DynamicGridObject::update(f32 milliseconds)
  * @param view    Camera's view matrix (world to NDC)
  *
  */
-void DynamicGridObject::render(const GLSLProgram &program, const glm::mat3 & model,
-        const glm::mat3 &view) const
+void DynamicGrid::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
     glm::mat3 toparent;
     moveable_.getToParentTransformation(toparent);
 
-    glm::mat3 new_model = model * toparent;
+    glm::mat3 MV = view * model * toparent;
 
-    pmesh_instance_->render(program, new_model, view);
+    program.setUniform("MV", MV);
+    program.setUniform("color", color_);
+
+    glmesh_.render();
 }
 
 

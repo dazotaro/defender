@@ -12,7 +12,7 @@
 #include "SpriteObject.hpp"                     // JU::SpriteObject
 #include "SpaceShip.hpp"			            // JU::SpaceShip
 #include "Background.hpp"                       // JU::Background
-#include "DynamicGridObject.hpp"                // JU::DynamicGridObject
+#include "DynamicGrid.hpp"                      // JU::DynamicGridObject
 #include "../core/Timer.hpp"				    // JU::Timer
 #include "../physics/PhysicsEngine.hpp"	        // PhysicsEngine
 // Global includes
@@ -39,6 +39,7 @@ JU::SDLEventManager* g_SDL_event_manager;
 JU::Keyboard* g_keyboard;
 SDL_Window* g_mainwindow; /* Our window handle */
 JU::PhysicsEngine* g_physics_engine;
+JU::DynamicGrid* g_pgrid;
 }
 
 
@@ -145,9 +146,9 @@ void init()
     g_game_object_map[pspaceship->getName()] = pspaceship;
     g_physics_engine->addRigidBody(pspaceship->getName(),  g_game_object_map[pspaceship->getName()]->getRigidBody());
 
-    JU::DynamicGridObject* pgrid = new JU::DynamicGridObject ("grid", 30, 30);
-    pgrid->setMoveable2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f));
-    g_game_object_map[pgrid->getName()] = pgrid;
+    // PARTICLE SYSTEM
+    // Dynamic Grid
+    g_pgrid = new JU::DynamicGrid(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f), 60, 60, glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
 
     // PHYSICS ENGINE
     // --------------
@@ -186,6 +187,10 @@ void loop()
             break;
         }
 
+        // PARTICLE SYSTEM UPDATE
+        // ----------------------
+        g_pgrid->update(milliseconds);
+
         // GAME OBJECT UPDATE
         // ------------------
         milliseconds = timer.getTicks();
@@ -194,7 +199,6 @@ void loop()
         g_game_object_map["enemy2"]->update(milliseconds);
         g_game_object_map["enemy3"]->update(milliseconds);
         g_game_object_map["enemy4"]->update(milliseconds);
-        g_game_object_map["grid"]->update(milliseconds);
 
 
         timer.start();
@@ -229,11 +233,13 @@ void loop()
         glm::mat3 view;
         g_pcamera->getWorld2NDCTransformation(view);
 
+        // Grid particle system
         p_program = &g_shader_map["simple"];
         p_program->use();
 
-        g_game_object_map["grid"]->render(*p_program, model, view);
+        g_pgrid->render(*p_program, model, view);
 
+        // All other Sprites
         p_program = &g_shader_map["texture"];
         p_program->use();
 
@@ -281,6 +287,8 @@ void exit()
     {
         delete iter->second;
     }
+
+    delete g_pgrid;
 
     delete g_pcamera;
     delete g_pminicamera;
