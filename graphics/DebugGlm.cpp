@@ -42,11 +42,16 @@ std::ostream& operator<<(std::ostream &out, const glm::mat4 &rhs)
 */
 
 
+void print(const char* string, const glm::vec2& vec)
+{
+    std::printf("%s = (%6.2f, %6.2f)\n", string, vec.x, vec.y);
+}
+
+
 void print(const char* string, const glm::vec3& vec)
 {
     std::printf("%s = (%6.2f, %6.2f, %6.2f)\n", string, vec.x, vec.y, vec.z);
 }
-
 
 
 void print(const char* string, const glm::vec4& vec)
