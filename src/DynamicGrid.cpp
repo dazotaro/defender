@@ -168,31 +168,35 @@ void DynamicGrid::setPosition(f32 x, f32 y)
 void DynamicGrid::update(f32 milliseconds)
 {
     static f32 elapsed_time = milliseconds;
-
     elapsed_time += milliseconds;
 
     glm::vec3* pnew_vertices = new glm::vec3[num_vertices_]();
 
+    glm::mat3 model;
+    moveable_.getToParentTransformation(model);
+
     if (num_vertices_)
     {
-        glm::vec2 origin(0.0f, 0.0f);
-        f32 amplitud = 0.01f;
+        //glm::vec2 origin(0.0f, 0.0f);
+        glm::vec2 origin(moveable_.position_);
+        f32 amplitud = 0.01f * moveable_.scale_[0];
         const f32 freq = 8.0f;
-        f32 angle = 2.0f * M_PI * freq;
-        f32 phase = elapsed_time * 2.0f * M_PI * 0.001f;
+        f32 angle = 2.0f * M_PI * freq / moveable_.scale_[0];
+        //f32 phase = elapsed_time * 2.0f * M_PI * 0.001f;
+        f32 phase = 0.0f;
 
         for (uint32 i = 0; i < num_vertices_; ++i)
         {
-            glm::vec2 vertex(pvertices_[i][0], pvertices_[i][1]);
-            glm::vec2 dir(glm::normalize(vertex));
+            glm::vec3 inworld(model * pvertices_[i]);
+            glm::vec2 from_origin(inworld[0] - origin[0], inworld[1] - origin[1]);
+            glm::vec2 dir(glm::normalize(from_origin));
 
-            f32 radius = std::sqrt((vertex[0] - origin[0])*(vertex[0] - origin[0]) + (vertex[1] - origin[1])*(vertex[1] - origin[1]));
+            f32 radius = glm::length(from_origin);
 
             f32 displacement = amplitud * std::sin(angle * radius + phase);
-            vertex += displacement * dir;
 
-            pnew_vertices[i][0] = vertex[0];
-            pnew_vertices[i][1] = vertex[1];
+            pnew_vertices[i][0] = inworld[0] + displacement * dir[0];
+            pnew_vertices[i][1] = inworld[1] + displacement * dir[1];
             pnew_vertices[i][2] = 1.0f;
         }
     }
@@ -217,12 +221,7 @@ void DynamicGrid::update(f32 milliseconds)
  */
 void DynamicGrid::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
-    glm::mat3 toparent;
-    moveable_.getToParentTransformation(toparent);
-
-    glm::mat3 MV = view * model * toparent;
-
-    program.setUniform("MV", MV);
+    program.setUniform("V", view);
     program.setUniform("color", color_);
 
     gl::BindVertexArray(vao_);

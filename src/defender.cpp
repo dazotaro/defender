@@ -106,7 +106,7 @@ void init()
 
     // GLSL PROGRAMS
     // -------------
-    g_shader_map["simple"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/simple.vs", "data/shaders/simple.fs");
+    g_shader_map["grid"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/dynamic_grid.vs", "data/shaders/simple.fs");
     g_shader_map["texture"] = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/texture.vs", "data/shaders/texture.fs");
 
     // GameObjects
@@ -193,6 +193,7 @@ void loop()
 
         // PARTICLE SYSTEM UPDATE
         // ----------------------
+        g_pgrid->getMoveable().position_ = g_game_object_map["spaceship"]->getMoveable().position_;
         g_pgrid->update(milliseconds);
 
         // GAME OBJECT UPDATE
@@ -234,7 +235,7 @@ void loop()
         g_pcamera->getWorld2NDCTransformation(view);
 
         // Grid particle system
-        p_program = &g_shader_map["simple"];
+        p_program = &g_shader_map["grid"];
         p_program->use();
 
         g_pgrid->render(*p_program, model, view);
