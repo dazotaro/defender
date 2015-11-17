@@ -24,13 +24,24 @@ class DynamicGrid : public Renderable2DInterface
         virtual ~DynamicGrid();
 
     public:
+        // Getters
+        const Moveable2D& getMoveable() const;
+        Moveable2D& getMoveable();
+
+        // Setters
+        void setPosition(f32 x, f32 y);
         void update(JU::f32 milliseconds);
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const override;
 
     private:
         Moveable2D  moveable_;
-        GridMesh    mesh_;
-        GLMesh2D    glmesh_;
+        glm::vec3*  pvertices_;
+        uint32      num_vertices_;
+        uint32*     pindices_;
+        uint32      num_indices_;
+        GLuint      vao_;
+        GLuint*     pvbos_;
+        uint32      num_vbos_;
         glm::vec4   color_;
 };
 

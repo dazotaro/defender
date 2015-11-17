@@ -187,6 +187,10 @@ void loop()
             break;
         }
 
+        // CAMERA
+        // -----------
+        g_pcamera->getMoveable().position_ = g_game_object_map["spaceship"]->getMoveable().position_;
+
         // PARTICLE SYSTEM UPDATE
         // ----------------------
         g_pgrid->update(milliseconds);
@@ -213,10 +217,6 @@ void loop()
         // COLLISIONS
         // -----------
         g_physics_engine->updateCollisions(milliseconds);
-
-        // CAMERA
-        // -----------
-        g_pcamera->getMoveable().position_ = g_game_object_map["spaceship"]->getMoveable().position_;
 
         // RENDER
         // ------
