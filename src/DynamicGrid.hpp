@@ -17,10 +17,14 @@
 namespace JU
 {
 
+template <uint32 SIZEX, uint32 SIZEY>
 class DynamicGrid : public Renderable2DInterface
 {
+        // Static Constants
+        static const uint8 NUM_VBOS = 2;
+
     public:
-        explicit DynamicGrid(Moveable2D moveable, uint32 sizex, uint32 sizey, const glm::vec4& color);
+        explicit DynamicGrid(Moveable2D moveable, f32 mass, const glm::vec4& color);
         virtual ~DynamicGrid();
 
     public:
@@ -30,21 +34,23 @@ class DynamicGrid : public Renderable2DInterface
 
         // Setters
         void setPosition(f32 x, f32 y);
-        void update(JU::f32 milliseconds);
+        void update(JU::f32 milliseconds, const glm::vec2* force_locations = nullptr, uint32 num_forces = 0);
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const override;
 
     private:
         Moveable2D  moveable_;
-        glm::vec3*  pvertices_;
-        uint32      num_vertices_;
-        uint32*     pindices_;
-        uint32      num_indices_;
+        f32         mass_;                              //!< Mass of all particles
+        glm::vec3   pvertices_[SIZEX * SIZEY];          //!< Particle coordinates
+        glm::vec2   pvelocities[SIZEX * SIZEY];         //!< Particle velocities
+        glm::vec2   pforces[SIZEX * SIZEY];             //!< Particle force accumulators
+        uint32      pindices_[2 * ( (SIZEX-1)*SIZEY + SIZEX*(SIZEY-1) )];   //!< Mesh indices
         GLuint      vao_;
-        GLuint*     pvbos_;
-        uint32      num_vbos_;
+        GLuint      pvbos_[NUM_VBOS];
         glm::vec4   color_;
 };
 
 } /* namespace JU */
+
+#include "DynamicGrid.cpp"
 
 #endif /* DYNAMICGRID_HPP_ */

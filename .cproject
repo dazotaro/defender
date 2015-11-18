@@ -60,7 +60,7 @@
 						<entry excluding="Singleton.cpp|ResourceManager.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="graphics"/>
 						<entry excluding="Collideable.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
+						<entry excluding="DynamicGrid.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -124,7 +124,7 @@
 						<entry excluding="Singleton.cpp|ResourceManager.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="graphics"/>
 						<entry excluding="Collideable.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
+						<entry excluding="DynamicGrid.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

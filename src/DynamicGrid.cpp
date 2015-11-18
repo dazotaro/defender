@@ -25,29 +25,25 @@ namespace JU
  * @param angle Angle of orientation in radians
  *
  */
-DynamicGrid::DynamicGrid(Moveable2D moveable, uint32 sizex, uint32 sizey, const glm::vec4& color)
-                : moveable_(moveable),
-                  pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0), vao_(0), pvbos_(nullptr), num_vbos_(0),
-                  color_(color)
+template <uint32 SIZEX, uint32 SIZEY>
+DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, const glm::vec4& color)
+                : moveable_(moveable), mass_(mass), vao_(0), color_(color)
 {
     const f32 width  = 1.0f;
     const f32 height = 1.0f;
-    const f32 xinc =  width / (sizex - 1);
-    const f32 yinc = height / (sizey - 1);
+    const f32 xinc =  width / (SIZEX - 1);
+    const f32 yinc = height / (SIZEY - 1);
 
     // POSITIONS
-    num_vertices_ = sizex * sizey;
-    pvertices_ = new glm::vec3[num_vertices_];
-
     f32 x = -width / 2.0f;
-    for (uint32 i = 0; i < sizex; ++i)
+    for (uint32 i = 0; i < SIZEX; ++i)
     {
         f32 y = -height / 2.0;
-        for (uint32 j = 0; j < sizey; ++j)
+        for (uint32 j = 0; j < SIZEY; ++j)
         {
-            pvertices_[i*sizey + j][0] = x;
-            pvertices_[i*sizey + j][1] = y;
-            pvertices_[i*sizey + j][2] = 1.0f;
+            pvertices_[i*SIZEY + j][0] = x;
+            pvertices_[i*SIZEY + j][1] = y;
+            pvertices_[i*SIZEY + j][2] = 1.0f;
 
             y += yinc;
         }
@@ -55,25 +51,22 @@ DynamicGrid::DynamicGrid(Moveable2D moveable, uint32 sizex, uint32 sizey, const 
     }
 
     // INDICES
-    num_indices_ = 2 * ( (sizex-1)*sizey + sizex*(sizey-1) );
-    pindices_ = new uint32[num_indices_];
-
     uint32 index = 0;
-    for (uint32 i = 0; i < sizex; ++i)
+    for (uint32 i = 0; i < SIZEX; ++i)
     {
-        for (uint32 j = 0; j < sizey; ++j)
+        for (uint32 j = 0; j < SIZEY; ++j)
         {
             if (i > 0)
             {
                 // Line to the WEST vertex
-                pindices_[index++] = (i-1) * sizey + j;
-                pindices_[index++] =     i * sizey + j;
+                pindices_[index++] = (i-1) * SIZEY + j;
+                pindices_[index++] =     i * SIZEY + j;
             }
             if (j > 0)
             {
                 // Line to the NORTH vertex
-                pindices_[index++] = i * sizey + (j-1);
-                pindices_[index++] = i * sizey + j;
+                pindices_[index++] = i * SIZEY + (j-1);
+                pindices_[index++] = i * SIZEY + j;
             }
         }
     }
@@ -86,20 +79,18 @@ DynamicGrid::DynamicGrid(Moveable2D moveable, uint32 sizex, uint32 sizey, const 
     gl::BindVertexArray(vao_);
 
     // VBO
-    num_vbos_ = 2;
-    pvbos_ = new GLuint[num_vbos_];
-    gl::GenBuffers(num_vbos_, pvbos_);
+    gl::GenBuffers(NUM_VBOS, pvbos_);
 
     // Allocate and initialize VBO for vertex positions
     gl::BindBuffer(gl::ARRAY_BUFFER, pvbos_[0]);
-    gl::BufferData(gl::ARRAY_BUFFER, sizeof(pvertices_[0]) * num_vertices_, pvertices_, gl::DYNAMIC_DRAW);
+    gl::BufferData(gl::ARRAY_BUFFER, sizeof(pvertices_), pvertices_, gl::DYNAMIC_DRAW);
     // Insert the VBO into the VAO
     gl::EnableVertexAttribArray(0);
     gl::VertexAttribPointer(0, 3, gl::FLOAT, gl::FALSE_, 0, 0);
 
     // Allocate and initialize VBO for vertex indices
     gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, pvbos_[1]);
-    gl::BufferData(gl::ELEMENT_ARRAY_BUFFER, sizeof(pindices_[0]) * num_indices_, pindices_, gl::STATIC_DRAW);
+    gl::BufferData(gl::ELEMENT_ARRAY_BUFFER, sizeof(pindices_), pindices_, gl::STATIC_DRAW);
 
     // Unbind
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
@@ -110,14 +101,11 @@ DynamicGrid::DynamicGrid(Moveable2D moveable, uint32 sizex, uint32 sizey, const 
  * @brief Destructor
  *
  */
-DynamicGrid::~DynamicGrid()
+template <uint32 SIZEX, uint32 SIZEY>
+DynamicGrid<SIZEX, SIZEY>::~DynamicGrid()
 {
-    gl::DeleteBuffers(num_vbos_, pvbos_);
+    gl::DeleteBuffers(NUM_VBOS, pvbos_);
     gl::DeleteVertexArrays(1, &vao_);
-
-    delete [] pvertices_;
-    delete [] pindices_;
-    delete [] pvbos_;
 }
 
 
@@ -127,7 +115,8 @@ DynamicGrid::~DynamicGrid()
  * @return Moveable2D object
  *
  */
-const Moveable2D& DynamicGrid::getMoveable() const
+template <uint32 SIZEX, uint32 SIZEY>
+const Moveable2D& DynamicGrid<SIZEX, SIZEY>::getMoveable() const
 {
     return moveable_;
 }
@@ -139,7 +128,8 @@ const Moveable2D& DynamicGrid::getMoveable() const
  * @return Moveable2D object
  *
  */
-Moveable2D& DynamicGrid::getMoveable()
+template <uint32 SIZEX, uint32 SIZEY>
+Moveable2D& DynamicGrid<SIZEX, SIZEY>::getMoveable()
 {
     return moveable_;
 }
@@ -152,7 +142,8 @@ Moveable2D& DynamicGrid::getMoveable()
  * @param y  Y coordinate of focus
  *
  */
-void DynamicGrid::setPosition(f32 x, f32 y)
+template <uint32 SIZEX, uint32 SIZEY>
+void DynamicGrid<SIZEX, SIZEY>::setPosition(f32 x, f32 y)
 {
     moveable_.position_[0] = x;
     moveable_.position_[1] = x;
@@ -165,17 +156,21 @@ void DynamicGrid::setPosition(f32 x, f32 y)
  * @param milliseconds  Time elapsed since the last call (in milliseconds)
  *
  */
-void DynamicGrid::update(f32 milliseconds)
+template <uint32 SIZEX, uint32 SIZEY>
+void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_locations, uint32 num_forces)
 {
+    // Update time since beginning of execution
     static f32 elapsed_time = milliseconds;
     elapsed_time += milliseconds;
 
-    glm::vec3* pnew_vertices = new glm::vec3[num_vertices_]();
+    static const uint32 num_vertices = SIZEX * SIZEY;
+
+    glm::vec3* pnew_vertices = new glm::vec3[num_vertices]();
 
     glm::mat3 model;
     moveable_.getToParentTransformation(model);
 
-    if (num_vertices_)
+    if (num_vertices)
     {
         //glm::vec2 origin(0.0f, 0.0f);
         glm::vec2 origin(moveable_.position_);
@@ -185,7 +180,7 @@ void DynamicGrid::update(f32 milliseconds)
         //f32 phase = elapsed_time * 2.0f * M_PI * 0.001f;
         f32 phase = 0.0f;
 
-        for (uint32 i = 0; i < num_vertices_; ++i)
+        for (uint32 i = 0; i < num_vertices; ++i)
         {
             glm::vec3 inworld(model * pvertices_[i]);
             glm::vec2 from_origin(inworld[0] - origin[0], inworld[1] - origin[1]);
@@ -203,7 +198,7 @@ void DynamicGrid::update(f32 milliseconds)
 
     // Allocate and initialize VBO for vertex positions
     gl::BindBuffer(gl::ARRAY_BUFFER, pvbos_[0]);
-    gl::BufferData(gl::ARRAY_BUFFER, sizeof(pnew_vertices[0]) * num_vertices_, pnew_vertices, gl::DYNAMIC_DRAW);
+    gl::BufferData(gl::ARRAY_BUFFER, sizeof(pnew_vertices[0]) * num_vertices, pnew_vertices, gl::DYNAMIC_DRAW);
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
 
     delete [] pnew_vertices;
@@ -219,7 +214,8 @@ void DynamicGrid::update(f32 milliseconds)
  * @param view    Camera's view matrix (world to NDC)
  *
  */
-void DynamicGrid::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
+template <uint32 SIZEX, uint32 SIZEY>
+void DynamicGrid<SIZEX, SIZEY>::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
     program.setUniform("V", view);
     program.setUniform("color", color_);
@@ -227,7 +223,7 @@ void DynamicGrid::render(const GLSLProgram &program, const glm::mat3 & model, co
     gl::BindVertexArray(vao_);
 
     // Draw using indices
-    gl::DrawElements(gl::LINES, num_indices_, gl::UNSIGNED_INT, 0);
+    gl::DrawElements(gl::LINES, sizeof(pindices_) / sizeof(pindices_[0]), gl::UNSIGNED_INT, 0);
 
     // Unbind
     gl::BindVertexArray(0);

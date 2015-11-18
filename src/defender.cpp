@@ -39,7 +39,7 @@ JU::SDLEventManager* g_SDL_event_manager;
 JU::Keyboard* g_keyboard;
 SDL_Window* g_mainwindow; /* Our window handle */
 JU::PhysicsEngine* g_physics_engine;
-JU::DynamicGrid* g_pgrid;
+JU::DynamicGrid<60,60>* g_pgrid;
 }
 
 
@@ -148,7 +148,7 @@ void init()
 
     // PARTICLE SYSTEM
     // Dynamic Grid
-    g_pgrid = new JU::DynamicGrid(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f), 60, 60, glm::vec4(0.0f, 0.5f, 0.5f, 1.0f));
+    g_pgrid = new JU::DynamicGrid<60, 60>(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f), 10.0f, glm::vec4(0.0f, 0.5f, 0.5f, 1.0f));
 
     // PHYSICS ENGINE
     // --------------
