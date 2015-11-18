@@ -170,6 +170,8 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
     glm::mat3 model;
     moveable_.getToParentTransformation(model);
 
+    // Accumulate Spring Forces
+    /*
     if (num_vertices)
     {
         //glm::vec2 origin(0.0f, 0.0f);
@@ -200,7 +202,7 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
     gl::BindBuffer(gl::ARRAY_BUFFER, pvbos_[0]);
     gl::BufferData(gl::ARRAY_BUFFER, sizeof(pnew_vertices[0]) * num_vertices, pnew_vertices, gl::DYNAMIC_DRAW);
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
-
+    */
     delete [] pnew_vertices;
 }
 
