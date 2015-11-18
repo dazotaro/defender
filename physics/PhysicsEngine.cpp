@@ -55,13 +55,14 @@ void PhysicsEngine::updateCollisions(uint32 milliseconds)
     }
 
     // Brute Force all-pairs collision test
+    static uint32 counter = 0;
     for (uint32 i = 0; i < num_bodies - 1; ++i)
     {
         for (uint32 j = i + 1; j < num_bodies; ++j)
         {
             if (testCollision(pcircles[i], pcircles[j]))
             {
-                std::printf("Collision occurred\n");
+                std::printf("Collision occurred %i\n", ++counter);
             }
         }
     }
