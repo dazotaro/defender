@@ -26,13 +26,19 @@ namespace JU
  *
  */
 template <uint32 SIZEX, uint32 SIZEY>
-DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, const glm::vec4& color)
-                : moveable_(moveable), mass_(mass), vao_(0), color_(color)
+DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, f32 ks, f32 kd, const glm::vec4& color)
+                : ks_(ks), kd_(kd), x_rest_(1.0f / (SIZEX - 1)), y_rest_(1.0f / (SIZEY - 1)), vao_(0), color_(color)
 {
     const f32 width  = 1.0f;
     const f32 height = 1.0f;
     const f32 xinc =  width / (SIZEX - 1);
     const f32 yinc = height / (SIZEY - 1);
+
+    glm::mat3 model;
+    moveable.getToParentTransformation(model);
+
+    x_rest_ *= moveable.scale_.x;
+    y_rest_ *= moveable.scale_.y;
 
     // POSITIONS
     f32 x = -width / 2.0f;
@@ -41,13 +47,16 @@ DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, const glm:
         f32 y = -height / 2.0;
         for (uint32 j = 0; j < SIZEY; ++j)
         {
-            pvertices_[i*SIZEY + j][0] = x;
-            pvertices_[i*SIZEY + j][1] = y;
+            glm::vec3 vtx_world = model * glm::vec3(x, y, 1.0f);
+            // Transform positions from local to world coordinate
+            pvertices_[i*SIZEY + j][0] = vtx_world.x;
+            pvertices_[i*SIZEY + j][1] = vtx_world.y;
 
             y += yinc;
         }
         x += xinc;
     }
+
 
     // INDICES
     uint32 index = 0;
@@ -95,6 +104,7 @@ DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, const glm:
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
     gl::BindVertexArray(0);
 
+
     // Physics Simulation
     // ------------------
     // Initialize Velocities and force accumulators
@@ -104,6 +114,17 @@ DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, const glm:
         pvelocities_[i].y = 0.0f;
         pforces_[i].x = 0.0f;
         pforces_[i].y = 0.0f;
+    }
+
+    for (uint32 i = 0; i < SIZEX; ++i)
+    {
+        for (uint32 j = 0; j < SIZEY; ++j)
+        {
+            if (i == 0 || j == 0 || i == (SIZEX - 1) || j == (SIZEY - 1))
+                pmass_[i*SIZEY + j] = 0.0f;
+            else
+                pmass_[i*SIZEY + j] = mass;
+        }
     }
 }
 
@@ -120,47 +141,6 @@ DynamicGrid<SIZEX, SIZEY>::~DynamicGrid()
 
 
 /**
- * @brief Get Moveable2D (const version)
- *
- * @return Moveable2D object
- *
- */
-template <uint32 SIZEX, uint32 SIZEY>
-const Moveable2D& DynamicGrid<SIZEX, SIZEY>::getMoveable() const
-{
-    return moveable_;
-}
-
-
-/**
- * @brief Get Moveable2D
- *
- * @return Moveable2D object
- *
- */
-template <uint32 SIZEX, uint32 SIZEY>
-Moveable2D& DynamicGrid<SIZEX, SIZEY>::getMoveable()
-{
-    return moveable_;
-}
-
-
-/**
- * @brief Set Position of the focus of waves
- *
- * @param x  X coordinate of focus
- * @param y  Y coordinate of focus
- *
- */
-template <uint32 SIZEX, uint32 SIZEY>
-void DynamicGrid<SIZEX, SIZEY>::setPosition(f32 x, f32 y)
-{
-    moveable_.position_[0] = 0.0f;
-    moveable_.position_[1] = 0.0f;
-}
-
-
-/**
  * @brief Update function
  *
  * @param milliseconds  Time elapsed since the last call (in milliseconds)
@@ -169,17 +149,12 @@ void DynamicGrid<SIZEX, SIZEY>::setPosition(f32 x, f32 y)
 template <uint32 SIZEX, uint32 SIZEY>
 void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_locations, uint32 num_forces)
 {
-    // Update time since beginning of execution
-    static f32 elapsed_time = milliseconds;
-    elapsed_time += milliseconds;
-
-    glm::mat3 model;
-    moveable_.getToParentTransformation(model);
-
-    const f32 ks      = 3.8f;
-    const f32 kd      = 0.6f;
-    const f32 x_rest  = 1.0f / (SIZEX - 1);
-    const f32 y_rest  = 1.0f / (SIZEY - 1);
+    // Reset force accumulators
+    for (uint32 i = 0; i < SIZEX * SIZEY; ++i)
+    {
+        pforces_[i].x = 0.0f;
+        pforces_[i].y = 0.0f;
+    }
 
     // Accumulate Spring Forces
     if (SIZEX > 0 || SIZEY > 0)
@@ -194,22 +169,46 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
 
             f32 resting_distance = 0.0f;
             if (pvertices_[pindices_[index + 1]].x == pvertices_[pindices_[index]].y)
-                resting_distance = x_rest;
+                resting_distance = x_rest_;
             else
-                resting_distance = y_rest;
+                resting_distance = y_rest_;
 
-            glm::vec2 force ((-ks * (P1toP2distance - resting_distance) - kd * V1toV2 * P1toP2normalized) * P1toP2normalized);
+            glm::vec2 force ((-ks_ * (P1toP2distance - resting_distance) - kd_ * V1toV2 * P1toP2normalized) * P1toP2normalized);
 
             pforces_[pindices_[index + 1]] += force;
             pforces_[pindices_[index]]     -= force;
         }
     }
 
-    // Integration
-    for (uint32 i = 0; i < SIZEX * SIZEY; ++i)
+    // Accumulate repulsive forces due to spaceships
+    for (uint32 i = 0; i < SIZEX; ++i)
     {
-        pvertices_[i]   += milliseconds * 0.001f * pvelocities_[i];
-        pvelocities_[i] += milliseconds * 0.001f * pforces_[i] / mass_;
+        for (uint32 j = 0; j < SIZEY; ++j)
+        {
+            if (i != 0 && j != 0 && i != (SIZEX - 1) && j != (SIZEY - 1))
+            {
+                for (uint32 k = 0; k < num_forces; ++k)
+                {
+                    glm::vec2 from_force(pvertices_[i * SIZEY + j] - force_locations[k]);
+                    f32 distance = glm::length(from_force);
+                    distance = (distance < x_rest_ * 0.3f ? x_rest_ * 0.3f : distance);
+                    pforces_[i * SIZEY + j] += 1.0f / (distance * distance) * glm::normalize(from_force);
+                }
+            }
+        }
+    }
+
+    // Integration
+    for (uint32 i = 0; i < SIZEX; ++i)
+    {
+        for (uint32 j = 0; j < SIZEY; ++j)
+        {
+            if (i != 0 && j != 0 && i != (SIZEX - 1) && j != (SIZEY - 1))
+            {
+                pvertices_[i * SIZEY + j] += milliseconds * 0.001f * pvelocities_[i * SIZEY + j];
+                pvelocities_[i * SIZEY + j] += milliseconds * 0.001f * pforces_[i * SIZEY + j] / pmass_[i * SIZEY + j];
+            }
+        }
     }
 
 

@@ -24,26 +24,27 @@ class DynamicGrid : public Renderable2DInterface
         static const uint8 NUM_VBOS = 2;
 
     public:
-        explicit DynamicGrid(Moveable2D moveable, f32 mass, const glm::vec4& color);
+        explicit DynamicGrid(Moveable2D moveable, f32 mass, f32 ks, f32 kd, const glm::vec4& color);
         virtual ~DynamicGrid();
 
     public:
-        // Getters
-        const Moveable2D& getMoveable() const;
-        Moveable2D& getMoveable();
-
         // Setters
-        void setPosition(f32 x, f32 y);
         void update(JU::f32 milliseconds, const glm::vec2* force_locations = nullptr, uint32 num_forces = 0);
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const override;
 
     private:
-        Moveable2D  moveable_;
-        f32         mass_;                              //!< Mass of all particles
+        // Particles
+        f32         pmass_[SIZEX * SIZEY];              //!< Mass of  particles
         glm::vec2   pvertices_[SIZEX * SIZEY];          //!< Particle coordinates
-        glm::vec2   pvelocities_[SIZEX * SIZEY];         //!< Particle velocities
-        glm::vec2   pforces_[SIZEX * SIZEY];             //!< Particle force accumulators
+        glm::vec2   pvelocities_[SIZEX * SIZEY];        //!< Particle velocities
+        glm::vec2   pforces_[SIZEX * SIZEY];            //!< Particle force accumulators
         uint32      pindices_[2 * ( (SIZEX-1)*SIZEY + SIZEX*(SIZEY-1) )];   //!< Mesh indices
+        // Damped Spring Forces
+        f32 ks_;
+        f32 kd_;
+        f32 x_rest_;
+        f32 y_rest_;
+        // OpenGL
         GLuint      vao_;
         GLuint      pvbos_[NUM_VBOS];
         glm::vec4   color_;

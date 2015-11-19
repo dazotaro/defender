@@ -148,7 +148,8 @@ void init()
 
     // PARTICLE SYSTEM
     // Dynamic Grid
-    g_pgrid = new JU::DynamicGrid<60, 60>(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f), 10.0f, glm::vec4(0.0f, 0.5f, 0.5f, 1.0f));
+    g_pgrid = new JU::DynamicGrid<60, 60>(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f),
+                                          1.0f, 1.8f, 0.6f, glm::vec4(0.0f, 0.5f, 0.5f, 1.0f));
 
     // PHYSICS ENGINE
     // --------------
@@ -193,8 +194,8 @@ void loop()
 
         // PARTICLE SYSTEM UPDATE
         // ----------------------
-        g_pgrid->getMoveable().position_ = g_game_object_map["spaceship"]->getMoveable().position_;
-        g_pgrid->update(milliseconds);
+        glm::vec2 force_positions[] = {g_game_object_map["spaceship"]->getMoveable().position_};
+        g_pgrid->update(milliseconds, force_positions, 1);
 
         // GAME OBJECT UPDATE
         // ------------------
