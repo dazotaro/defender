@@ -1,1 +1,2 @@
-- Write 'Sprite' GameObject that replaces 'EnemyShip', 'SpaceShip' and 'Background'
+- Need to reconvert pvertices in DynamicGrid to be vec3 as in 'update' we first need to multiply times model matrix
+

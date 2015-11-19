@@ -40,9 +40,9 @@ class DynamicGrid : public Renderable2DInterface
     private:
         Moveable2D  moveable_;
         f32         mass_;                              //!< Mass of all particles
-        glm::vec3   pvertices_[SIZEX * SIZEY];          //!< Particle coordinates
-        glm::vec2   pvelocities[SIZEX * SIZEY];         //!< Particle velocities
-        glm::vec2   pforces[SIZEX * SIZEY];             //!< Particle force accumulators
+        glm::vec2   pvertices_[SIZEX * SIZEY];          //!< Particle coordinates
+        glm::vec2   pvelocities_[SIZEX * SIZEY];         //!< Particle velocities
+        glm::vec2   pforces_[SIZEX * SIZEY];             //!< Particle force accumulators
         uint32      pindices_[2 * ( (SIZEX-1)*SIZEY + SIZEX*(SIZEY-1) )];   //!< Mesh indices
         GLuint      vao_;
         GLuint      pvbos_[NUM_VBOS];

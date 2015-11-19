@@ -43,7 +43,6 @@ DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, const glm:
         {
             pvertices_[i*SIZEY + j][0] = x;
             pvertices_[i*SIZEY + j][1] = y;
-            pvertices_[i*SIZEY + j][2] = 1.0f;
 
             y += yinc;
         }
@@ -86,7 +85,7 @@ DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, const glm:
     gl::BufferData(gl::ARRAY_BUFFER, sizeof(pvertices_), pvertices_, gl::DYNAMIC_DRAW);
     // Insert the VBO into the VAO
     gl::EnableVertexAttribArray(0);
-    gl::VertexAttribPointer(0, 3, gl::FLOAT, gl::FALSE_, 0, 0);
+    gl::VertexAttribPointer(0, 2, gl::FLOAT, gl::FALSE_, 0, 0);
 
     // Allocate and initialize VBO for vertex indices
     gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, pvbos_[1]);
@@ -95,6 +94,17 @@ DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, const glm:
     // Unbind
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
     gl::BindVertexArray(0);
+
+    // Physics Simulation
+    // ------------------
+    // Initialize Velocities and force accumulators
+    for (uint32 i = 0; i < SIZEX * SIZEY; ++i)
+    {
+        pvelocities_[i].x = 0.0f;
+        pvelocities_[i].y = 0.0f;
+        pforces_[i].x = 0.0f;
+        pforces_[i].y = 0.0f;
+    }
 }
 
 /**
@@ -145,8 +155,8 @@ Moveable2D& DynamicGrid<SIZEX, SIZEY>::getMoveable()
 template <uint32 SIZEX, uint32 SIZEY>
 void DynamicGrid<SIZEX, SIZEY>::setPosition(f32 x, f32 y)
 {
-    moveable_.position_[0] = x;
-    moveable_.position_[1] = x;
+    moveable_.position_[0] = 0.0f;
+    moveable_.position_[1] = 0.0f;
 }
 
 
@@ -163,48 +173,52 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
     static f32 elapsed_time = milliseconds;
     elapsed_time += milliseconds;
 
-    static const uint32 num_vertices = SIZEX * SIZEY;
-
-    glm::vec3* pnew_vertices = new glm::vec3[num_vertices]();
-
     glm::mat3 model;
     moveable_.getToParentTransformation(model);
 
+    const f32 ks      = 3.8f;
+    const f32 kd      = 0.6f;
+    const f32 x_rest  = 1.0f / (SIZEX - 1);
+    const f32 y_rest  = 1.0f / (SIZEY - 1);
+
     // Accumulate Spring Forces
-    /*
-    if (num_vertices)
+    if (SIZEX > 0 || SIZEY > 0)
     {
-        //glm::vec2 origin(0.0f, 0.0f);
-        glm::vec2 origin(moveable_.position_);
-        f32 amplitud = 0.01f * moveable_.scale_[0];
-        const f32 freq = 8.0f;
-        f32 angle = 2.0f * M_PI * freq / moveable_.scale_[0];
-        //f32 phase = elapsed_time * 2.0f * M_PI * 0.001f;
-        f32 phase = 0.0f;
-
-        for (uint32 i = 0; i < num_vertices; ++i)
+        for (JU::uint32 index = 0; index < 2 * ( (SIZEX-1)*SIZEY + SIZEX*(SIZEY-1) ); index += 2)
         {
-            glm::vec3 inworld(model * pvertices_[i]);
-            glm::vec2 from_origin(inworld[0] - origin[0], inworld[1] - origin[1]);
-            glm::vec2 dir(glm::normalize(from_origin));
+            glm::vec2 P1toP2 (pvertices_[pindices_[index + 1]] - pvertices_[pindices_[index]]);
+            JU::f32 P1toP2distance = glm::length(P1toP2);
+            glm::vec2 P1toP2normalized = glm::normalize(P1toP2);
 
-            f32 radius = glm::length(from_origin);
+            glm::vec2 V1toV2 (pvelocities_[pindices_[index + 1]] - pvelocities_[pindices_[index]]);
 
-            f32 displacement = amplitud * std::sin(angle * radius + phase);
+            f32 resting_distance = 0.0f;
+            if (pvertices_[pindices_[index + 1]].x == pvertices_[pindices_[index]].y)
+                resting_distance = x_rest;
+            else
+                resting_distance = y_rest;
 
-            pnew_vertices[i][0] = inworld[0] + displacement * dir[0];
-            pnew_vertices[i][1] = inworld[1] + displacement * dir[1];
-            pnew_vertices[i][2] = 1.0f;
+            glm::vec2 force ((-ks * (P1toP2distance - resting_distance) - kd * V1toV2 * P1toP2normalized) * P1toP2normalized);
+
+            pforces_[pindices_[index + 1]] += force;
+            pforces_[pindices_[index]]     -= force;
         }
     }
 
+    // Integration
+    for (uint32 i = 0; i < SIZEX * SIZEY; ++i)
+    {
+        pvertices_[i]   += milliseconds * 0.001f * pvelocities_[i];
+        pvelocities_[i] += milliseconds * 0.001f * pforces_[i] / mass_;
+    }
+
+
     // Allocate and initialize VBO for vertex positions
     gl::BindBuffer(gl::ARRAY_BUFFER, pvbos_[0]);
-    gl::BufferData(gl::ARRAY_BUFFER, sizeof(pnew_vertices[0]) * num_vertices, pnew_vertices, gl::DYNAMIC_DRAW);
+    gl::BufferData(gl::ARRAY_BUFFER, sizeof(pvertices_), pvertices_, gl::DYNAMIC_DRAW);
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
-    */
-    delete [] pnew_vertices;
 }
+
 
 /**
  * @brief Render function
