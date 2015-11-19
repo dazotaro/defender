@@ -192,7 +192,7 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
                     glm::vec2 from_force(pvertices_[i * SIZEY + j] - force_locations[k]);
                     f32 distance = glm::length(from_force);
                     distance = (distance < x_rest_ * 0.3f ? x_rest_ * 0.3f : distance);
-                    pforces_[i * SIZEY + j] += 1.0f / (distance * distance) * glm::normalize(from_force);
+                    pforces_[i * SIZEY + j] += 3.0f / (distance * distance) * glm::normalize(from_force);
                 }
             }
         }

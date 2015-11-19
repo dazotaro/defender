@@ -149,7 +149,7 @@ void init()
     // PARTICLE SYSTEM
     // Dynamic Grid
     g_pgrid = new JU::DynamicGrid<60, 60>(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f),
-                                          1.0f, 1.8f, 0.6f, glm::vec4(0.0f, 0.5f, 0.5f, 1.0f));
+                                          1.0f, 3.8f, 1.6f, glm::vec4(0.0f, 0.5f, 0.5f, 1.0f));
 
     // PHYSICS ENGINE
     // --------------
@@ -188,6 +188,8 @@ void loop()
             break;
         }
 
+        std::printf("milliseconds = %i\n", milliseconds);
+
         // CAMERA
         // -----------
         g_pcamera->getMoveable().position_ = g_game_object_map["spaceship"]->getMoveable().position_;
@@ -212,7 +214,7 @@ void loop()
         //////////////
         // REMOVE IT!!!
         //////////////
-        SDL_Delay(1);
+        SDL_Delay(10);
         //////////////
         //////////////
 
