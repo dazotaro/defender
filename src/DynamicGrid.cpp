@@ -108,16 +108,8 @@ DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, f32 ks, f3
     // Physics Simulation
     // ------------------
     // Initialize Velocities and force accumulators
-    for (uint32 i = 0; i < SIZEX; ++i)
-    {
-        for (uint32 j = 0; j < SIZEY; ++j)
-        {
-            pvelocities_[i][j].x = 0.0f;
-            pvelocities_[i][j].y = 0.0f;
-            pforces_[i][j].x = 0.0f;
-            pforces_[i][j].y = 0.0f;
-        }
-    }
+    memset(pvelocities_, 0, sizeof(pvelocities_));
+    memset(pforces_,     0, sizeof(pforces_));
 
     for (uint32 i = 0; i < SIZEX; ++i)
     {
@@ -153,14 +145,7 @@ template <uint32 SIZEX, uint32 SIZEY>
 void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_locations, uint32 num_forces)
 {
     // Reset force accumulators
-    for (uint32 i = 0; i < SIZEX; ++i)
-    {
-        for (uint32 j = 0; j < SIZEY; ++j)
-        {
-            pforces_[i][j].x = 0.0f;
-            pforces_[i][j].y = 0.0f;
-        }
-    }
+    memset(pforces_, 0, sizeof(pforces_));
 
     // Accumulate Spring Forces
     if (SIZEX > 0 || SIZEY > 0)
