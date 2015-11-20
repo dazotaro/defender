@@ -59,8 +59,8 @@
 					<sourceEntries>
 						<entry excluding="Singleton.cpp|ResourceManager.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="graphics"/>
-						<entry excluding="Collideable.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
-						<entry excluding="DynamicGrid.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
+						<entry excluding="ParticleSystem.cpp|Collideable.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
+						<entry excluding="ParticleSystem.cpp|DynamicGrid.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -123,8 +123,8 @@
 					<sourceEntries>
 						<entry excluding="Singleton.cpp|ResourceManager.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="core"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="graphics"/>
-						<entry excluding="Collideable.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
-						<entry excluding="DynamicGrid.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
+						<entry excluding="ParticleSystem.cpp|Collideable.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="physics"/>
+						<entry excluding="ParticleSystem.cpp|DynamicGrid.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

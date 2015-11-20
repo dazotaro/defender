@@ -1,4 +1,4 @@
-// Local incluces
+// Local includes
 #include "../graphics/gl_core_4_2.hpp"			// glLoadGen generated header files (need to be included before 'SDL_oepngl.h')
 #include "../graphics/GLSLProgramHelper.hpp"	// GLSLProgramHelper
 #include "../graphics/GLSLProgram.hpp"			// GLSLProgram
@@ -12,7 +12,8 @@
 #include "SpriteObject.hpp"                     // JU::SpriteObject
 #include "SpaceShip.hpp"			            // JU::SpaceShip
 #include "Background.hpp"                       // JU::Background
-#include "DynamicGrid.hpp"                      // JU::DynamicGridObject
+#include "DynamicGrid.hpp"                      // JU::DynamicGrid
+#include "ParticleSystem.hpp"                   // JU::ParticleSystem
 #include "../core/Timer.hpp"				    // JU::Timer
 #include "../physics/PhysicsEngine.hpp"	        // PhysicsEngine
 // Global includes
@@ -25,10 +26,13 @@
 namespace
 {
 // CONSTANTS
-const unsigned int WIDTH = 1000;                            // Main viewport
-const unsigned int HEIGHT = 600;                            // Main viewport
-const unsigned int MINI_WIDTH  = 600;                       // Mini viewport
-const unsigned int MINI_HEIGHT = 100;                       // Mini viewport
+const JU::uint32 WIDTH = 1000;                            // Main viewport
+const JU::uint32 HEIGHT = 600;                            // Main viewport
+const JU::uint32 MINI_WIDTH  = 600;                       // Mini viewport
+const JU::uint32 MINI_HEIGHT = 100;                       // Mini viewport
+const JU::uint32 GRIDX = 60;
+const JU::uint32 GRIDY = 60;
+const JU::uint32 MAX_PARTICLES = 50;
 
 // GLOBAL VARIABLES
 std::map<std::string, JU::GLSLProgram> g_shader_map;
@@ -39,7 +43,8 @@ JU::SDLEventManager* g_SDL_event_manager;
 JU::Keyboard* g_keyboard;
 SDL_Window* g_mainwindow; /* Our window handle */
 JU::PhysicsEngine* g_physics_engine;
-JU::DynamicGrid<60,60>* g_pgrid;
+JU::DynamicGrid<GRIDX, GRIDY>* g_pgrid;
+JU::ParticleSystem<MAX_PARTICLES>* g_particle_system;
 }
 
 
@@ -106,8 +111,9 @@ void init()
 
     // GLSL PROGRAMS
     // -------------
-    g_shader_map["grid"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/dynamic_grid.vs", "data/shaders/simple.fs");
+    g_shader_map["grid"]    = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/dynamic_grid.vs", "data/shaders/simple.fs");
     g_shader_map["texture"] = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/texture.vs", "data/shaders/texture.fs");
+    g_shader_map["points"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/point.vs", "data/shaders/simple.fs");
 
     // GameObjects
     // -----------
@@ -146,10 +152,14 @@ void init()
     g_game_object_map[pspaceship->getName()] = pspaceship;
     g_physics_engine->addRigidBody(pspaceship->getName(),  g_game_object_map[pspaceship->getName()]->getRigidBody());
 
-    // PARTICLE SYSTEM
+    // PARTICLE SYSTEMS
+    // ----------------
     // Dynamic Grid
-    g_pgrid = new JU::DynamicGrid<60, 60>(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f),
+    g_pgrid = new JU::DynamicGrid<GRIDX, GRIDY>(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f),
                                           1.0f, 1.8f, 1.6f, glm::vec4(0.0f, 0.5f, 0.5f, 1.0f));
+    // Point-based Particle System
+    g_particle_system = new JU::ParticleSystem<MAX_PARTICLES>;
+    g_particle_system->init();
 
     // PHYSICS ENGINE
     // --------------
@@ -188,6 +198,7 @@ void loop()
             break;
         }
 
+        milliseconds = timer.getTicks();
         std::printf("milliseconds = %i\n", milliseconds);
 
         // CAMERA
@@ -196,12 +207,17 @@ void loop()
 
         // PARTICLE SYSTEM UPDATE
         // ----------------------
+        // GRID
+        // ----
         glm::vec2 force_positions[] = {g_game_object_map["spaceship"]->getMoveable().position_};
         g_pgrid->update(milliseconds, force_positions, 1);
+        // POINT-PARTICLES
+        // ---------------
+        g_particle_system->addParticle(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 0.0f), 1.0f, 1.0f, 1000);
+        g_particle_system->update(milliseconds);
 
         // GAME OBJECT UPDATE
         // ------------------
-        milliseconds = timer.getTicks();
         g_game_object_map["spaceship"]->update(milliseconds);
         g_game_object_map["enemy1"]->update(milliseconds);
         g_game_object_map["enemy2"]->update(milliseconds);
@@ -240,8 +256,12 @@ void loop()
         // Grid particle system
         p_program = &g_shader_map["grid"];
         p_program->use();
-
         g_pgrid->render(*p_program, model, view);
+
+        // Point-particle system
+        p_program = &g_shader_map["points"];
+        p_program->use();
+        g_particle_system->render(*p_program, model, view);
 
         // All other Sprites
         p_program = &g_shader_map["texture"];
@@ -345,7 +365,7 @@ int main(int argc, char *argv[])
     checkSDLError(__LINE__);
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
-    SDL_GL_SetSwapInterval(0);
+    SDL_GL_SetSwapInterval(1);
 
     init();
     loop();
