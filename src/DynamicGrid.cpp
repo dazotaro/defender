@@ -247,12 +247,6 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
             }
         }
     }
-
-
-    // Allocate and initialize VBO for vertex positions
-    gl::BindBuffer(gl::ARRAY_BUFFER, pvbos_[0]);
-    gl::BufferData(gl::ARRAY_BUFFER, sizeof(pvertices_), pvertices_, gl::DYNAMIC_DRAW);
-    gl::BindBuffer(gl::ARRAY_BUFFER, 0);
 }
 
 
@@ -273,6 +267,11 @@ void DynamicGrid<SIZEX, SIZEY>::render(const GLSLProgram &program, const glm::ma
     program.setUniform("color", color_);
 
     gl::BindVertexArray(vao_);
+
+    // Allocate and initialize VBO for vertex positions
+    gl::BindBuffer(gl::ARRAY_BUFFER, pvbos_[0]);
+    gl::BufferData(gl::ARRAY_BUFFER, sizeof(pvertices_), pvertices_, gl::DYNAMIC_DRAW);
+    gl::BindBuffer(gl::ARRAY_BUFFER, 0);
 
     // Draw using indices
     gl::DrawElements(gl::LINES, sizeof(pindices_) / sizeof(pindices_[0]), gl::UNSIGNED_INT, 0);
