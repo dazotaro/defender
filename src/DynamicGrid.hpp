@@ -34,10 +34,10 @@ class DynamicGrid : public Renderable2DInterface
 
     private:
         // Particles
-        f32         pmass_[SIZEX * SIZEY];              //!< Mass of  particles
-        glm::vec2   pvertices_[SIZEX * SIZEY];          //!< Particle coordinates
-        glm::vec2   pvelocities_[SIZEX * SIZEY];        //!< Particle velocities
-        glm::vec2   pforces_[SIZEX * SIZEY];            //!< Particle force accumulators
+        f32         pmass_[SIZEX][SIZEY];              //!< Mass of  particles
+        glm::vec2   pvertices_[SIZEX][SIZEY];          //!< Particle coordinates
+        glm::vec2   pvelocities_[SIZEX][SIZEY];        //!< Particle velocities
+        glm::vec2   pforces_[SIZEX][SIZEY];            //!< Particle force accumulators
         uint32      pindices_[2 * ( (SIZEX-1)*SIZEY + SIZEX*(SIZEY-1) )];   //!< Mesh indices
         // Damped Spring Forces
         f32 ks_;

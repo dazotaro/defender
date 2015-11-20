@@ -49,8 +49,8 @@ DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, f32 ks, f3
         {
             glm::vec3 vtx_world = model * glm::vec3(x, y, 1.0f);
             // Transform positions from local to world coordinate
-            pvertices_[i*SIZEY + j][0] = vtx_world.x;
-            pvertices_[i*SIZEY + j][1] = vtx_world.y;
+            pvertices_[i][j].x = vtx_world.x;
+            pvertices_[i][j].y = vtx_world.y;
 
             y += yinc;
         }
@@ -108,12 +108,15 @@ DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, f32 ks, f3
     // Physics Simulation
     // ------------------
     // Initialize Velocities and force accumulators
-    for (uint32 i = 0; i < SIZEX * SIZEY; ++i)
+    for (uint32 i = 0; i < SIZEX; ++i)
     {
-        pvelocities_[i].x = 0.0f;
-        pvelocities_[i].y = 0.0f;
-        pforces_[i].x = 0.0f;
-        pforces_[i].y = 0.0f;
+        for (uint32 j = 0; j < SIZEY; ++j)
+        {
+            pvelocities_[i][j].x = 0.0f;
+            pvelocities_[i][j].y = 0.0f;
+            pforces_[i][j].x = 0.0f;
+            pforces_[i][j].y = 0.0f;
+        }
     }
 
     for (uint32 i = 0; i < SIZEX; ++i)
@@ -121,9 +124,9 @@ DynamicGrid<SIZEX, SIZEY>::DynamicGrid(Moveable2D moveable, f32 mass, f32 ks, f3
         for (uint32 j = 0; j < SIZEY; ++j)
         {
             if (i == 0 || j == 0 || i == (SIZEX - 1) || j == (SIZEY - 1))
-                pmass_[i*SIZEY + j] = 0.0f;
+                pmass_[i][j] = 0.0f;
             else
-                pmass_[i*SIZEY + j] = mass;
+                pmass_[i][j] = mass;
         }
     }
 }
@@ -150,10 +153,13 @@ template <uint32 SIZEX, uint32 SIZEY>
 void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_locations, uint32 num_forces)
 {
     // Reset force accumulators
-    for (uint32 i = 0; i < SIZEX * SIZEY; ++i)
+    for (uint32 i = 0; i < SIZEX; ++i)
     {
-        pforces_[i].x = 0.0f;
-        pforces_[i].y = 0.0f;
+        for (uint32 j = 0; j < SIZEY; ++j)
+        {
+            pforces_[i][j].x = 0.0f;
+            pforces_[i][j].y = 0.0f;
+        }
     }
 
     // Accumulate Spring Forces
@@ -161,22 +167,27 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
     {
         for (JU::uint32 index = 0; index < 2 * ( (SIZEX-1)*SIZEY + SIZEX*(SIZEY-1) ); index += 2)
         {
-            glm::vec2 P1toP2 (pvertices_[pindices_[index + 1]] - pvertices_[pindices_[index]]);
+            const uint32 row0 = pindices_[index] / SIZEY;
+            const uint32 col0 = pindices_[index] % SIZEY;
+            const uint32 row1 = pindices_[index + 1] / SIZEY;
+            const uint32 col1 = pindices_[index + 1] % SIZEY;
+
+            glm::vec2 P1toP2 (pvertices_[row1][col1] - pvertices_[row0][col0]);
             JU::f32 P1toP2distance = glm::length(P1toP2);
             glm::vec2 P1toP2normalized = glm::normalize(P1toP2);
 
-            glm::vec2 V1toV2 (pvelocities_[pindices_[index + 1]] - pvelocities_[pindices_[index]]);
+            glm::vec2 V1toV2 (pvelocities_[row1][col1] - pvelocities_[row0][col0]);
 
             f32 resting_distance = 0.0f;
-            if (pvertices_[pindices_[index + 1]].x == pvertices_[pindices_[index]].y)
+            if (row0 == row1)
                 resting_distance = x_rest_;
             else
                 resting_distance = y_rest_;
 
             glm::vec2 force ((-ks_ * (P1toP2distance - resting_distance) - kd_ * V1toV2 * P1toP2normalized) * P1toP2normalized);
 
-            pforces_[pindices_[index + 1]] += force;
-            pforces_[pindices_[index]]     -= force;
+            pforces_[row1][col1] += force;
+            pforces_[row0][col0] -= force;
         }
     }
 
@@ -189,10 +200,10 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
             {
                 for (uint32 k = 0; k < num_forces; ++k)
                 {
-                    glm::vec2 from_force(pvertices_[i * SIZEY + j] - force_locations[k]);
+                    glm::vec2 from_force(pvertices_[i][j] - force_locations[k]);
                     f32 distance = glm::length(from_force);
                     distance = (distance < x_rest_ * 0.3f ? x_rest_ * 0.3f : distance);
-                    pforces_[i * SIZEY + j] += 3.0f / (distance * distance) * glm::normalize(from_force);
+                    pforces_[i][j] += 3.0f / (distance * distance) * glm::normalize(from_force);
                 }
             }
         }
@@ -205,8 +216,8 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
         {
             if (i != 0 && j != 0 && i != (SIZEX - 1) && j != (SIZEY - 1))
             {
-                pvertices_[i * SIZEY + j] += milliseconds * 0.001f * pvelocities_[i * SIZEY + j];
-                pvelocities_[i * SIZEY + j] += milliseconds * 0.001f * pforces_[i * SIZEY + j] / pmass_[i * SIZEY + j];
+                pvertices_[i][j] += milliseconds * 0.001f * pvelocities_[i][j];
+                pvelocities_[i][j] += milliseconds * 0.001f * pforces_[i][j] / pmass_[i][j];
             }
         }
     }
