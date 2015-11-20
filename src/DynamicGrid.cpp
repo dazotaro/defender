@@ -17,6 +17,19 @@
 namespace JU
 {
 
+static glm::vec2 dampedSpringForce(const glm::vec2& vtx0, const glm::vec2& vtx1,
+                       const glm::vec2& vel0, const glm::vec2& vel1,
+                       f32 resting_distance, f32 ks, f32 kd)
+{
+    glm::vec2 P1toP2 (vtx1 - vtx0);
+    JU::f32 P1toP2distance = glm::length(P1toP2);
+    glm::vec2 P1toP2normalized = glm::normalize(P1toP2);
+
+    glm::vec2 V1toV2 (vel1 - vel0);
+
+    return glm::vec2((-ks * (P1toP2distance - resting_distance) - kd * V1toV2 * P1toP2normalized) * P1toP2normalized);
+}
+
 /**
  * @brief Non-default constructor
  *
@@ -148,33 +161,61 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
     memset(pforces_, 0, sizeof(pforces_));
 
     // Accumulate Spring Forces
-    if (SIZEX > 0 || SIZEY > 0)
+    for (uint32 i = 0; i < SIZEX; ++i)
     {
-        for (JU::uint32 index = 0; index < 2 * ( (SIZEX-1)*SIZEY + SIZEX*(SIZEY-1) ); index += 2)
+        for (uint32 j = 0; j < SIZEY; ++j)
         {
-            const uint32 row0 = pindices_[index] / SIZEY;
-            const uint32 col0 = pindices_[index] % SIZEY;
-            const uint32 row1 = pindices_[index + 1] / SIZEY;
-            const uint32 col1 = pindices_[index + 1] % SIZEY;
-
-            glm::vec2 P1toP2 (pvertices_[row1][col1] - pvertices_[row0][col0]);
-            JU::f32 P1toP2distance = glm::length(P1toP2);
-            glm::vec2 P1toP2normalized = glm::normalize(P1toP2);
-
-            glm::vec2 V1toV2 (pvelocities_[row1][col1] - pvelocities_[row0][col0]);
-
-            f32 resting_distance = 0.0f;
-            if (row0 == row1)
-                resting_distance = x_rest_;
-            else
-                resting_distance = y_rest_;
-
-            glm::vec2 force ((-ks_ * (P1toP2distance - resting_distance) - kd_ * V1toV2 * P1toP2normalized) * P1toP2normalized);
-
-            pforces_[row1][col1] += force;
-            pforces_[row0][col0] -= force;
+            if (i > 0)
+            {
+                // Line to the WEST vertex
+                // -----------------------
+                uint32 row0 = i,     col0 = j;
+                uint32 row1 = i - 1, col1 = j;
+                glm::vec2 force = dampedSpringForce(pvertices_[row0][col0], pvertices_[row1][col1],
+                                                    pvelocities_[row0][col0], pvelocities_[row1][col1],
+                                                    x_rest_, ks_, kd_);
+                pforces_[row1][col1] += force;
+                pforces_[row0][col0] -= force;
+            }
+            if (i > 1)
+            {
+                // Line to the WEST-WEST vertex
+                // -----------------------
+                uint32 row0 = i,     col0 = j;
+                uint32 row1 = i - 2, col1 = j;
+                glm::vec2 force = dampedSpringForce(pvertices_[row0][col0], pvertices_[row1][col1],
+                                                    pvelocities_[row0][col0], pvelocities_[row1][col1],
+                                                    2.0f * x_rest_, ks_ * 1.5f, kd_);
+                pforces_[row1][col1] += force;
+                pforces_[row0][col0] -= force;
+            }
+            if (j > 0)
+            {
+                // Line to the NORTH vertex
+                // -----------------------
+                uint32 row0 = i, col0 = j;
+                uint32 row1 = i, col1 = j - 1;
+                glm::vec2 force = dampedSpringForce(pvertices_[row0][col0], pvertices_[row1][col1],
+                                                    pvelocities_[row0][col0], pvelocities_[row1][col1],
+                                                    y_rest_, ks_, kd_);
+                pforces_[row1][col1] += force;
+                pforces_[row0][col0] -= force;
+            }
+            if (j > 1)
+            {
+                // Line to the NORTH-NORTH vertex
+                // -----------------------
+                uint32 row0 = i, col0 = j;
+                uint32 row1 = i, col1 = j - 2;
+                glm::vec2 force = dampedSpringForce(pvertices_[row0][col0], pvertices_[row1][col1],
+                                                    pvelocities_[row0][col0], pvelocities_[row1][col1],
+                                                    2.0f * y_rest_, ks_ * 1.5f, kd_);
+                pforces_[row1][col1] += force;
+                pforces_[row0][col0] -= force;
+            }
         }
     }
+
 
     // Accumulate repulsive forces due to spaceships
     for (uint32 i = 0; i < SIZEX; ++i)
@@ -188,7 +229,7 @@ void DynamicGrid<SIZEX, SIZEY>::update(f32 milliseconds, const glm::vec2* force_
                     glm::vec2 from_force(pvertices_[i][j] - force_locations[k]);
                     f32 distance = glm::length(from_force);
                     distance = (distance < x_rest_ * 0.3f ? x_rest_ * 0.3f : distance);
-                    pforces_[i][j] += 3.0f / (distance * distance) * glm::normalize(from_force);
+                    pforces_[i][j] += 5.0f / (distance * distance) * glm::normalize(from_force);
                 }
             }
         }
