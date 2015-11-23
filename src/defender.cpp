@@ -22,6 +22,7 @@
 #include <SDL_opengl.h>
 #include <map>						            // std::map
 #include <string>					            // std::string
+#include <glm/gtc/random.hpp>                   // glm::normalizedRand2
 
 namespace
 {
@@ -32,7 +33,7 @@ const JU::uint32 MINI_WIDTH  = 600;                       // Mini viewport
 const JU::uint32 MINI_HEIGHT = 100;                       // Mini viewport
 const JU::uint32 GRIDX = 60;
 const JU::uint32 GRIDY = 60;
-const JU::uint32 MAX_PARTICLES = 1000;
+const JU::uint32 MAX_PARTICLES = 500;
 
 // GLOBAL VARIABLES
 std::map<std::string, JU::GLSLProgram> g_shader_map;
@@ -235,21 +236,23 @@ void loop()
                 if (j > 0)
                 {
                     JU::uint32 index_left = index - 1;
-                    if (glm::distance(grid_positions[index], grid_positions[index_left]) > (distancex))
+                    JU::f32 distance = glm::distance(grid_positions[index], grid_positions[index_left]);
+                    if (distance > distancex)
                     {
-                        glm::vec2 midpoint (0.5f * (grid_positions[index] + grid_positions[index_left]));
-                        glm::vec2 velocity (glm::normalize(0.5f * (grid_velocities[index] + grid_velocities[index_left])));
-                        g_particle_system->addParticle(midpoint, velocity, 1.0f, 1.0f, 1000);
+                        glm::vec2 position = glm::linearRand(grid_positions[index], grid_positions[index_left]);
+                        glm::vec2 velocity (distance * glm::circularRand(1.0f));
+                        g_particle_system->addParticle(position, velocity, 1.0f, 0.5f, 1500);
                     }
                 }
                 if (i > 0)
                 {
                     JU::uint32 index_up = index - gridy;
-                    if (glm::distance(grid_positions[index], grid_positions[index_up]) > (distancey))
+                    JU::f32 distance = glm::distance(grid_positions[index], grid_positions[index_up]);
+                    if (distance > distancey)
                     {
-                        glm::vec2 midpoint (0.5f * (grid_positions[index] + grid_positions[index_up]));
-                        glm::vec2 velocity (glm::normalize(0.5f * (grid_velocities[index] + grid_velocities[index_up])));
-                        g_particle_system->addParticle(midpoint, velocity, 1.0f, 1.0f, 1000);
+                        glm::vec2 position = glm::linearRand(grid_positions[index], grid_positions[index_up]);
+                        glm::vec2 velocity (distance * glm::circularRand(1.0f));
+                        g_particle_system->addParticle(position, velocity, 1.0f, 0.5f, 1500);
                     }
                 }
             }
