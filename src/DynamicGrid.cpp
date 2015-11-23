@@ -149,6 +149,62 @@ DynamicGrid<SIZEX, SIZEY>::~DynamicGrid()
 
 
 /**
+ * @brief Get the dimensions (X, Y) of the grid
+ *
+ * @param sizex      Number of particles on X direction
+ * @param sizey      Number of particles on Y direction
+ *
+ */
+template <uint32 SIZEX, uint32 SIZEY>
+void DynamicGrid<SIZEX, SIZEY>::getDimensions(uint32& sizex, uint32& sizey) const
+{
+    sizex = SIZEX;
+    sizey = SIZEY;
+}
+
+
+/**
+ * @brief Get the positions of all particles in the grid
+ *
+ * @param ppositions Pointer to pointer to vec2 to the positions
+ *
+ */
+template <uint32 SIZEX, uint32 SIZEY>
+void DynamicGrid<SIZEX, SIZEY>::getPositions(const glm::vec2** ppositions) const
+{
+    *ppositions = &pvertices_[0][0];
+}
+
+
+/**
+* @brief Get the velocities of all particles in the grid
+*
+* @param pvelocities Pointer to pointer to vec2 to velocities
+*
+*/
+template <uint32 SIZEX, uint32 SIZEY>
+void DynamicGrid<SIZEX, SIZEY>::getVelocities(const glm::vec2** pvelocities) const
+{
+   *pvelocities = &pvelocities_[0][0];
+}
+
+
+/**
+ * @brief Get the resting distance between particles
+ *
+ * @param xrest Resting distance on X direction
+ * @param yrest Resting distance on Y direction
+ *
+ */
+template <uint32 SIZEX, uint32 SIZEY>
+void DynamicGrid<SIZEX, SIZEY>::getRestDistances(f32& xrest, f32& yrest) const
+{
+    xrest = x_rest_;
+    yrest = y_rest_;
+}
+
+
+/**
  * @brief Update function
  *
  * @param milliseconds  Time elapsed since the last call (in milliseconds)

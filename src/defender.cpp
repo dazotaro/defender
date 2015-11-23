@@ -32,7 +32,7 @@ const JU::uint32 MINI_WIDTH  = 600;                       // Mini viewport
 const JU::uint32 MINI_HEIGHT = 100;                       // Mini viewport
 const JU::uint32 GRIDX = 60;
 const JU::uint32 GRIDY = 60;
-const JU::uint32 MAX_PARTICLES = 50;
+const JU::uint32 MAX_PARTICLES = 1000;
 
 // GLOBAL VARIABLES
 std::map<std::string, JU::GLSLProgram> g_shader_map;
@@ -200,7 +200,7 @@ void loop()
 
         milliseconds = timer.getTicks();
         timer.start();
-        std::printf("milliseconds = %i\n", milliseconds);
+        //std::printf("milliseconds = %i\n", milliseconds);
 
         // CAMERA
         // -----------
@@ -212,9 +212,49 @@ void loop()
         // ----
         glm::vec2 force_positions[] = {g_game_object_map["spaceship"]->getMoveable().position_};
         g_pgrid->update(milliseconds, force_positions, 1);
+        // Get info from Dynamic Grid to create particles
+        const glm::vec2* grid_positions;
+        const glm::vec2* grid_velocities;
+        JU::uint32 gridx = 0, gridy = 0;          // Grid dimensions on both principal axis
+        JU::f32 xrest = 0.0f, yrest = 0.0f;       // Resting distance of springs
+        g_pgrid->getDimensions(gridx, gridy);
+        g_pgrid->getPositions(&grid_positions);
+        g_pgrid->getVelocities(&grid_velocities);
+        g_pgrid->getRestDistances(xrest, yrest);
+
+        const JU::f32 distancex = xrest * 4.0f;
+        const JU::f32 distancey = yrest * 4.0f;
+
         // POINT-PARTICLES
         // ---------------
-        g_particle_system->addParticle(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 0.0f), 1.0f, 1.0f, 1000);
+        for (JU::uint32 i = 0; i < gridx; ++i)
+        {
+            for (JU::uint32 j = 0; j < gridy; ++j)
+            {
+                JU::uint32 index = i * gridy + j;
+                if (j > 0)
+                {
+                    JU::uint32 index_left = index - 1;
+                    if (glm::distance(grid_positions[index], grid_positions[index_left]) > (distancex))
+                    {
+                        glm::vec2 midpoint (0.5f * (grid_positions[index] + grid_positions[index_left]));
+                        glm::vec2 velocity (glm::normalize(0.5f * (grid_velocities[index] + grid_velocities[index_left])));
+                        g_particle_system->addParticle(midpoint, velocity, 1.0f, 1.0f, 1000);
+                    }
+                }
+                if (i > 0)
+                {
+                    JU::uint32 index_up = index - gridy;
+                    if (glm::distance(grid_positions[index], grid_positions[index_up]) > (distancey))
+                    {
+                        glm::vec2 midpoint (0.5f * (grid_positions[index] + grid_positions[index_up]));
+                        glm::vec2 velocity (glm::normalize(0.5f * (grid_velocities[index] + grid_velocities[index_up])));
+                        g_particle_system->addParticle(midpoint, velocity, 1.0f, 1.0f, 1000);
+                    }
+                }
+            }
+        }
+        //g_particle_system->addParticle(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 0.0f), 1.0f, 1.0f, 1000);
         g_particle_system->update(milliseconds);
 
         // GAME OBJECT UPDATE

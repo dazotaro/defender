@@ -126,6 +126,8 @@ void ParticleSystem<MAX_PARTICLES>::update(uint32 milliseconds)
             ++i;
         }
     }
+
+    std::printf("ParticleSystem: Particle count = %i\n", particle_count_);
 }
 
 
@@ -146,7 +148,7 @@ void ParticleSystem<MAX_PARTICLES>::render(const GLSLProgram &program, const glm
     if (pshare_texture_)
         program.setUniform("tex_image", static_cast<int>(JU::Singleton<TextureManager>::getInstance()->bindTexture(pshare_texture_->pdata_->getTextureId())));
 
-    gl::PointSize(20);
+    gl::PointSize(10);
 
     gl::BindVertexArray(vao_);
 

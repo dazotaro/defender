@@ -28,7 +28,12 @@ class DynamicGrid : public Renderable2DInterface
         virtual ~DynamicGrid();
 
     public:
-        // Setters
+        // Getters
+        void getDimensions(uint32& sizex, uint32& sizey) const;
+        void getPositions(const glm::vec2** ppositions) const;
+        void getVelocities(const glm::vec2** pvelociites) const;
+        void getRestDistances(f32& xrest, f32& yrest) const;
+
         void update(JU::f32 milliseconds, const glm::vec2* force_locations = nullptr, uint32 num_forces = 0);
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const override;
 
