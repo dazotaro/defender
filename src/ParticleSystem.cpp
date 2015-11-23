@@ -126,8 +126,6 @@ void ParticleSystem<MAX_PARTICLES>::update(uint32 milliseconds)
             ++i;
         }
     }
-
-    std::printf("ParticleSystem: Particle count = %i\n", particle_count_);
 }
 
 
