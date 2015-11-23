@@ -14,10 +14,11 @@ namespace JU
 {
 
 template <uint32 MAX_PARTICLES>
-ParticleSystem<MAX_PARTICLES>::ParticleSystem() : initialized_(false), particle_count_(0), vao_(0), vbo_(0), pshare_texture_(nullptr)
+ParticleSystem<MAX_PARTICLES>::ParticleSystem() : initialized_(false), particle_count_(0), vao_(0), pshare_texture_(nullptr)
 {
     memset(ppositions_, 0, sizeof(ppositions_));
     memset(pparticles_, 0, sizeof(pparticles_));
+    memset(pcolors_,    0, sizeof(pcolors_));
 }
 
 
@@ -37,7 +38,7 @@ void ParticleSystem<MAX_PARTICLES>::terminate()
         Singleton<ResourceManager<const Texture>>::getInstance()->releaseResource(pshare_texture_);
 
     gl::DeleteVertexArrays(1, &vao_);
-    gl::DeleteBuffers(1, &vbo_);
+    gl::DeleteBuffers(2, pvbos_);
 }
 
 
@@ -49,7 +50,7 @@ void ParticleSystem<MAX_PARTICLES>::init()
 
     // Texture
     // ----------------
-    const char* texture_filename ("data/textures/sparkle.png");
+    const char* texture_filename ("data/textures/sparkle_mono.png");
     ResourceManager<const Texture>* prm_texture = Singleton<ResourceManager<const Texture>>::getInstance();
     if (!(pshare_texture_ = prm_texture->referenceResource(texture_filename)))
     {
@@ -64,14 +65,21 @@ void ParticleSystem<MAX_PARTICLES>::init()
     gl::BindVertexArray(vao_);
 
     // VBO
-    gl::GenBuffers(1, &vbo_);
+    gl::GenBuffers(2, pvbos_);
 
     // Allocate and initialize VBO for vertex positions
-    gl::BindBuffer(gl::ARRAY_BUFFER, vbo_);
+    gl::BindBuffer(gl::ARRAY_BUFFER, pvbos_[0]);
     gl::BufferData(gl::ARRAY_BUFFER, sizeof(ppositions_), ppositions_, gl::DYNAMIC_DRAW);
     // Insert the VBO into the VAO
     gl::EnableVertexAttribArray(0);
     gl::VertexAttribPointer(0, 2, gl::FLOAT, gl::FALSE_, 0, 0);
+
+    // Allocate and initialize VBO for color
+    gl::BindBuffer(gl::ARRAY_BUFFER, pvbos_[1]);
+    gl::BufferData(gl::ARRAY_BUFFER, sizeof(pcolors_), pcolors_, gl::DYNAMIC_DRAW);
+    // Insert the VBO into the VAO
+    gl::EnableVertexAttribArray(1);
+    gl::VertexAttribPointer(1, 4, gl::FLOAT, gl::FALSE_, 0, 0);
 
     // Unbind
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
@@ -82,12 +90,17 @@ void ParticleSystem<MAX_PARTICLES>::init()
 
 
 template <uint32 MAX_PARTICLES>
-void ParticleSystem<MAX_PARTICLES>::addParticle(const glm::vec2& position, const glm::vec2& velocity, f32 mass, f32 kf, uint32 time)
+void ParticleSystem<MAX_PARTICLES>::addParticle(const glm::vec2& position,
+                                                const glm::vec2& velocity,
+                                                f32 mass,
+                                                f32 kf,
+                                                uint32 time,
+                                                const glm::vec4& color)
 {
     if (particle_count_ < MAX_PARTICLES)
     {
         ppositions_[particle_count_] = position;
-
+        pcolors_[particle_count_]    = color;
         pparticles_[particle_count_].velocity_ = velocity;
         pparticles_[particle_count_].kf_       = kf;
         pparticles_[particle_count_].mass_     = mass;
@@ -112,6 +125,7 @@ void ParticleSystem<MAX_PARTICLES>::update(uint32 milliseconds)
         if (pparticles_[i].time_ <= 0)
         {
             ppositions_[i] = ppositions_[particle_count_ - 1];
+            pcolors_[i] = pcolors_[particle_count_ - 1];
             memcpy(&pparticles_[i], &pparticles_[particle_count_ - 1], sizeof(pparticles_[0]));
             --particle_count_;
         }
@@ -141,7 +155,6 @@ template <uint32 MAX_PARTICLES>
 void ParticleSystem<MAX_PARTICLES>::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
     program.setUniform("V", view);
-    program.setUniform("color", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
     if (pshare_texture_)
         program.setUniform("tex_image", static_cast<int>(JU::Singleton<TextureManager>::getInstance()->bindTexture(pshare_texture_->pdata_->getTextureId())));
@@ -150,9 +163,13 @@ void ParticleSystem<MAX_PARTICLES>::render(const GLSLProgram &program, const glm
 
     gl::BindVertexArray(vao_);
 
-    // Allocate and initialize VBO for vertex positions
-    gl::BindBuffer(gl::ARRAY_BUFFER, vbo_);
+    // Transfer positions
+    gl::BindBuffer(gl::ARRAY_BUFFER, pvbos_[0]);
     gl::BufferData(gl::ARRAY_BUFFER, sizeof(ppositions_), ppositions_, gl::DYNAMIC_DRAW);
+    // Transfer colors
+    gl::BindBuffer(gl::ARRAY_BUFFER, pvbos_[1]);
+    gl::BufferData(gl::ARRAY_BUFFER, sizeof(pcolors_), pcolors_, gl::DYNAMIC_DRAW);
+
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
 
     // Draw using indices

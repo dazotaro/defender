@@ -157,7 +157,7 @@ void init()
     // ----------------
     // Dynamic Grid
     g_pgrid = new JU::DynamicGrid<GRIDX, GRIDY>(JU::Moveable2D(0.0f, 0.0f, 0.0f, 30.0f, 30.0f),
-                                          1.0f, 1.8f, 1.6f, glm::vec4(0.0f, 0.5f, 0.5f, 1.0f));
+                                          1.0f, 1.8f, 1.6f, glm::vec4(0.4f, 0.6f, 0.8f, 1.0f));
     // Point-based Particle System
     g_particle_system = new JU::ParticleSystem<MAX_PARTICLES>;
     g_particle_system->init();
@@ -241,7 +241,8 @@ void loop()
                     {
                         glm::vec2 position = glm::linearRand(grid_positions[index], grid_positions[index_left]);
                         glm::vec2 velocity (distance * glm::circularRand(1.0f));
-                        g_particle_system->addParticle(position, velocity, 1.0f, 0.5f, 1500);
+                        glm::vec4 color(glm::circularRand(1.5f), 0.0f, 1.0f);
+                        g_particle_system->addParticle(position, velocity, 1.0f, 0.5f, 1500, color);
                     }
                 }
                 if (i > 0)
@@ -252,7 +253,8 @@ void loop()
                     {
                         glm::vec2 position = glm::linearRand(grid_positions[index], grid_positions[index_up]);
                         glm::vec2 velocity (distance * glm::circularRand(1.0f));
-                        g_particle_system->addParticle(position, velocity, 1.0f, 0.5f, 1500);
+                        glm::vec4 color(glm::circularRand(1.5f), 0.0f, 1.0f);
+                        g_particle_system->addParticle(position, velocity, 1.0f, 0.5f, 1500, color);
                     }
                 }
             }

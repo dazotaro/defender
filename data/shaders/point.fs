@@ -7,5 +7,5 @@ uniform sampler2D tex_image;
 
 void main()
 {
-    outputColor = texture(tex_image, gl_PointCoord);   
+    outputColor = vcolor * texture(tex_image, gl_PointCoord);   
 }

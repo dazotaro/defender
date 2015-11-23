@@ -24,7 +24,7 @@ class ParticleSystem : public Renderable2DInterface
         void init();
         void terminate();
 
-        void addParticle(const glm::vec2& position, const glm::vec2& velocity, f32 mass, f32 kf, uint32 time);
+        void addParticle(const glm::vec2& position, const glm::vec2& velocity, f32 mass, f32 kf, uint32 time, const glm::vec4& color);
         void update(uint32 milliseconds);
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const override;
 
@@ -43,11 +43,12 @@ class ParticleSystem : public Renderable2DInterface
         bool initialized_;                      //!< Has the system been initialized?
         // Physics Simulation
         glm::vec2 ppositions_[MAX_PARTICLES];   //!< 2D position
-        Particle  pparticles_[MAX_PARTICLES];    //!< Physics-related particle data
+        glm::vec4 pcolors_[MAX_PARTICLES];      //!< 2D position
+        Particle  pparticles_[MAX_PARTICLES];   //!< Physics-related particle data
         uint32    particle_count_;
         // OpenGL
         GLuint   vao_;
-        GLuint   vbo_;
+        GLuint   pvbos_[2];
         Shareable<const Texture>*   pshare_texture_;
 };
 

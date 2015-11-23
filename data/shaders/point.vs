@@ -1,8 +1,8 @@
 #version 420
 layout(location = 0) in vec2 VertexPosition;
+layout(location = 1) in vec4 color;
 
 uniform mat3 V;
-uniform vec4 color;
 
 out vec4 vcolor;
 
