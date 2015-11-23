@@ -113,7 +113,7 @@ void init()
     // -------------
     g_shader_map["grid"]    = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/dynamic_grid.vs", "data/shaders/simple.fs");
     g_shader_map["texture"] = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/texture.vs", "data/shaders/texture.fs");
-    g_shader_map["points"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/point.vs", "data/shaders/simple.fs");
+    g_shader_map["points"]  = JU::GLSLProgramHelper::compileAndLinkShader("data/shaders/point.vs", "data/shaders/point.fs");
 
     // GameObjects
     // -----------
@@ -365,7 +365,7 @@ int main(int argc, char *argv[])
     checkSDLError(__LINE__);
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
-    SDL_GL_SetSwapInterval(0);
+    SDL_GL_SetSwapInterval(1);
 
     init();
     loop();

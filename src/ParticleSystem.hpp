@@ -22,6 +22,7 @@ class ParticleSystem : public Renderable2DInterface
         virtual ~ParticleSystem();
 
         void init();
+        void terminate();
 
         void addParticle(const glm::vec2& position, const glm::vec2& velocity, f32 mass, f32 kf, uint32 time);
         void update(uint32 milliseconds);
@@ -47,6 +48,7 @@ class ParticleSystem : public Renderable2DInterface
         // OpenGL
         GLuint   vao_;
         GLuint   vbo_;
+        Shareable<const Texture>*   pshare_texture_;
 };
 
 } /* namespace JU */

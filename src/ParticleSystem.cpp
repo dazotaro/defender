@@ -14,7 +14,7 @@ namespace JU
 {
 
 template <uint32 MAX_PARTICLES>
-ParticleSystem<MAX_PARTICLES>::ParticleSystem() : initialized_(false), particle_count_(0), vao_(0), vbo_(0)
+ParticleSystem<MAX_PARTICLES>::ParticleSystem() : initialized_(false), particle_count_(0), vao_(0), vbo_(0), pshare_texture_(nullptr)
 {
     memset(ppositions_, 0, sizeof(ppositions_));
     memset(pparticles_, 0, sizeof(pparticles_));
@@ -25,16 +25,38 @@ template <uint32 MAX_PARTICLES>
 ParticleSystem<MAX_PARTICLES>::~ParticleSystem()
 {
     if (initialized_)
-    {
-        gl::DeleteVertexArrays(1, &vao_);
-        gl::DeleteBuffers(1, &vbo_);
-    }
+        terminate();
+}
+
+
+template <uint32 MAX_PARTICLES>
+void ParticleSystem<MAX_PARTICLES>::terminate()
+{
+    // Release Texture
+    if (pshare_texture_)
+        Singleton<ResourceManager<const Texture>>::getInstance()->releaseResource(pshare_texture_);
+
+    gl::DeleteVertexArrays(1, &vao_);
+    gl::DeleteBuffers(1, &vbo_);
 }
 
 
 template <uint32 MAX_PARTICLES>
 void ParticleSystem<MAX_PARTICLES>::init()
 {
+    if (initialized_)
+        terminate();
+
+    // Texture
+    // ----------------
+    const char* texture_filename ("data/textures/sparkle.png");
+    ResourceManager<const Texture>* prm_texture = Singleton<ResourceManager<const Texture>>::getInstance();
+    if (!(pshare_texture_ = prm_texture->referenceResource(texture_filename)))
+    {
+        Texture* ptexture = new Texture(texture_filename);
+        pshare_texture_ = prm_texture->addResource(texture_filename, ptexture);
+    }
+
     // Transfer the data to the GPU
     // -------------
     // VAO
@@ -120,6 +142,11 @@ void ParticleSystem<MAX_PARTICLES>::render(const GLSLProgram &program, const glm
 {
     program.setUniform("V", view);
     program.setUniform("color", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+
+    if (pshare_texture_)
+        program.setUniform("tex_image", static_cast<int>(JU::Singleton<TextureManager>::getInstance()->bindTexture(pshare_texture_->pdata_->getTextureId())));
+
+    gl::PointSize(20);
 
     gl::BindVertexArray(vao_);
 
