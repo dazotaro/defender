@@ -199,6 +199,7 @@ void loop()
         }
 
         milliseconds = timer.getTicks();
+        timer.start();
         std::printf("milliseconds = %i\n", milliseconds);
 
         // CAMERA
@@ -225,7 +226,6 @@ void loop()
         g_game_object_map["enemy4"]->update(milliseconds);
 
 
-        timer.start();
 
         //////////////
         // REMOVE IT!!!
@@ -365,7 +365,7 @@ int main(int argc, char *argv[])
     checkSDLError(__LINE__);
 
     /* This makes our buffer swap syncronized with the monitor's vertical refresh */
-    SDL_GL_SetSwapInterval(1);
+    SDL_GL_SetSwapInterval(0);
 
     init();
     loop();
