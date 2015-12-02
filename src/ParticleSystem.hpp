@@ -24,7 +24,13 @@ class ParticleSystem : public Renderable2DInterface
         void init();
         void terminate();
 
-        void addParticle(const glm::vec2& position, const glm::vec2& velocity, f32 mass, f32 kf, uint32 time, const glm::vec4& color);
+        void addParticle(const glm::vec2& position,
+                         const glm::vec2& velocity,
+                         f32 mass,
+                         f32 kf,
+                         f32 viscosity_threshold,
+                         uint32 time,
+                         const glm::vec4& color);
         void update(uint32 milliseconds);
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const override;
 
@@ -33,10 +39,11 @@ class ParticleSystem : public Renderable2DInterface
         // Type definitions
         struct Particle
         {
-            glm::vec2 velocity_;    //!< Velocity
-            f32       mass_;        //!< Particle's mass
-            f32       kf_;          //!< Friction coefficient
-            int32     time_;        //!< Particle's lifetime (in milliseconds)
+            glm::vec2 velocity_;                //!< Velocity
+            f32       mass_;                    //!< Particle's mass
+            f32       kf_;                      //!< Friction coefficient
+            f32       viscosity_threshold_;     //!< Speed at which the model of the viscosity switches from linear to quadratic
+            int32     time_;                    //!< Particle's lifetime (in milliseconds)
         };
 
         // General

@@ -13,6 +13,38 @@
 namespace JU
 {
 
+glm::vec2 computeViscosityForce(f32 kf, const glm::vec2& velocity, f32 viscosity_threshold)
+{
+    glm::vec2 force;
+
+    static uint32 above = 0;
+    static uint32 below = 0;
+    static uint32 hits = 0;
+
+    f32 speed = glm::length(velocity);
+
+    if (speed > viscosity_threshold)
+    {
+        force = kf * speed * velocity;
+
+        above++;
+        hits++;
+    }
+    else
+    {
+        force = kf * velocity;
+
+        below++;
+        hits++;
+    }
+
+    if (hits % 5000 == 0)
+        std::printf("Above %i, below %i\n", above, below);
+
+    return force;
+}
+
+
 template <uint32 MAX_PARTICLES>
 ParticleSystem<MAX_PARTICLES>::ParticleSystem() : initialized_(false), particle_count_(0), vao_(0), pshare_texture_(nullptr)
 {
@@ -94,6 +126,7 @@ void ParticleSystem<MAX_PARTICLES>::addParticle(const glm::vec2& position,
                                                 const glm::vec2& velocity,
                                                 f32 mass,
                                                 f32 kf,
+                                                f32 viscosity_threshold,
                                                 uint32 time,
                                                 const glm::vec4& color)
 {
@@ -101,10 +134,11 @@ void ParticleSystem<MAX_PARTICLES>::addParticle(const glm::vec2& position,
     {
         ppositions_[particle_count_] = position;
         pcolors_[particle_count_]    = color;
-        pparticles_[particle_count_].velocity_ = velocity;
-        pparticles_[particle_count_].kf_       = kf;
-        pparticles_[particle_count_].mass_     = mass;
-        pparticles_[particle_count_].time_     = time;
+        pparticles_[particle_count_].velocity_              = velocity;
+        pparticles_[particle_count_].mass_                  = mass;
+        pparticles_[particle_count_].kf_                    = kf;
+        pparticles_[particle_count_].viscosity_threshold_   = viscosity_threshold;
+        pparticles_[particle_count_].time_                  = time;
 
         ++particle_count_;
     }
@@ -121,7 +155,7 @@ void ParticleSystem<MAX_PARTICLES>::update(uint32 milliseconds)
     {
         pparticles_[i].time_ -= milliseconds;
 
-        // Is this particle's judgment frame?
+        // Is this particle's last frame?
         if (pparticles_[i].time_ <= 0)
         {
             ppositions_[i] = ppositions_[particle_count_ - 1];
@@ -131,7 +165,7 @@ void ParticleSystem<MAX_PARTICLES>::update(uint32 milliseconds)
         }
         else
         {
-            glm::vec2 force = -pparticles_[i].kf_ * pparticles_[i].velocity_;
+            glm::vec2 force = -computeViscosityForce(pparticles_[i].kf_, pparticles_[i].velocity_, pparticles_[i].viscosity_threshold_);
 
             // Integrate
             ppositions_[i] += seconds * pparticles_[i].velocity_;

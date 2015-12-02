@@ -240,9 +240,9 @@ void loop()
                     if (distance > distancex)
                     {
                         glm::vec2 position = glm::linearRand(grid_positions[index], grid_positions[index_left]);
-                        glm::vec2 velocity (distance * glm::circularRand(1.0f));
+                        glm::vec2 velocity (3.0f * distance * glm::circularRand(1.0f));
                         glm::vec4 color(glm::circularRand(1.5f), 0.0f, 1.0f);
-                        g_particle_system->addParticle(position, velocity, 1.0f, 0.5f, 1500, color);
+                        g_particle_system->addParticle(position, velocity, 1.0f, 0.5f, 1.5f * distancex, 1500, color);
                     }
                 }
                 if (i > 0)
@@ -252,9 +252,9 @@ void loop()
                     if (distance > distancey)
                     {
                         glm::vec2 position = glm::linearRand(grid_positions[index], grid_positions[index_up]);
-                        glm::vec2 velocity (distance * glm::circularRand(1.0f));
+                        glm::vec2 velocity (3.0f * distance * glm::circularRand(1.0f));
                         glm::vec4 color(glm::circularRand(1.5f), 0.0f, 1.0f);
-                        g_particle_system->addParticle(position, velocity, 1.0f, 0.5f, 1500, color);
+                        g_particle_system->addParticle(position, velocity, 1.0f, 0.5f, 1.5f * distancey, 1500, color);
                     }
                 }
             }
