@@ -9,7 +9,7 @@
 #include "Texture.hpp"
 #include "ImageHelper.hpp"  // imageInvertVertically
 // Global includes
-#include <SOIL.h>           // SOIL_load_image
+#include <SOIL/SOIL.h>           // SOIL_load_image
 #include <cstdio>           // std::printf
 #include <cstdlib>          // exit
 
