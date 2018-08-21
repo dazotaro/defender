@@ -14,11 +14,24 @@
 namespace JU
 {
 
+/**
+ * Non-default constructor
+ *
+ * @param center Center point
+ * @param radius Radius
+ */
 BoundingCircle::BoundingCircle(const glm::vec2 center, f32 radius) :
         center_(center), radius_(radius)
 {
 }
 
+
+/**
+ * Non-default constructor
+ *
+ * @param vertices Address of array of vertices
+ * @param size 	   Size of the array
+ */
 BoundingCircle::BoundingCircle(const glm::vec2* vertices, int size)
 {
     glm::vec2 pmin, pmax;
@@ -33,6 +46,13 @@ BoundingCircle::BoundingCircle(const glm::vec2* vertices, int size)
     radius_ = glm::distance(pmin, pmax) * 0.5f;
 }
 
+
+/**
+ * Non-default constructor
+ *
+ * @param pmin Minimum (x,y) of the rectangle
+ * @param pmax Maximum (x,y) of the rectangle
+ */
 BoundingRectangle::BoundingRectangle(const glm::vec2 pmin, const glm::vec2 pmax) :
         pmin_(pmin), pmax_(pmax)
 {

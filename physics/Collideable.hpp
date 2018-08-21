@@ -17,6 +17,10 @@ namespace JU
 template <typename T>
 class Shareable;
 
+
+/**
+ * This class defines a collideable object
+ */
 template <typename T>
 class Collideable
 {

@@ -13,6 +13,15 @@
 namespace JU
 {
 
+/**
+ * Compute a bounding rectangle
+ *
+ * @param points Array with input 2D points
+ * @param size	 Size of the array
+ * @param pmin	 Minimum point of the rectangle
+ * @param pmax	 Maximum point of the rectangle
+ * @return True if successful, false otherwise
+ */
 bool computeBoundingRectangle(const glm::vec2* points, int size,
         glm::vec2& pmin, glm::vec2& pmax)
 {
@@ -51,6 +60,14 @@ bool computeBoundingRectangle(const glm::vec2* points, int size,
     return true;
 }
 
+
+/**
+ * Test collision between two bounding circles
+ *
+ * @param circle1 First circle
+ * @param circle2 Second circle
+ * @return True if colliding, false otherwise
+ */
 bool testCollision(const BoundingCircle& circle1, const BoundingCircle& circle2)
 {
     /*
@@ -74,8 +91,19 @@ bool testCollision(const BoundingCircle& circle1, const BoundingCircle& circle2)
     return false;
 }
 
+
+/**
+ * Test collision between two bounding rectangles
+ *
+ * \todo rewrite huge if-statement
+ *
+ * @param rec1 First rectangle
+ * @param rec2 Second rectangle
+ * @return True if colliding, false otherwise
+ */
 bool testCollision(const BoundingRectangle& rec1, const BoundingRectangle& rec2)
 {
+	// REWRITE (simplify) this massive if-statement
     if ((((rec1.pmax_[0] > rec2.pmin_[0]) && (rec1.pmax_[0] < rec2.pmax_[0]))
             || ((rec1.pmin_[0] < rec2.pmax_[0])
                     && (rec1.pmin_[0] > rec2.pmin_[0])))

@@ -20,6 +20,9 @@ class Moveable2D;
 template <typename T>
 class Shareable;
 
+/**
+ * Class storing a rigid body
+ */
 class RigidBody
 {
     public:
@@ -32,7 +35,7 @@ class RigidBody
 
     private:
         Shareable<BoundingCircle>* pshare_boundingbox_; //!< BoundingArea object for collision detection/resolution
-        Moveable2D*                pmoveable_;
+        Moveable2D*                pmoveable_;			//!< address of moveable object (rotation and translation)
 };
 
 } /* namespace JU */

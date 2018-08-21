@@ -13,12 +13,22 @@
 namespace JU
 {
 
+/**
+ * Non-default constructor\
+ *
+ * @param pshare_boundingarea (shareable) bounding area object
+ * @param pshare_mesh 		  (shareable) mesh
+ */
 template <typename T>
 Collideable::Collideable(Shareable<T>* pshare_boundingarea, Shareable<Mesh2D>* pshare_mesh)
                     : pshare_boundingarea_(pshare_boundingarea), pshare_mesh_(pshare_mesh)
 {
 }
 
+
+/**
+ * Destructor
+ */
 template <typename T>
 Collideable::~Collideable()
 {
@@ -27,6 +37,11 @@ Collideable::~Collideable()
 }
 
 
+/**
+ * Getter function
+ *
+ * @return (shareable) bounding area
+ */
 template <typename T>
 const T* Collideable::getBoundingArea() const
 {

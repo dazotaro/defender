@@ -12,12 +12,22 @@
 namespace JU
 {
 
+
+/**
+ * Non-default Constructor
+ *
+ * @param pshare_boundingbox (shareable) bounding box
+ * @param pmoveable			 Address of moveable object (rotation and translation)
+ */
 RigidBody::RigidBody(Shareable<BoundingCircle>* pshare_boundingbox, Moveable2D* pmoveable)
                 : pshare_boundingbox_(pshare_boundingbox), pmoveable_(pmoveable)
 {
 }
 
 
+/**
+ * Destructor
+ */
 RigidBody::~RigidBody()
 {
     if (pshare_boundingbox_)
@@ -25,18 +35,33 @@ RigidBody::~RigidBody()
 }
 
 
+/**
+ * Set moveable object
+ *
+ * @param pmoveable Address of moveable object
+ */
 void RigidBody::setMoveable(Moveable2D* pmoveable)
 {
     pmoveable_ = pmoveable;
 }
 
 
+/**
+ * Get moveable object
+ *
+ * @return Address of moveable object
+ */
 const Moveable2D* RigidBody::getMoveable() const
 {
     return pmoveable_;
 }
 
 
+/**
+ * Get bounding area
+ *
+ * @return Address of bounding area ojbect
+ */
 const BoundingCircle* RigidBody::getBoundingArea() const
 {
     return pshare_boundingbox_->pdata_;

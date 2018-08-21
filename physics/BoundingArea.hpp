@@ -14,6 +14,10 @@
 namespace JU
 {
 
+
+/**
+ * Class to implement a bounding circle
+ */
 class BoundingCircle
 {
     public:
@@ -21,20 +25,26 @@ class BoundingCircle
         BoundingCircle(const glm::vec2 center, f32 radius);
         BoundingCircle(const glm::vec2* vertices, int size);
 
-        glm::vec2 center_;
-        f32 radius_;
+        glm::vec2 center_;		//!< Center of the circle
+        f32 radius_;			//!< Radius of the circle
 };
 
+/**
+ * Class to implement a bounding rectangle
+ */
 class BoundingRectangle
 {
     public:
         BoundingRectangle(const glm::vec2 pmin, const glm::vec2 pmax);
         BoundingRectangle(const glm::vec2* vertices, int size);
 
-        glm::vec2 pmin_;
-        glm::vec2 pmax_;
+        glm::vec2 pmin_;	//!< Minimum (x, y) of the rectangle
+        glm::vec2 pmax_;	//!< Maximum (x, y) of the rectangle
 };
 
+/**
+ * Generic bounding area class (not in use, remove it?)
+ */
 template<typename T>
 class BoundingArea
 {

@@ -20,6 +20,9 @@ namespace JU
 // Forward Declarations
 class RigidBody;
 
+/**
+ * Class to implement a physics engine (at this point just handles collisions)
+ */
 class PhysicsEngine
 {
     public:

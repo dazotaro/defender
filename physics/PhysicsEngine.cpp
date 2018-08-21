@@ -16,21 +16,35 @@
 namespace JU
 {
 
+/**
+ * Default Constructor
+ */
 PhysicsEngine::PhysicsEngine()
 {
-    // TODO Auto-generated constructor stub
-
 }
 
+
+/**
+ * Destructor
+ */
 PhysicsEngine::~PhysicsEngine()
 {
-    // TODO Auto-generated destructor stub
 }
 
+
+/**
+ * Initialization function
+ */
 void PhysicsEngine::init()
 {
 }
 
+
+/**
+ * Update collisions between rigid objects
+ *
+ * @param milliseconds Milliseconds elapsed since the last call
+ */
 void PhysicsEngine::updateCollisions(uint32 milliseconds)
 {
     uint32 num_bodies = mrigid_bodies_.size();
@@ -70,8 +84,14 @@ void PhysicsEngine::updateCollisions(uint32 milliseconds)
     delete[] pcircles;
 }
 
-void PhysicsEngine::addRigidBody(const std::string& name,
-        RigidBody* prigid_body)
+
+/**
+ * Add a rigid body
+ *
+ * @param name 			Name of the rigid body
+ * @param prigid_body	Address of the rigid body
+ */
+void PhysicsEngine::addRigidBody(const std::string& name, RigidBody* prigid_body)
 {
     if (mrigid_bodies_.find(name) == mrigid_bodies_.end())
     {
@@ -79,6 +99,12 @@ void PhysicsEngine::addRigidBody(const std::string& name,
     }
 }
 
+
+/**
+ * Remove a rigid body
+ *
+ * @param name Name of the rigid body
+ */
 void PhysicsEngine::removeRigidBody(const std::string& name)
 {
     mrigid_bodies_.erase(name);
