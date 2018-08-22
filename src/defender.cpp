@@ -142,11 +142,9 @@ void init()
     g_game_object_map[psprite->getName()] = psprite;
     g_physics_engine->addRigidBody(psprite->getName(),  g_game_object_map[psprite->getName()]->getRigidBody());
 
-    /*
     psprite = new JU::SpriteObject("background", "data/textures/background.jpg",false);
     psprite->setMoveable2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 80.0f, 80.0f * HEIGHT / WIDTH));
     g_game_object_map[psprite->getName()] = psprite;
-    */
 
     JU::SpaceShip* pspaceship = new JU::SpaceShip("spaceship", "data/textures/spaceship.png", true);
     pspaceship->setMoveable2D(JU::Moveable2D(0.0f, 0.0f, 0.0f, 1.3f, 1.3f));
@@ -298,6 +296,11 @@ void loop()
         glm::mat3 view;
         g_pcamera->getWorld2NDCTransformation(view);
 
+        // Background
+        p_program = &g_shader_map["texture"];
+        p_program->use();
+        g_game_object_map["background"]->render(*p_program, model, view);
+
         // Grid particle system
         p_program = &g_shader_map["grid"];
         p_program->use();
@@ -311,8 +314,6 @@ void loop()
         // All other Sprites
         p_program = &g_shader_map["texture"];
         p_program->use();
-
-        //g_game_object_map["background"]->render(*p_program, model, view);
         g_game_object_map["enemy1"]->render(*p_program, model, view);
         g_game_object_map["enemy2"]->render(*p_program, model, view);
         g_game_object_map["enemy3"]->render(*p_program, model, view);
