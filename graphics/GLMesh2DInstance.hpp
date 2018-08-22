@@ -19,6 +19,9 @@ class GLMesh2D;
 template <typename T>
 class Shareable;
 
+/**
+ * OpenGL code for a 2D Mesh instance (geometry, texture, color)
+ */
 class GLMesh2DInstance : public Renderable2DInterface
 {
     public:
@@ -38,9 +41,9 @@ class GLMesh2DInstance : public Renderable2DInterface
         void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
 
     private:
-        Shareable<const GLMesh2D>*  pshare_mesh_;
-        Shareable<const Texture>*   pshare_texture_;
-        glm::vec4                   color_;
+        Shareable<const GLMesh2D>*  pshare_mesh_;		//!< Shareable mesh
+        Shareable<const Texture>*   pshare_texture_;	//!< Shareable texture
+        glm::vec4                   color_;				//!< Color
 };
 
 } /* namespace JU */

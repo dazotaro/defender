@@ -14,6 +14,9 @@
 namespace JU
 {
 
+/**
+ * 2D Camera class
+ */
 class Camera2D
 {
     public:

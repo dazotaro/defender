@@ -14,6 +14,7 @@
 
 namespace JU
 {
+
 /**
 * @brief Default constructor
 *
@@ -126,6 +127,7 @@ void GLMesh2D::transferDataGPU(const Mesh2D& mesh, GLenum usage)
         gl::EnableVertexAttribArray(1);
         gl::VertexAttribPointer(1, 2, gl::FLOAT, gl::FALSE_, 0, 0);
     }
+
     // Unbind
     gl::BindBuffer(gl::ARRAY_BUFFER, 0);
     gl::BindVertexArray(0);

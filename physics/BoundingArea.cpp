@@ -59,6 +59,12 @@ BoundingRectangle::BoundingRectangle(const glm::vec2 pmin, const glm::vec2 pmax)
 
 }
 
+/**
+ * Non-default constructor
+ *
+ * @param vertices Address of array of vertices
+ * @param size 	   Size of the array
+ */
 BoundingRectangle::BoundingRectangle(const glm::vec2* vertices, int size)
 {
     if (!computeBoundingRectangle(vertices, size, pmin_, pmax_))

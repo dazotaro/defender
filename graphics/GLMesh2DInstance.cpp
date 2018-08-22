@@ -15,6 +15,13 @@
 namespace JU
 {
 
+/**
+ * Non-default constructor
+ *
+ * @param pshare_mesh 		(shareable) Address of mesh
+ * @param pshare_texture	(shareable) Address of texture
+ * @param color				Color
+ */
 GLMesh2DInstance::GLMesh2DInstance(Shareable<const GLMesh2D>* pshare_mesh,
                                    Shareable<const Texture>* pshare_texture,
                                    const glm::vec4& color)
@@ -23,6 +30,9 @@ GLMesh2DInstance::GLMesh2DInstance(Shareable<const GLMesh2D>* pshare_mesh,
 }
 
 
+/**
+ * Destructor
+ */
 GLMesh2DInstance::~GLMesh2DInstance()
 {
     if (pshare_mesh_)
@@ -32,6 +42,9 @@ GLMesh2DInstance::~GLMesh2DInstance()
 }
 
 
+/**
+ * Get
+ */
 const GLMesh2D* GLMesh2DInstance::getGLMesh() const
 {
     return pshare_mesh_->pdata_;
