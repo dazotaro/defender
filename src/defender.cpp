@@ -16,7 +16,6 @@
 #include "ParticleSystem.hpp"                   // JU::ParticleSystem
 #include "../core/Timer.hpp"				    // JU::Timer
 #include "../physics/PhysicsEngine.hpp"	        // PhysicsEngine
-#include "../graphics/DebugGlm.hpp"				// print
 // Global includes
 #include <cstdio>					            // printf
 #include <SDL.h>					            // all SDL2
@@ -294,8 +293,6 @@ void loop()
 
         // Model is identity
         glm::mat3 model(1.0f);
-
-        debug::print("Model from main loop", model);
 
         // Get World to Camera matrix
         glm::mat3 view;
