@@ -12,10 +12,24 @@
 namespace JU
 {
 
+/**
+ * Default constructor
+ */
 Mesh2D::Mesh2D() : pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0), draw_mode_(gl::TRIANGLES), ptexcoordinates_(nullptr)
 {
 }
 
+
+/**
+ * Non-default constructor
+ *
+ * @param pvertices 		Array of vertices
+ * @param num_vertices		Size of the array of vertices
+ * @param pindices			Array of indices
+ * @param num_indices		Size of the array of indices
+ * @param ptexcoordinates	Array with texture coordinates
+ * @param draw_mode			GL draw mode (GL_TRIANGLES,...)
+ */
 Mesh2D::Mesh2D(const glm::vec2* pvertices,
                uint32           num_vertices,
                const uint32*    pindices,
@@ -28,6 +42,11 @@ Mesh2D::Mesh2D(const glm::vec2* pvertices,
 }
 
 
+/**
+ * Copy constructor
+ *
+ * @param rhs Object to copy
+ */
 Mesh2D::Mesh2D(const Mesh2D& rhs)
         : pvertices_(nullptr), num_vertices_(0), pindices_(nullptr), num_indices_(0), draw_mode_(gl::STATIC_DRAW), ptexcoordinates_(nullptr)
 {
@@ -35,6 +54,9 @@ Mesh2D::Mesh2D(const Mesh2D& rhs)
 }
 
 
+/**
+ * Destructor
+ */
 Mesh2D::~Mesh2D()
 {
     delete [] pvertices_;
@@ -42,6 +64,11 @@ Mesh2D::~Mesh2D()
 }
 
 
+/**
+ * Assignment operator
+ *
+ * @param rhs Object to copy
+ */
 const Mesh2D& Mesh2D::operator=(const Mesh2D& rhs)
 {
     if (&rhs != this)
@@ -87,7 +114,16 @@ void Mesh2D::getVertexCoordinates(glm::vec2* & pvertices, uint32& num_vertices)
 }
 
 
-
+/**
+ * Get all the data
+ *
+ * @param pvertices 		Array of vertices
+ * @param num_vertices		Size of the array of vertices
+ * @param pindices			Array of indices
+ * @param num_indices		Size of the array of indices
+ * @param ptexcoordinates	Array with texture coordinates
+ * @param draw_mode			GL draw mode (GL_TRIANGLES,...)
+ */
 void Mesh2D::getData(const glm::vec2** pvertices,
                      uint32&           num_vertices,
                      const uint32**    pindices,

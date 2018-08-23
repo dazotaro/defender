@@ -28,10 +28,19 @@ const std::string GLSLProgram::COLOR_TEX_PREFIX ("ColorTex");
 const std::string GLSLProgram::NORMAL_MAP_TEX_PREFIX ("NormalMapTex");
 
 
+/**
+ * Default constructor
+ */
 GLSLProgram::GLSLProgram() : handle_(0), linked_(false) {}
 
 
-
+/**
+ * Compile a shader file
+ *
+ * @param filename 	Name of the file
+ * @param type		Shader type
+ * @return True if successful, false otherwise
+ */
 bool GLSLProgram::compileShaderFromFile(const char * fileName, GLSLShader::GLSLShaderType type)
 {
     if (!fileExists(fileName))
@@ -71,7 +80,13 @@ bool GLSLProgram::compileShaderFromFile(const char * fileName, GLSLShader::GLSLS
 }
 
 
-
+/**
+ * Compile shader from string
+ *
+ * @param source String containing the shader code
+ * @param type	 Type of the shader (fragment, vertex...)
+ * @return True if successful, false otherwise
+ */
 bool GLSLProgram::compileShaderFromString(const std::string & source, GLSLShader::GLSLShaderType type)
 {
     if (handle_ <= 0)
@@ -142,7 +157,11 @@ bool GLSLProgram::compileShaderFromString(const std::string & source, GLSLShader
 }
 
 
-
+/**
+ * Link the shader program
+ *
+ * @return True is successful, false otherwise
+ */
 bool GLSLProgram::link()
 {
     if( linked_ ) return true;
@@ -179,7 +198,9 @@ bool GLSLProgram::link()
 }
 
 
-
+/**
+ * Enable the shader program
+ */
 void GLSLProgram::use() const
 {
     if(handle_ <= 0 || (!linked_))
@@ -189,42 +210,75 @@ void GLSLProgram::use() const
 }
 
 
-
+/**
+ * Return log string
+ *
+ * @return Log string
+ */
 std::string GLSLProgram::log() const
 {
     return log_string_;
 }
 
 
-
+/**
+ * Get program handle
+ *
+ * @return Program handle
+ */
 GLuint GLSLProgram::getHandle() const
 {
     return handle_;
 }
 
 
-
+/**
+ * Is program successfully linked?
+ *
+ * @return True if sucessful, false otherwise
+ */
 bool GLSLProgram::isLinked() const
 {
     return linked_;
 }
 
 
-
+/**
+ * Wrapper around GL function call:
+ *
+ * "Associates a generic vertex attribute index with a named attribute variable"
+ *
+ * @param location 	Location
+ * @param name		Name of the attribute
+ */
 void GLSLProgram::bindAttribLocation(GLuint location, const char * name)
 {
     gl::BindAttribLocation(handle_, location, name);
 }
 
 
-
+/**
+ * Wrapper around GL function call:
+ *
+ * "Bind a user-defined varying out variable to a fragment shader color number"
+ *
+ * @param location 	Location
+ * @param name		Name of the attribute
+ */
 void GLSLProgram::bindFragDataLocation(GLuint location, const char * name)
 {
     gl::BindFragDataLocation(handle_, location, name);
 }
 
 
-
+/**
+ * Wrapper around GL function call to set a uniform
+ *
+ * @param name Uniform name
+ * @param x	   x value
+ * @param y	   y value
+ * @param z	   z value
+ */
 void GLSLProgram::setUniform(const char* name, float x, float y, float z) const
 {
     GLint loc = getUniformLocation(name);
@@ -241,6 +295,12 @@ void GLSLProgram::setUniform(const char* name, float x, float y, float z) const
 
 
 
+/**
+ * Wrapper around GL function call to set a uniform
+ *
+ * @param name Uniform name
+ * @param v	   Vec3
+ */
 void GLSLProgram::setUniform(const char* name, const glm::vec3 & v) const
 {
     this->setUniform(name,v.x,v.y,v.z);
@@ -248,6 +308,12 @@ void GLSLProgram::setUniform(const char* name, const glm::vec3 & v) const
 
 
 
+/**
+ * Wrapper around GL function call to set a uniform
+ *
+ * @param name Uniform name
+ * @param v	   Vec4
+ */
 void GLSLProgram::setUniform(const char* name, const glm::vec4 & v) const
 {
     GLint loc = getUniformLocation(name);
@@ -264,6 +330,12 @@ void GLSLProgram::setUniform(const char* name, const glm::vec4 & v) const
 
 
 
+/**
+ * Wrapper around GL function call to set a uniform
+ *
+ * @param name Uniform name
+ * @param m	   Mat4
+ */
 void GLSLProgram::setUniform(const char* name, const glm::mat4 & m) const
 {
     GLint loc = getUniformLocation(name);
@@ -280,6 +352,12 @@ void GLSLProgram::setUniform(const char* name, const glm::mat4 & m) const
 
 
 
+/**
+ * Wrapper around GL function call to set a uniform
+ *
+ * @param name Uniform name
+ * @param m	   Mat3
+ */
 void GLSLProgram::setUniform(const char* name, const glm::mat3 & m) const
 {
     GLint loc = getUniformLocation(name);
@@ -296,6 +374,12 @@ void GLSLProgram::setUniform(const char* name, const glm::mat3 & m) const
 
 
 
+/**
+ * Wrapper around GL function call to set a uniform
+ *
+ * @param name Uniform name
+ * @param val  Floating point value
+ */
 void GLSLProgram::setUniform(const char* name, float val) const
 {
     GLint loc = getUniformLocation(name);
@@ -312,6 +396,12 @@ void GLSLProgram::setUniform(const char* name, float val) const
 
 
 
+/**
+ * Wrapper around GL function call to set a uniform
+ *
+ * @param name Uniform name
+ * @param val  Integer value
+ */
 void GLSLProgram::setUniform(const char* name, JU::int32 val) const
 {
     GLint loc = getUniformLocation(name);
@@ -328,6 +418,12 @@ void GLSLProgram::setUniform(const char* name, JU::int32 val) const
 
 
 
+/**
+ * Wrapper around GL function call to set a uniform
+ *
+ * @param name Uniform name
+ * @param val  Boolean value
+ */
 void GLSLProgram::setUniform(const char* name, bool val) const
 {
     GLint loc = getUniformLocation(name);
@@ -343,7 +439,9 @@ void GLSLProgram::setUniform(const char* name, bool val) const
 }
 
 
-
+/**
+ * Print active uniform variables
+ */
 void GLSLProgram::printActiveUniforms()  const
 {
     GLint nUniforms, size, location, maxLen;
@@ -369,7 +467,9 @@ void GLSLProgram::printActiveUniforms()  const
 }
 
 
-
+/**
+ * Print active attribute values
+ */
 void GLSLProgram::printActiveAttribs() const
 {
 
@@ -395,7 +495,11 @@ void GLSLProgram::printActiveAttribs() const
 }
 
 
-
+/**
+ * Is this shader program valid?
+ *
+ * @return True is valid, false otherwise
+ */
 bool GLSLProgram::validate()
 {
     if (!isLinked())
@@ -432,13 +536,26 @@ bool GLSLProgram::validate()
 
 
 
+/**
+ * Get uniform location
+ *
+ * @param name Uniform name
+ * @return Uniform location
+ */
 GLint GLSLProgram::getUniformLocation(const char * name) const
 {
     return gl::GetUniformLocation(handle_, name);
 }
 
 
-
+/**
+ * Does this file exist?
+ *
+ * \todo This function does not need to be a member function since it doesn't
+ * make use of any class data
+ *
+ * @return True if it does, false otherwise
+ */
 bool GLSLProgram::fileExists( const std::string & fileName )
 {
     struct stat info;

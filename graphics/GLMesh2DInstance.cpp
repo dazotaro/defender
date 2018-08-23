@@ -43,7 +43,9 @@ GLMesh2DInstance::~GLMesh2DInstance()
 
 
 /**
- * Get
+ * Get Mesh
+ *
+ * @return Address of GLMesh2D object
  */
 const GLMesh2D* GLMesh2DInstance::getGLMesh() const
 {
@@ -51,12 +53,24 @@ const GLMesh2D* GLMesh2DInstance::getGLMesh() const
 }
 
 
+/**
+ * Set Color
+ *
+ * @param color Color
+ */
 void GLMesh2DInstance::setColor(const glm::vec4& color)
 {
     color_ = color;
 }
 
 
+/**
+ * Render instance
+ *
+ * @param program 	Shader program
+ * @param model 	Homogeneous model matrix
+ * @param view		Homogeneous view matrix
+ */
 void GLMesh2DInstance::render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const
 {
     glm::mat3 MV = view * model;

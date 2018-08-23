@@ -10,7 +10,9 @@
 namespace JU
 {
 
-
+/**
+ * Default constructor
+ */
 TextureManager::TextureManager() : num_tex_bound_(0)
 {
     // TODO Auto-generated constructor stub
@@ -18,11 +20,20 @@ TextureManager::TextureManager() : num_tex_bound_(0)
 }
 
 
+/**
+ * Destructor
+ */
 TextureManager::~TextureManager()
 {
 }
 
 
+/**
+ * Bind a texture
+ *
+ * @param tex_id Texture id
+ * @return Active texture id
+ */
 GLuint TextureManager::bindTexture(GLuint tex_id)
 {
     gl::ActiveTexture(gl::TEXTURE0 + num_tex_bound_);
@@ -32,6 +43,9 @@ GLuint TextureManager::bindTexture(GLuint tex_id)
 }
 
 
+/**
+ * Unbind all textures
+ */
 void TextureManager::unbindAllTextures()
 {
     num_tex_bound_ = 0;

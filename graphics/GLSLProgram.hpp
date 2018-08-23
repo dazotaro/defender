@@ -72,9 +72,9 @@ class GLSLProgram
         bool  fileExists(const std::string & fileName);
 
     private:
-        GLuint                  handle_;
-        bool                    linked_;
-        std::string             log_string_;
+        GLuint                  handle_;		//!< Program handle
+        bool                    linked_;		//!< Is linked?
+        std::string             log_string_;	//!< Output log string
 };
 
 } // namespace JU

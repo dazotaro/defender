@@ -16,22 +16,39 @@
 namespace JU
 {
 
-
+/**
+ * Default constructor
+ */
 Texture::Texture() : tex_id_(0)
 {
 }
 
 
+/**
+ * Non-default constructor
+ *
+ * @param filename name of the texture file
+ */
 Texture::Texture(const char* filename) : tex_id_(0)
 {
     loadTexture(filename);
 }
 
+
+/**
+ * Destructor
+ */
 Texture::~Texture()
 {
 }
 
 
+/**
+ * Load a texture from file
+ *
+ * @param filename Name of the texture file
+ * @return True if successful, false otherwise
+ */
 bool Texture::loadTexture(const char* filename)
 {
     if (tex_id_)

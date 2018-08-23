@@ -13,6 +13,9 @@
 namespace JU
 {
 
+/**
+ * Class to facilitate the management of textures
+ */
 class TextureManager
 {
     template <typename U>
@@ -30,7 +33,7 @@ class TextureManager
         void unbindAllTextures();
 
     private:
-        GLuint num_tex_bound_;
+        GLuint num_tex_bound_;		//!< Number of textures bound
 };
 
 } /* namespace JU */

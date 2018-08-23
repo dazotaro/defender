@@ -56,7 +56,7 @@ class Mesh2D
         uint32      num_vertices_;
         uint32*     pindices_;
         uint32      num_indices_;
-        GLenum      draw_mode_;         //!< GL_TRIANGLE, GL_TRIANGLE_FAN, GL_LINE, GL_LINE_LOOP
+        GLenum      draw_mode_;         //!< Shouldn't this just be in GLMesh2D? GL_TRIANGLE, GL_TRIANGLE_FAN, GL_LINE, GL_LINE_LOOP
         glm::vec2*  ptexcoordinates_;
 };
 

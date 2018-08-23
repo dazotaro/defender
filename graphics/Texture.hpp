@@ -13,6 +13,9 @@
 namespace JU
 {
 
+/**
+ * Class to facilitate the loading of textures from file, and their transfer to the GPU
+ */
 class Texture
 {
     public:
