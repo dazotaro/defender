@@ -18,6 +18,9 @@ namespace JU
 
 #define FUNCTION_NAME __PRETTY_FUNCTION__
 
+/**
+ * Class to manage log messages
+ */
 class SystemLog
 {
     private:
@@ -51,7 +54,7 @@ class SystemLog
         typedef LogMap::const_iterator      LogMapConsIter;
 
         // Member Variables
-        static LogMap log_map_;
+        static LogMap log_map_;			//!< Hastable with logs (for different tags/keys)
 };
 
 } /* namespace JU */

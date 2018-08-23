@@ -11,6 +11,9 @@
 namespace JU
 {
 
+/**
+ * Programming exercise: generic singleton
+ */
 template <typename T>
 class Singleton
 {

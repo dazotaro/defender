@@ -13,6 +13,9 @@
 namespace JU
 {
 
+/**
+ * Timer class
+ */
 class Timer
 {
     public:
@@ -32,13 +35,11 @@ class Timer
         bool isPaused();
 
     private:
-        //The clock time when the timer started
-        uint32 start_ticks_;
-        //The ticks stored when the timer was paused
-        uint32 paused_ticks_;
-        //The timer status
-        bool paused_;
-        bool started_;
+
+        uint32 start_ticks_;	//!< The clock time when the timer started
+        uint32 paused_ticks_;	//!< The ticks stored when the timer was paused
+        bool paused_;			//!< Is paused?
+        bool started_;			//!< Has started?
 };
 
 } /* namespace JU */

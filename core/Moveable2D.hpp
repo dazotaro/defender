@@ -14,6 +14,10 @@
 namespace JU
 {
 
+/**
+ * Class to encapsulate position and orientation (translation and rotation) of
+ * a 2D rigid body
+ */
 class Moveable2D
 {
     public:

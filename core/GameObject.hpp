@@ -23,6 +23,9 @@ class GLMesh2DInstance;
 class GLSLProgram;
 class RigidBody;
 
+/**
+ * Base class for game objects
+ */
 class GameObject
 {
     public:
@@ -48,11 +51,11 @@ class GameObject
         virtual void render(const GLSLProgram &program, const glm::mat3 & model, const glm::mat3 &view) const;
 
     protected:
-        std::string       name_;
+        std::string       name_;			//!< Name of the object
         GLMesh2DInstance* pmesh_instance_;  //!< Renderable component
         Moveable2D        moveable_;        //!< Position and orientation
         RigidBody*        prigid_body_;     //!< RigidBody
-        bool              collideable_;
+        bool              collideable_;		//!< Is it collideable?
 };
 
 } /* namespace JU */

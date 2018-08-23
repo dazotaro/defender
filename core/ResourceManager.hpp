@@ -17,6 +17,10 @@
 namespace JU
 {
 
+/**
+ * Programming exercises that implement smart pointers
+ * \todo replace it with actual C++11 smart pointers
+ */
 template<typename T>
 class Shareable
 {
@@ -34,6 +38,9 @@ class Shareable
         T* const pdata_;
 };
 
+/**
+ * Resource Manager
+ */
 template<typename T>
 class ResourceManager
 {

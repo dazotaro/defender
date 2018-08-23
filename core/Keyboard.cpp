@@ -110,6 +110,9 @@ bool Keyboard::isKeyDown(SDL_Scancode code) const
 
 
 #ifdef _DEBUG
+/**
+ * Print the keyboard state
+ */
 void Keyboard::printKeyboard() const
 {
     for (JU::uint32 scancode = SDL_SCANCODE_UNKNOWN; scancode < SDL_NUM_SCANCODES; ++scancode)

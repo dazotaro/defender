@@ -13,11 +13,17 @@
 namespace JU
 {
 
+/**
+ * Default constructor
+ */
 Timer::Timer() :
         start_ticks_(0), paused_ticks_(0), paused_(false), started_(false)
-{
-}
+{}
 
+
+/**
+ * Start timer
+ */
 void Timer::start()
 {
     //Start the timer
@@ -31,6 +37,10 @@ void Timer::start()
     paused_ticks_ = 0;
 }
 
+
+/**
+ * Stop timer
+ */
 void Timer::stop()
 {
     //Stop the timer
@@ -44,6 +54,10 @@ void Timer::stop()
     paused_ticks_ = 0;
 }
 
+
+/**
+ * Pause timer
+ */
 void Timer::pause()
 {
     //If the timer is running and isn't already paused
@@ -58,6 +72,10 @@ void Timer::pause()
     }
 }
 
+
+/**
+ * Resume timer
+ */
 void Timer::unpause()
 {
     //If the timer is running and paused
@@ -74,6 +92,10 @@ void Timer::unpause()
     }
 }
 
+
+/**
+ * Get number of ticks since start
+ */
 uint32 Timer::getTicks()
 {
     //The actual timer time
@@ -98,12 +120,24 @@ uint32 Timer::getTicks()
     return time;
 }
 
+
+/**
+ * Is running?
+ *
+ * @return True if running, false otherwise
+ */
 bool Timer::isStarted()
 {
     //Timer is running and paused or unpaused
     return started_;
 }
 
+
+/**
+ * Is paused?
+ *
+ * @return True if paused, false otherwise
+ */
 bool Timer::isPaused()
 {
     //Timer is running and paused

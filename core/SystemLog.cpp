@@ -16,6 +16,13 @@ namespace JU
 
 SystemLog::LogMap SystemLog::log_map_;
 
+/**
+ * Log a message for a given tag
+ *
+ * @param tag 		Tag of the log
+ * @param message	Message to log
+ * @param abort		Abort execution?
+ */
 void SystemLog::logMessage(const char* tag, const char* message, bool abort)
 {
     LogMapIter iter = log_map_.find(tag);
@@ -35,18 +42,31 @@ void SystemLog::logMessage(const char* tag, const char* message, bool abort)
 }
 
 
+/**
+ * Clear a log for an specific tag
+ *
+ * @param tag Tag
+ */
 void SystemLog::clearLog(const char* tag)
 {
     log_map_.erase(tag);
 }
 
 
+/**
+ * Clear all logs
+ */
 void SystemLog::clarAllLogs()
 {
     log_map_.clear();
 }
 
 
+/**
+ * Print a log for an specific tag
+ *
+ * @param tag Tag of log to print
+ */
 bool SystemLog::printLog(const char* tag)
 {
     std::string output_string;
@@ -64,6 +84,9 @@ bool SystemLog::printLog(const char* tag)
 }
 
 
+/**
+ * Print all logs
+ */
 void SystemLog::printAllLogs()
 {
     for (LogMapConsIter iter = log_map_.begin(); iter != log_map_.end(); iter++)

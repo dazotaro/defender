@@ -18,6 +18,9 @@
 
 namespace JU
 {
+	/**
+	 * Class to handle SDL events
+	 */
     class SDLEventHandler
     {
         public:
@@ -26,6 +29,9 @@ namespace JU
             virtual void handleSDLEvent(const SDL_Event* event) = 0;
     };
 
+	/**
+	 * Wrapper class for SDL events
+	 */
     class SDLEvent
     {
         public:

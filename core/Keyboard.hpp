@@ -17,6 +17,10 @@
 
 namespace JU
 {
+
+	/**
+	 * Class to implement a keyboard handler for SDL events
+	 */
     class Keyboard : public SDLEventHandler
     {
         enum KeyState

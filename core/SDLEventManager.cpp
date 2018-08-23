@@ -15,7 +15,12 @@
 namespace JU
 {
 
-
+/**
+ * Attach an event handler to an event name
+ *
+ * @param handler_name		Event name
+ * @param handler_handler	Event handler
+ */
 void SDLEvent::attachEventHandler(const std::string& handler_name, SDLEventHandler* event_handler)
 {
     EventHandlerMap::iterator result = event_handler_map_.find(handler_name);
@@ -32,6 +37,11 @@ void SDLEvent::attachEventHandler(const std::string& handler_name, SDLEventHandl
 }
 
 
+/**
+ * Detach event handler
+ *
+ * @param handler_name Handler name
+ */
 void SDLEvent::detachEventHandler(const std::string& handler_name)
 {
     EventHandlerMap::iterator result = event_handler_map_.find(handler_name);
@@ -48,6 +58,13 @@ void SDLEvent::detachEventHandler(const std::string& handler_name)
 }
 
 
+/**
+ * @brief Handle an event
+ *
+ * Present an event to all of the event handlers
+ *
+ * @param event Event to be handled
+ */
 void SDLEvent::handleEvent(const SDL_Event* event) const
 {
     for (EventHandlerMap::const_iterator iter = event_handler_map_.begin(); iter != event_handler_map_.end(); ++iter)
@@ -58,7 +75,7 @@ void SDLEvent::handleEvent(const SDL_Event* event) const
 
 
 /**
-* @brief Default Constructor
+* Default Constructor
 *
 */
 SDLEventManager::SDLEventManager (): quit_(false)
@@ -67,7 +84,7 @@ SDLEventManager::SDLEventManager (): quit_(false)
 
 
 /**
-* @brief Default Destructor
+* Destructor
 *
 */
 SDLEventManager::~SDLEventManager ()
@@ -76,12 +93,9 @@ SDLEventManager::~SDLEventManager ()
 
 
 /**
-* @brief Initializer Function
-*
 * Initialize all components of input
 *
-* @return True if successful
-*
+* @return True if successful, false otherwise
 */
 bool SDLEventManager::initialize()
 {
@@ -94,8 +108,7 @@ bool SDLEventManager::initialize()
 *
 * Go through all the events available since the last update
 *
-* @return True if successful
-*
+* @return True if successful, false otherwise
 */
 bool SDLEventManager::update()
 {
@@ -145,12 +158,22 @@ bool SDLEventManager::update()
 }
 
 
+/**
+ * Are we quitting the application? e.g. did the 'esc' was pressed?
+ */
 bool SDLEventManager::quitting() const
 {
     return quit_;
 }
 
 
+/**
+ * Attach an event handler to an event id
+ *
+ * @param event_id		Event id
+ * @param handler_name	Event handler name
+ * @param event_handler	Address of Event handler
+ */
 void SDLEventManager::attachEventHandler(SDLEvent::EventID event_id, const std::string& handler_name, SDLEventHandler* event_handler)
 {
     SDLEventHashMap::iterator result = event_handlers_hashmap_.find(event_id);
@@ -168,6 +191,12 @@ void SDLEventManager::attachEventHandler(SDLEvent::EventID event_id, const std::
 }
 
 
+/**
+ * Detach and event handler
+ *
+ * @param event_id 		Event id
+ * @param handler_name	Event handler name
+ */
 void SDLEventManager::detachEventHandler(SDLEvent::EventID event_id, const std::string& handler_name)
 {
     SDLEventHashMap::iterator result = event_handlers_hashmap_.find(event_id);
