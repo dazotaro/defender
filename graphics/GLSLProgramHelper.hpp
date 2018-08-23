@@ -16,6 +16,7 @@ namespace JU
 namespace GLSLProgramHelper
 {
     GLSLProgram compileAndLinkShader(const char* vertex, const char* fragment);
+    bool  fileExists(const std::string & fileName);
 }
 
 }

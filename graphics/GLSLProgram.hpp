@@ -69,7 +69,6 @@ class GLSLProgram
 
     private:
         GLint getUniformLocation(const char * name ) const;
-        bool  fileExists(const std::string & fileName);
 
     private:
         GLuint                  handle_;		//!< Program handle

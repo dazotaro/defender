@@ -6,6 +6,7 @@
  */
 
 #include "GLSLProgramHelper.hpp"
+#include <sys/stat.h>				// stat
 
 namespace JU
 {
@@ -43,6 +44,21 @@ GLSLProgram compileAndLinkShader(const char* vertex, const char* fragment)
 	program.use();
 
 	return program;
+}
+
+
+/**
+ * Does this file exist?
+ *
+ * @return True if it does, false otherwise
+ */
+bool fileExists( const std::string & fileName )
+{
+    struct stat info;
+    JU::int32 ret = -1;
+
+    ret = stat(fileName.c_str(), &info);
+    return 0 == ret;
 }
 
 } // namespace GLSLProgramHelper

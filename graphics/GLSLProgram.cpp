@@ -1,14 +1,14 @@
 
 
 // Local includes
-#include "GLSLProgram.hpp"    // GLSLProgram
+#include "GLSLProgram.hpp"    		// GLSLProgram
+#include "GLSLProgramHelper.hpp"	// fileExists
 
 
 // Global includes
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <sys/stat.h>
 
 namespace JU
 {
@@ -43,7 +43,7 @@ GLSLProgram::GLSLProgram() : handle_(0), linked_(false) {}
  */
 bool GLSLProgram::compileShaderFromFile(const char * fileName, GLSLShader::GLSLShaderType type)
 {
-    if (!fileExists(fileName))
+    if (!GLSLProgramHelper::fileExists(fileName))
     {
         log_string_ = "File not found.";
         return false;
@@ -547,22 +547,5 @@ GLint GLSLProgram::getUniformLocation(const char * name) const
     return gl::GetUniformLocation(handle_, name);
 }
 
-
-/**
- * Does this file exist?
- *
- * \todo This function does not need to be a member function since it doesn't
- * make use of any class data
- *
- * @return True if it does, false otherwise
- */
-bool GLSLProgram::fileExists( const std::string & fileName )
-{
-    struct stat info;
-    JU::int32 ret = -1;
-
-    ret = stat(fileName.c_str(), &info);
-    return 0 == ret;
-}
 
 } // namespace JU
